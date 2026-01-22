@@ -1,0 +1,6 @@
+export * from './primary-details'
+export * from './location-details'
+export * from './stakeholder-details'
+export * from './financial-details'
+export * from './date-details'
+export * from './status-details'

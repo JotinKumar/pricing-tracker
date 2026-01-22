@@ -1,0 +1,366 @@
+{
+  "teams": [
+    {
+      "id": 1,
+      "teamname": "Solutions",
+      "display": "SO",
+      "isActive": true
+    },
+    {
+      "id": 2,
+      "teamname": "Pricing",
+      "display": "PR",
+      "isActive": true
+    },
+    {
+      "id": 3,
+      "teamname": "Business Finance",
+      "display": "BF",
+      "isActive": true
+    },
+    {
+      "id": 4,
+      "teamname": "Sales",
+      "display": "SA",
+      "isActive": true
+    },
+    {
+      "id": 5,
+      "teamname": "Workforce Management",
+      "display": "WO",
+      "isActive": true
+    },
+    {
+      "id": 6,
+      "teamname": "Talent Acquisition",
+      "display": "TA",
+      "isActive": true
+    },
+    {
+      "id": 7,
+      "teamname": "Leader / Management",
+      "display": "LE",
+      "isActive": true
+    }
+  ],
+  "verticals": [
+    {
+      "id": 1,
+      "vertical": "Healthcare",
+      "display": "Hea",
+      "isActive": true
+    },
+    {
+      "id": 2,
+      "vertical": "Bank Finance",
+      "display": "BF",
+      "isActive": true
+    },
+    {
+      "id": 3,
+      "vertical": "CME",
+      "display": "CME",
+      "isActive": true
+    },
+    {
+      "id": 4,
+      "vertical": "Government",
+      "display": "Gov",
+      "isActive": true
+    },
+    {
+      "id": 5,
+      "vertical": "Insurance",
+      "display": "Ins",
+      "isActive": true
+    },
+    {
+      "id": 6,
+      "vertical": "Amazon",
+      "display": "Ama",
+      "isActive": true
+    },
+    {
+      "id": 7,
+      "vertical": "Mortgage",
+      "display": "Mor",
+      "isActive": true
+    },
+    {
+      "id": 8,
+      "vertical": "Retail",
+      "display": "Ret",
+      "isActive": true
+    },
+    {
+      "id": 9,
+      "vertical": "Technology",
+      "display": "Tech",
+      "isActive": true
+    },
+    {
+      "id": 10,
+      "vertical": "Financial Research",
+      "display": "FR",
+      "isActive": true
+    },
+    {
+      "id": 11,
+      "vertical": "FTP",
+      "display": "FTP",
+      "isActive": true
+    }
+  ],
+  "horizontals": [
+    {
+      "id": 1,
+      "horizontal": "App Dev",
+      "display": "App Dev",
+      "isActive": true
+    },
+    {
+      "id": 2,
+      "horizontal": "Infra",
+      "display": "Infra",
+      "isActive": true
+    },
+    {
+      "id": 3,
+      "horizontal": "BPO",
+      "display": "BPO",
+      "isActive": true
+    },
+    {
+      "id": 4,
+      "horizontal": "Consulting",
+      "display": "Consulting",
+      "isActive": true
+    },
+    {
+      "id": 5,
+      "horizontal": "Regular",
+      "display": "Regular",
+      "isActive": true
+    }
+  ],
+  "statuses": [
+    {
+      "id": 1,
+      "status": "Work in progress",
+      "display": "WIP",
+      "isActive": true
+    },
+    {
+      "id": 2,
+      "status": "Waiting for inputs",
+      "display": "Waiting",
+      "isActive": true
+    },
+    {
+      "id": 3,
+      "status": "Pending confirmation",
+      "display": "Confirming",
+      "isActive": true
+    },
+    {
+      "id": 4,
+      "status": "Pending approval",
+      "display": "Approval",
+      "isActive": true
+    },
+    {
+      "id": 5,
+      "status": "Pending Exceptional approval",
+      "display": "Exc. Appr",
+      "isActive": true
+    },
+    {
+      "id": 6,
+      "status": "Completed",
+      "display": "Completed",
+      "isActive": true
+    },
+    {
+      "id": 7,
+      "status": "Inactive",
+      "display": "Inactive",
+      "isActive": true
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "category": "Linear",
+      "display": "Linear",
+      "isActive": true
+    },
+    {
+      "id": 2,
+      "category": "Non-linear",
+      "display": "Non-linear",
+      "isActive": true
+    }
+  ],
+  "versions": [
+    {
+      "id": 1,
+      "version": "First Price",
+      "display": "FP",
+      "isActive": true
+    },
+    {
+      "id": 2,
+      "version": "Re-price",
+      "display": "RE",
+      "isActive": true
+    },
+    {
+      "id": 3,
+      "version": "POS",
+      "display": "POS",
+      "isActive": true
+    }
+  ],
+  "documentTypes": [
+    {
+      "id": 1,
+      "type": "Solution Inputs",
+      "display": "SI",
+      "isActive": true
+    },
+    {
+      "id": 2,
+      "type": "Pricing Summary",
+      "display": "PS",
+      "isActive": true
+    },
+    {
+      "id": 3,
+      "type": "Talent Acquisition Inputs",
+      "display": "TA",
+      "isActive": true
+    },
+    {
+      "id": 4,
+      "type": "Meeting Summaries",
+      "display": "ME",
+      "isActive": true
+    },
+    {
+      "id": 5,
+      "type": "Others",
+      "display": "OT",
+      "isActive": true
+    }
+  ],
+  "locations": [
+    {
+      "id": 1,
+      "country": "India",
+      "display": "IN",
+      "isActive": true
+    },
+    {
+      "id": 2,
+      "country": "China",
+      "display": "CN",
+      "isActive": true
+    },
+    {
+      "id": 3,
+      "country": "Japan",
+      "display": "JP",
+      "isActive": true
+    },
+    {
+      "id": 4,
+      "country": "Malaysia",
+      "display": "MY",
+      "isActive": true
+    },
+    {
+      "id": 5,
+      "country": "Philippines",
+      "display": "PH",
+      "isActive": true
+    },
+    {
+      "id": 6,
+      "country": "Singapore",
+      "display": "SG",
+      "isActive": true
+    },
+    {
+      "id": 7,
+      "country": "Bulgaria",
+      "display": "BG",
+      "isActive": true
+    },
+    {
+      "id": 8,
+      "country": "Kosovo",
+      "display": "XK",
+      "isActive": true
+    },
+    {
+      "id": 9,
+      "country": "United Kingdom",
+      "display": "GB",
+      "isActive": true
+    },
+    {
+      "id": 10,
+      "country": "Colombia",
+      "display": "CO",
+      "isActive": true
+    },
+    {
+      "id": 11,
+      "country": "Mexico",
+      "display": "MX",
+      "isActive": true
+    },
+    {
+      "id": 12,
+      "country": "Egypt",
+      "display": "EG",
+      "isActive": true
+    },
+    {
+      "id": 13,
+      "country": "Saudi Arabia",
+      "display": "SA",
+      "isActive": true
+    },
+    {
+      "id": 14,
+      "country": "South Africa",
+      "display": "ZA",
+      "isActive": true
+    },
+    {
+      "id": 15,
+      "country": "UAE",
+      "display": "AE",
+      "isActive": true
+    },
+    {
+      "id": 16,
+      "country": "Canada",
+      "display": "CA",
+      "isActive": true
+    },
+    {
+      "id": 17,
+      "country": "Jamaica",
+      "display": "JM",
+      "isActive": true
+    },
+    {
+      "id": 18,
+      "country": "United States",
+      "display": "US",
+      "isActive": true
+    }
+  ]
+}

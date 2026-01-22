@@ -1,0 +1,245 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String
+  initials  String?
+  avatar    String?
+  designation String?
+  managerId Int?
+  manager   User?    @relation("UserHierarchy", fields: [managerId], references: [id])
+  role      String   // "ADMIN", "MANAGER", "USER", "READ_ONLY"
+  teams      Team[]
+  
+  isActive  Boolean  @default(true)
+  
+  reports   User[]   @relation("UserHierarchy")
+  activities PricingActivity[]
+  activityMembers ActivityTeamMember[]
+  attachments     Attachment[]
+  comments        Comment[]
+  defaultAssignments DefaultAssignment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Team {
+  id        Int      @id @default(autoincrement())
+  teamname  String   @unique
+  display   String?  @unique
+  isActive  Boolean  @default(true)
+  users     User[]
+  activityMembers ActivityTeamMember[]
+}
+
+// Lookup Tables
+
+model DocumentType {
+  id        Int      @id @default(autoincrement())
+  type      String   @unique
+  display   String?  @unique
+  isActive  Boolean  @default(true)
+}
+
+model Vertical {
+  id        Int      @id @default(autoincrement())
+  vertical  String   @unique
+  display   String?  @unique
+  isActive  Boolean  @default(true)
+  activities PricingActivity[]
+}
+
+model Horizontal {
+  id        Int      @id @default(autoincrement())
+  horizontal String   @unique
+  display   String?  @unique
+  isActive  Boolean  @default(true)
+  activities PricingActivity[]
+}
+
+model Location {
+  id        Int      @id @default(autoincrement())
+  country   String   @unique
+  display   String?  @unique
+  isActive  Boolean  @default(true)
+  
+  clientActivities   PricingActivity[] @relation("ClientLocations")
+  deliveryActivities PricingActivity[] @relation("DeliveryLocations")
+}
+
+model Status {
+  id        Int      @id @default(autoincrement())
+  status    String   @unique
+  display   String?  @unique
+  isActive  Boolean  @default(true)
+  activities PricingActivity[]
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  category  String   @unique
+  display   String?  @unique
+  isActive  Boolean  @default(true)
+  activities PricingActivity[]
+}
+
+model Version {
+  id        Int      @id @default(autoincrement())
+  version   String   @unique
+  display   String?  @unique
+  isActive  Boolean  @default(true)
+  activities PricingActivity[]
+}
+
+model Outcome {
+  id        Int      @id @default(autoincrement())
+  outcome   String   @unique
+  display   String?  @unique
+  isActive  Boolean  @default(true)
+  activities PricingActivity[]
+}
+
+// Main Transactional Table
+
+model PricingActivity {
+  id                   Int      @id @default(autoincrement())
+  id1                  String
+  id2                  String
+  clientName           String
+  projectName          String
+  
+  // Relations
+  vertical             Vertical @relation(fields: [verticalId], references: [id])
+  verticalId           Int
+  
+  horizontal           Horizontal @relation(fields: [horizontalId], references: [id])
+  horizontalId         Int
+  
+  annualContractValue  Float
+  dueDate              DateTime
+  
+  clientLocations      Location[] @relation("ClientLocations")
+  
+  deliveryLocations    Location[] @relation("DeliveryLocations")
+  
+  // Dynamic Team Members
+  teamMembers          ActivityTeamMember[]
+
+  assignDate           DateTime
+  
+  status               Status @relation(fields: [statusId], references: [id])
+  statusId             Int
+  
+  category             Category @relation(fields: [categoryId], references: [id])
+  categoryId           Int
+  
+  version              Version @relation(fields: [versionId], references: [id])
+  versionId            Int
+  
+  comments             Comment[]
+
+  outcome              Outcome? @relation(fields: [outcomeId], references: [id])
+  outcomeId            Int?
+
+  user                 User @relation(fields: [userId], references: [id]) // Creator
+  userId               Int
+
+
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  text      String
+  
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  
+  activity  PricingActivity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  activityId Int
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ActivityTeamMember {
+  id        Int      @id @default(autoincrement())
+  
+  activity  PricingActivity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  activityId Int
+  
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  
+  team      Team     @relation(fields: [teamId], references: [id])
+  teamId    Int
+
+  @@index([activityId])
+  @@index([userId])
+  @@index([teamId])
+}
+
+model Attachment {
+  id        Int      @id @default(autoincrement())
+  fileType  String
+  fileName  String 
+  filePath  String?
+  fileSize  Int?
+
+  notes     String?
+  
+  salesForceId String
+  
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+
+  createdAt DateTime @default(now())
+
+  @@index([salesForceId])
+}
+
+
+
+model SystemSetting {
+  key   String @id
+  value String
+  
+  updatedAt DateTime @updatedAt
+}
+
+model DefaultAssignment {
+  id          Int      @id @default(autoincrement())
+  type        String   // "Vertical", "Horizontal", "Location"
+  referenceId Int?     // Specific ID or null for "All"
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+  isActive    Boolean  @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([type, referenceId, userId])
+}
+
+model FieldConfig {
+  id          Int      @id @default(autoincrement())
+  targetField String   @unique // "id1", "id2"
+  fieldName   String
+  fieldType   String   // "STRING", "NUMBER"
+  hasPrefix   Boolean  @default(false)
+  prefix      String?
+  isActive    Boolean  @default(true)
+
+  updatedAt   DateTime @updatedAt
+}
