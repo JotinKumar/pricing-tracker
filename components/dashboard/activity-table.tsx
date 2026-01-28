@@ -1,7 +1,7 @@
 
 'use client'
 
-import { Fragment } from 'react'
+import { Fragment, useMemo } from 'react'
 import { RenderFilterHeader, LocationFilterHeader, DealTeamFilterHeader, ProjectFilterHeader } from './filter-headers'
 import { PricingActivity, Lookups } from '@/types'
 import { ActivityRow } from './activity-row'
@@ -18,7 +18,7 @@ interface ActivityTableProps {
     setActiveFilter: (filter: string | null) => void
     handleFilterChange: (field: string, value: string) => void
     handleBulkFilterChange: (changes: Record<string, string | null>) => void
-    filterRef: any
+    filterRef: React.RefObject<HTMLDivElement | null>
     groupBy: 'client' | 'vertical'
     getDateColor: (dateStr: string | Date) => string
     getFirstName: (fullName: string | null) => string
@@ -27,11 +27,11 @@ interface ActivityTableProps {
     handleStorageOpen: (activity: PricingActivity) => void
     handleCommentsOpen: (activity: PricingActivity) => void
     isReadOnly: boolean
-    fieldConfigs?: Record<string, any>
+    fieldConfigs?: Record<string, unknown>
 }
 
 export function ActivityTable({
-    activities, // Needed for unique value generation in filters
+    activities,
     groupedActivities,
     groupKeys,
     expandedGroups,
@@ -53,8 +53,39 @@ export function ActivityTable({
     isReadOnly,
     fieldConfigs = {}
 }: ActivityTableProps) {
-    const totalVisibleRows = Object.values(groupedActivities).reduce((acc, curr) => acc + curr.length, 0)
+    // Memoize expensive calculations
+    const totalVisibleRows = useMemo(() => 
+        Object.values(groupedActivities).reduce((acc, curr) => acc + curr.length, 0),
+        [groupedActivities]
+    )
     const forceAbove = totalVisibleRows < 3
+
+    // Memoize options arrays to prevent unnecessary re-renders
+    const versionOptions = useMemo(() => 
+        lookups.versions.map((v) => ({ 
+            label: v.version, 
+            value: v.id.toString(), 
+            className: "bg-popover text-popover-foreground" 
+        })),
+        [lookups.versions]
+    )
+
+    const categoryOptions = useMemo(() => 
+        lookups.categories.map((c) => ({ 
+            label: c.category, 
+            value: c.id.toString() 
+        })),
+        [lookups.categories]
+    )
+
+    const statusOptions = useMemo(() => 
+        lookups.statuses.map((s) => ({ 
+            label: s.status, 
+            value: s.id.toString(), 
+            className: "bg-popover text-popover-foreground" 
+        })),
+        [lookups.statuses]
+    )
 
     return (
         <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden flex flex-col max-h-[75vh] min-h-[600px]">
@@ -74,9 +105,9 @@ export function ActivityTable({
                                 forceAbove={forceAbove}
                             />
                             <th className="px-4 py-3 align-middle w-[8%] sticky top-0 z-20 bg-muted/95 backdrop-blur-sm shadow-sm border-b border-border">
-                                {fieldConfigs?.acv?.fieldName === 'THOUSANDS' ? 'ACV (K)' :
-                                    fieldConfigs?.acv?.fieldName === 'MILLIONS' ? 'ACV (M)' :
-                                        fieldConfigs?.acv?.fieldName === 'BILLIONS' ? 'ACV (B)' : 'ACV'}
+                                {(fieldConfigs?.acv as { fieldName?: string })?.fieldName === 'THOUSANDS' ? 'ACV (K)' :
+                                    (fieldConfigs?.acv as { fieldName?: string })?.fieldName === 'MILLIONS' ? 'ACV (M)' :
+                                        (fieldConfigs?.acv as { fieldName?: string })?.fieldName === 'BILLIONS' ? 'ACV (B)' : 'ACV'}
                             </th>
                             <th className="px-4 py-3 align-middle w-[14%] sticky top-0 z-20 bg-muted/95 backdrop-blur-sm shadow-sm border-b border-border">Due Date</th>
 
@@ -84,7 +115,7 @@ export function ActivityTable({
                                 label="Version"
                                 field="versionId"
                                 width="w-[10%]"
-                                options={lookups.versions.map((v) => ({ label: v.version, value: v.id.toString(), className: "bg-popover text-popover-foreground" }))}
+                                options={versionOptions}
                                 filters={filters}
                                 activeFilter={activeFilter}
                                 setActiveFilter={setActiveFilter}
@@ -94,7 +125,7 @@ export function ActivityTable({
                                 linkedFilter={{
                                     field: 'categoryId',
                                     label: 'Category',
-                                    options: lookups.categories.map((c: any) => ({ label: c.category, value: c.id.toString() }))
+                                    options: categoryOptions
                                 }}
                             />
 
@@ -113,7 +144,7 @@ export function ActivityTable({
                                 label="Status"
                                 field="statusId"
                                 width="w-[10%]"
-                                options={lookups.statuses.map((s) => ({ label: s.status, value: s.id.toString(), className: "bg-popover text-popover-foreground" }))}
+                                options={statusOptions}
                                 filters={filters}
                                 activeFilter={activeFilter}
                                 setActiveFilter={setActiveFilter}
