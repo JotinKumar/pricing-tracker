@@ -20,6 +20,10 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { toast } from 'sonner'
+import { CommentsSection } from './comments-section'
+import { FileStorageSection } from './file-storage-section'
+import { ConfirmationDialog } from '@/components/ui/confirmation-dialog'
 
 interface ActivityFormProps {
     activity?: PricingActivity | null
@@ -33,6 +37,19 @@ interface ActivityFormProps {
 export default function ActivityForm({ activity, lookups, onClose, onSuccess, session, isEdit = false }: ActivityFormProps) {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
+    const [clientNames, setClientNames] = useState<string[]>([])
+
+    // Fetch unique clients on mount
+    useEffect(() => {
+        // Dynamic import to avoid circular dependencies if any, though likely safe to import normally
+        import('@/lib/actions/activity').then(({ getUniqueClients }) => {
+            getUniqueClients().then(res => {
+                if (res.success && res.data) {
+                    setClientNames(res.data)
+                }
+            })
+        })
+    }, [])
 
     const defaultValues: Partial<ActivityFormValues> = {
         id: activity?.id,
@@ -124,8 +141,71 @@ export default function ActivityForm({ activity, lookups, onClose, onSuccess, se
         await processSubmission(data)
     }
 
+    // Cast comments to array safely - and merge with local state if we want to show new ones immediately
+    // Ideally we should initialize a state with props.activity.comments
+    const [localComments, setLocalComments] = useState<any[]>((activity as any)?.comments || [])
+    const [deleteCommentId, setDeleteCommentId] = useState<number | null>(null)
+
+    // Sync if activity changes (e.g. after save success)
+    useEffect(() => {
+        if (activity?.comments) {
+            setLocalComments(activity.comments)
+        }
+    }, [activity])
+
+    // New Comment Handler
+    const handleAddComment = async (text: string) => {
+        if (activity?.id) {
+            // Immediate save for existing activity
+            try {
+                // We need to import addComment dynamically or ensure it's imported
+                const { addComment } = await import('@/lib/actions/activity')
+                const res = await addComment(activity.id, text)
+
+                if (res.success && res.comment) {
+                    toast.success("Comment added")
+                    setLocalComments(prev => [res.comment, ...prev])
+                    form.setValue('newComment', '') // Clear input
+                } else {
+                    toast.error(res.message || "Failed to add comment")
+                }
+            } catch (err) {
+                toast.error("Error adding comment")
+            }
+        } else {
+            // For new activity, just update form state (staging)
+            form.setValue('newComment', text)
+            toast.info("Comment staged. Will be saved when you click 'Save Activity'.")
+        }
+    }
+
     // Cast comments to array safely
     const existingComments = (activity as any)?.comments || []
+    // If pending comment exists in form, maybe show it? (Not implemented in backend return yet)
+
+    const handleDeleteComment = (commentId: number) => {
+        setDeleteCommentId(commentId)
+    }
+
+    const confirmDeleteComment = async () => {
+        if (!deleteCommentId) return
+
+        try {
+            const { deleteComment } = await import('@/lib/actions/activity')
+            const res = await deleteComment(deleteCommentId)
+
+            if (res.success) {
+                toast.success("Comment deleted")
+                setLocalComments(prev => prev.filter(c => c.id !== deleteCommentId))
+            } else {
+                toast.error(res.message || "Failed to delete comment")
+            }
+        } catch (err) {
+            toast.error("Error deleting comment")
+        } finally {
+            setDeleteCommentId(null)
+        }
+    }
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
@@ -134,16 +214,11 @@ export default function ActivityForm({ activity, lookups, onClose, onSuccess, se
                     <form onSubmit={form.handleSubmit(onSubmit)} className="p-8 space-y-6">
                         <ActivityFormHeader isEdit={isEdit} onClose={onClose} />
 
-                        {/* Datalist for Users/Inputs */}
-                        <datalist id="user-list">
-                            {lookups.users?.map((u) => (
-                                <option key={u.id} value={u.name} />
-                            ))}
-                        </datalist>
-
+                        {/* Primary with Client Dropdown */}
                         <PrimaryDetails
                             lookups={lookups}
                             session={session}
+                            clientNames={clientNames}
                         />
 
                         <LocationDetails
@@ -161,60 +236,54 @@ export default function ActivityForm({ activity, lookups, onClose, onSuccess, se
                             session={session}
                         />
 
-                        <StakeholderDetails
-                            lookups={lookups}
-                            session={session}
-                            lockedUserIds={lockedUserIds}
-                        />
-
-                        <StatusDetails
-                            lookups={lookups}
-                            session={session}
-                        />
-
-                        {/* Comments Section */}
-                        <div className="space-y-4 pt-4 border-t">
-                            <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Comments</h3>
-
-                            {/* Comment History */}
-                            {existingComments.length > 0 && (
-                                <ScrollArea className="h-[200px] w-full rounded-md border p-4 bg-muted/30">
-                                    <div className="space-y-4">
-                                        {existingComments.map((comment: any) => (
-                                            <div key={comment.id} className="flex flex-col space-y-1">
-                                                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                                    <span className="font-semibold text-foreground">{comment.user?.name || comment.user?.email || 'Unknown User'}</span>
-                                                    <span>•</span>
-                                                    <span>{new Date(comment.createdAt).toLocaleString()}</span>
-                                                </div>
-                                                <div className="text-sm p-2 bg-background rounded border shadow-sm">
-                                                    {comment.text}
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </ScrollArea>
-                            )}
-
-                            {/* Add New Comment */}
-                            <FormField
-                                control={form.control}
-                                name="newComment"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormControl>
-                                            <Textarea
-                                                {...field}
-                                                placeholder="Add a comment..."
-                                                rows={2}
-                                                className="resize-none"
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
+                        {/* Swapped Order: Status before Stakeholder */}
+                        <div className="pt-4 border-t border-border">
+                            <StatusDetails
+                                lookups={lookups}
+                                session={session}
                             />
                         </div>
+
+
+                        <div className="flex items-center justify-end gap-4 pt-4 border-t border-border">
+                            <Button type="button" variant="outline" onClick={onClose} disabled={loading}>
+                                Cancel
+                            </Button>
+                            <Button
+                                type="submit"
+                                disabled={loading || session.role === 'READ_ONLY'}
+                                className="shadow-lg shadow-primary/20"
+                            >
+                                {loading ? 'Saving...' : 'Save Activity'}
+                            </Button>
+                        </div>
+
+                        <div className="pt-4 border-t border-border">
+                            <StakeholderDetails
+                                lookups={lookups}
+                                session={session}
+                                lockedUserIds={lockedUserIds}
+                            />
+                        </div>
+
+                        {/* Comments Section */}
+                        <CommentsSection
+                            comments={localComments}
+                            onAddComment={handleAddComment}
+                            isReadOnly={session.role === 'READ_ONLY'}
+                            commentText={form.watch('newComment')}
+                            onCommentChange={(text) => form.setValue('newComment', text, { shouldDirty: true })}
+                            onDeleteComment={handleDeleteComment}
+                            currentUserId={session.id}
+                            currentUserRole={session.role}
+                        />
+
+                        {/* Project Files Section */}
+                        <FileStorageSection
+                            activity={activity || null}
+                            currentUserId={session.id}
+                            currentUserRole={session.role}
+                        />
 
                         {error && <div className="text-destructive text-sm font-medium">{error}</div>}
 
@@ -269,6 +338,16 @@ export default function ActivityForm({ activity, lookups, onClose, onSuccess, se
                     </div>
                 </div>
             )}
+
+            <ConfirmationDialog
+                isOpen={!!deleteCommentId}
+                title="Delete Comment"
+                message="Are you sure you want to delete this comment? This action cannot be undone."
+                confirmLabel="Delete"
+                variant="destructive"
+                onConfirm={confirmDeleteComment}
+                onCancel={() => setDeleteCommentId(null)}
+            />
         </div>
     )
 }

@@ -9,21 +9,23 @@ import { Select, SelectContent, SelectTrigger, SelectValue } from '@/components/
 import { ActivityFormValues } from '@/lib/schemas'
 import { getFieldConfigs } from '@/lib/actions/field-config'
 import { SectionProps, renderOptions } from './shared'
+import { ClientCombobox } from '../client-combobox'
 
 type FieldConfig = {
     fieldName: string
     fieldType: 'STRING' | 'NUMBER'
     prefix?: string
     hasPrefix?: boolean
+    isActive?: boolean
 }
 
-export function PrimaryDetails({ lookups, session }: SectionProps) {
+export function PrimaryDetails({ lookups, session, clientNames = [] }: SectionProps) {
     const { control } = useFormContext<ActivityFormValues>()
     const isReadOnly = session.role === 'READ_ONLY'
 
     const [configs, setConfigs] = useState<Record<string, FieldConfig>>({
-        id1: { fieldName: 'Salesforce ID', fieldType: 'STRING', prefix: '' },
-        id2: { fieldName: 'DSR Number', fieldType: 'STRING', prefix: '' }
+        id1: { fieldName: 'ID1', fieldType: 'STRING', prefix: '', isActive: true },
+        id2: { fieldName: 'ID2', fieldType: 'STRING', prefix: '', isActive: true }
     })
 
     useEffect(() => {
@@ -39,81 +41,85 @@ export function PrimaryDetails({ lookups, session }: SectionProps) {
     return (
         <>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                {/* Dynamically Configured ID2 */}
-                <div className="flex items-end gap-2">
-                    <FormField
-                        control={control}
-                        name="id2"
-                        render={({ field }) => (
-                            <FormItem className="flex-1">
-                                <FormLabel className="uppercase text-xs text-muted-foreground">{configs.id2.fieldName || 'DSR Number'}</FormLabel>
-                                <FormControl>
-                                    <div className="relative">
-                                        {configs.id2.hasPrefix && configs.id2.prefix && (
-                                            <div className="absolute left-3 top-2.5 text-sm text-muted-foreground select-none">
-                                                {configs.id2.prefix}
-                                            </div>
-                                        )}
-                                        <Input
-                                            {...field}
-                                            type={configs.id2.fieldType === 'NUMBER' ? 'number' : 'text'}
-                                            disabled={isReadOnly}
-                                            placeholder={configs.id2.fieldName}
-                                            className={configs.id2.hasPrefix && configs.id2.prefix ? "pl-12" : ""}
-                                        />
-                                    </div>
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <button
-                        type="button"
-                        className="h-10 px-3 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80 flex items-center justify-center mb-0.5"
-                        onClick={() => toast.info("API Fetch Placeholder")}
-                        title={`Fetch ${configs.id2.fieldName}`}
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" /><path d="M16 16h5v5" /></svg>
-                    </button>
-                </div>
-
                 {/* Dynamically Configured ID1 */}
-                <div className="flex items-end gap-2">
-                    <FormField
-                        control={control}
-                        name="id1"
-                        render={({ field }) => (
-                            <FormItem className="flex-1">
-                                <FormLabel className="uppercase text-xs text-muted-foreground">{configs.id1.fieldName || 'Salesforce ID'}</FormLabel>
-                                <FormControl>
-                                    <div className="relative">
-                                        {configs.id1.hasPrefix && configs.id1.prefix && (
-                                            <div className="absolute left-3 top-2.5 text-sm text-muted-foreground select-none">
-                                                {configs.id1.prefix}
-                                            </div>
-                                        )}
-                                        <Input
-                                            {...field}
-                                            type={configs.id1.fieldType === 'NUMBER' ? 'number' : 'text'}
-                                            disabled={isReadOnly}
-                                            placeholder={configs.id1.fieldName}
-                                            className={configs.id1.hasPrefix && configs.id1.prefix ? "pl-10" : ""}
-                                        />
-                                    </div>
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <button
-                        type="button"
-                        className="h-10 px-3 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80 flex items-center justify-center mb-0.5"
-                        onClick={() => toast.info("API Fetch Placeholder")}
-                        title={`Fetch ${configs.id1.fieldName}`}
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" /><path d="M16 16h5v5" /></svg>
-                    </button>
-                </div>
+                {configs.id1.isActive !== false && (
+                    <div className="flex items-end gap-2">
+                        <FormField
+                            control={control}
+                            name="id1"
+                            render={({ field }) => (
+                                <FormItem className="flex-1">
+                                    <FormLabel className="uppercase text-xs text-muted-foreground">{configs.id1.fieldName || 'ID1'}</FormLabel>
+                                    <FormControl>
+                                        <div className="relative">
+                                            {configs.id1.hasPrefix && configs.id1.prefix && (
+                                                <div className="absolute left-3 top-2.5 text-sm text-muted-foreground select-none">
+                                                    {configs.id1.prefix}
+                                                </div>
+                                            )}
+                                            <Input
+                                                {...field}
+                                                type={configs.id1.fieldType === 'NUMBER' ? 'number' : 'text'}
+                                                disabled={isReadOnly}
+                                                placeholder={configs.id1.fieldName || 'ID1'}
+                                                className={configs.id1.hasPrefix && configs.id1.prefix ? "pl-10" : ""}
+                                            />
+                                        </div>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <button
+                            type="button"
+                            className="h-10 px-3 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80 flex items-center justify-center mb-0.5"
+                            onClick={() => toast.info("API Fetch Placeholder")}
+                            title={`Fetch ${configs.id1.fieldName || 'ID1'}`}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" /><path d="M16 16h5v5" /></svg>
+                        </button>
+                    </div>
+                )}
+
+                {/* Dynamically Configured ID2 */}
+                {configs.id2.isActive !== false && (
+                    <div className="flex items-end gap-2">
+                        <FormField
+                            control={control}
+                            name="id2"
+                            render={({ field }) => (
+                                <FormItem className="flex-1">
+                                    <FormLabel className="uppercase text-xs text-muted-foreground">{configs.id2.fieldName || 'ID2'}</FormLabel>
+                                    <FormControl>
+                                        <div className="relative">
+                                            {configs.id2.hasPrefix && configs.id2.prefix && (
+                                                <div className="absolute left-3 top-2.5 text-sm text-muted-foreground select-none">
+                                                    {configs.id2.prefix}
+                                                </div>
+                                            )}
+                                            <Input
+                                                {...field}
+                                                type={configs.id2.fieldType === 'NUMBER' ? 'number' : 'text'}
+                                                disabled={isReadOnly}
+                                                placeholder={configs.id2.fieldName || 'ID2'}
+                                                className={configs.id2.hasPrefix && configs.id2.prefix ? "pl-12" : ""}
+                                            />
+                                        </div>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <button
+                            type="button"
+                            className="h-10 px-3 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80 flex items-center justify-center mb-0.5"
+                            onClick={() => toast.info("API Fetch Placeholder")}
+                            title={`Fetch ${configs.id2.fieldName || 'ID2'}`}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" /><path d="M16 16h5v5" /></svg>
+                        </button>
+                    </div>
+                )}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -124,7 +130,23 @@ export function PrimaryDetails({ lookups, session }: SectionProps) {
                         <FormItem>
                             <FormLabel className="uppercase text-xs text-muted-foreground">Client Name</FormLabel>
                             <FormControl>
-                                <Input {...field} disabled={isReadOnly} />
+                                <div className="relative">
+                                    <Input
+                                        {...field}
+                                        disabled={isReadOnly}
+                                        list="clientLinks"
+                                        placeholder="Select or enter client name"
+                                        autoComplete="off"
+                                        className="hidden" // Keep hidden input for form linkage if needed, or just replace
+                                    />
+                                    <ClientCombobox
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        options={clientNames}
+                                        disabled={isReadOnly}
+                                    />
+
+                                </div>
                             </FormControl>
                             <FormMessage />
                         </FormItem>

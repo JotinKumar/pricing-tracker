@@ -20,6 +20,7 @@ export async function saveFieldConfig(data: {
     hasPrefix: boolean
     prefix?: string
     isActive: boolean
+    displayOnDashboard: boolean
 }) {
     try {
         const config = await prisma.fieldConfig.upsert({
@@ -29,7 +30,8 @@ export async function saveFieldConfig(data: {
                 fieldType: data.fieldType,
                 hasPrefix: data.hasPrefix,
                 prefix: data.prefix,
-                isActive: data.isActive
+                isActive: data.isActive,
+                displayOnDashboard: data.displayOnDashboard
             },
             create: {
                 targetField: data.targetField,
@@ -37,7 +39,8 @@ export async function saveFieldConfig(data: {
                 fieldType: data.fieldType,
                 hasPrefix: data.hasPrefix,
                 prefix: data.prefix,
-                isActive: data.isActive
+                isActive: data.isActive,
+                displayOnDashboard: data.displayOnDashboard
             }
         })
         revalidatePath('/dashboard/admin')

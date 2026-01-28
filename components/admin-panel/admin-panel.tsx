@@ -20,6 +20,7 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { DefaultsTab } from './tabs/defaults-tab'
 import { SettingsTab } from './tabs/settings-tab'
 import { useAdminData } from '@/hooks/use-admin-data'
+import { getFieldConfigs } from '@/lib/actions/field-config'
 
 interface AdminPanelProps {
     session: UserSession
@@ -61,6 +62,17 @@ function AdminPanelContent() {
         params.set('subtab', subtab)
         router.replace(`${pathname}?${params.toString()}`, { scroll: false })
     }
+
+    const [defaultCurrency, setDefaultCurrency] = useState('$')
+
+    useEffect(() => {
+        getFieldConfigs().then(res => {
+            if (res.success && res.data) {
+                const acvConfig = res.data.find((c: any) => c.targetField === 'acv')
+                if (acvConfig?.prefix) setDefaultCurrency(acvConfig.prefix)
+            }
+        })
+    }, [])
 
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -196,9 +208,19 @@ function AdminPanelContent() {
                             <div className="p-8 h-full overflow-hidden flex flex-col">
                                 <Tabs value={activeSubTab} onValueChange={setActiveSubTab} className="h-full flex flex-col">
                                     <div className="flex-none mb-6">
-                                        <TabsList className="bg-muted/50 p-1 rounded-lg">
-                                            <TabsTrigger value="default-users">Default Users</TabsTrigger>
-                                            <TabsTrigger value="advanced-settings">Advanced Settings</TabsTrigger>
+                                        <TabsList className="bg-background border border-border p-1 rounded-lg">
+                                            <TabsTrigger
+                                                value="default-users"
+                                                className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border-primary border border-transparent"
+                                            >
+                                                Default Users
+                                            </TabsTrigger>
+                                            <TabsTrigger
+                                                value="advanced-settings"
+                                                className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border-primary border border-transparent"
+                                            >
+                                                Advanced Settings
+                                            </TabsTrigger>
                                         </TabsList>
                                     </div>
 
@@ -275,6 +297,7 @@ function AdminPanelContent() {
                         onClose={() => setIsModalOpen(false)}
                         data={data}
                         availableTeams={availableTeams}
+                        defaultCurrency={defaultCurrency}
                     />
                 )}
                 {/* Confirmation Dialog */}

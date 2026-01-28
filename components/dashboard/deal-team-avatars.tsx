@@ -23,6 +23,7 @@ interface DealTeamAvatarsProps {
         user: { name: string | null }
         team: { display: string | null; teamname: string }
     }[]
+    onMemberClick?: (teamName: string, userName: string) => void
 }
 
 function getInitials(name: string | null) {
@@ -33,7 +34,8 @@ function getInitials(name: string | null) {
 }
 
 export function DealTeamAvatars({
-    teamMembers
+    teamMembers,
+    onMemberClick
 }: DealTeamAvatarsProps) {
     const members = teamMembers || []
     if (members.length === 0) {
@@ -82,8 +84,14 @@ export function DealTeamAvatars({
                                             relative
                                             rounded-full
                                             ring-2 ring-background
-                                            cursor-default
+                                            ${onMemberClick ? 'cursor-pointer hover:ring-primary' : 'cursor-default'}
                                         `}
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            if (onMemberClick && tm.user.name) {
+                                                onMemberClick(tm.team.teamname, tm.user.name)
+                                            }
+                                        }}
                                     >
                                         <Avatar className={`h-[33px] w-[33px] text-[10px] font-bold border bg-foreground text-background border-border`}>
                                             <AvatarFallback className={`bg-transparent text-inherit`}>
@@ -114,8 +122,15 @@ export function DealTeamAvatars({
                                             relative 
                                             rounded-full 
                                             ring-2 ring-background 
-                                            transition-transform hover:-translate-y-1 hover:z-10 hover:shadow-sm cursor-default
+                                            transition-transform hover:-translate-y-1 hover:z-10 hover:shadow-sm
+                                            ${onMemberClick ? 'cursor-pointer hover:ring-primary' : 'cursor-default'}
                                         `}
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            if (onMemberClick && tm.user.name) {
+                                                onMemberClick(tm.team.teamname, tm.user.name)
+                                            }
+                                        }}
                                     >
                                         <Avatar className={`h-[31px] w-[31px] text-[10px] font-bold border bg-secondary text-secondary-foreground border-border`}>
                                             <AvatarFallback className={`bg-transparent text-inherit`}>

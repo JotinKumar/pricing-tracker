@@ -22,6 +22,11 @@ export type PricingActivity = Prisma.PricingActivityGetPayload<{
                 team: true
                 user: true
             }
+        },
+        comments: {
+            include: {
+                user: true
+            }
         }
     }
 }> & { attachmentCount?: number }

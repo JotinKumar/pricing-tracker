@@ -14,6 +14,7 @@ import { getDateColor, getFirstName } from '@/lib/utils'
 import { PaginationControls } from './dashboard/pagination-controls'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { StorageModal } from './dashboard/storage-modal'
+import { CommentsModal } from './dashboard/comments-modal'
 
 const ActivityForm = dynamic(() => import('@/components/activity-form'), { ssr: false })
 
@@ -117,19 +118,23 @@ export default function DashboardClient({ session, initialActivities, lookups, p
       id2: (activity as any).id2 || (activity as any).dsrNumber || '',
       clientName: activity.clientName,
       projectName: activity.projectName,
-      verticalId: activity.verticalId,
-      horizontalId: activity.horizontalId,
+      verticalId: String(activity.verticalId),
+      horizontalId: String(activity.horizontalId),
       annualContractValue: activity.annualContractValue,
       dueDate: activity.dueDate, // Date object
       clientLocationIds: activity.clientLocations?.map((l) => l.id) || [],
       deliveryLocationIds: activity.deliveryLocations?.map((l) => l.id) || [],
+      teamMembers: (activity as any).teamMembers?.map((tm: any) => ({
+        teamId: tm.teamId,
+        userId: tm.userId
+      })) || [],
       assignDate: activity.assignDate, // Date object
-      statusId: activity.statusId,
-      categoryId: activity.categoryId,
-      versionId: activity.versionId,
-      outcomeId: activity.outcomeId,
+      statusId: String(activity.statusId),
+      categoryId: String(activity.categoryId),
+      versionId: String(activity.versionId),
+      outcomeId: activity.outcomeId ? String(activity.outcomeId) : undefined,
       newComment: '',
-      [field]: intValue // Override the changed field with number
+      [field]: String(intValue) // Override the changed field with string
     }
 
     const result = await submitActivity(flatPayload)
@@ -159,6 +164,15 @@ export default function DashboardClient({ session, initialActivities, lookups, p
     setSelectedActivity(null)
     setIsModalOpen(true)
   }
+
+  const [isCommentsModalOpen, setIsCommentsModalOpen] = useState(false)
+
+  const handleCommentsOpen = (activity: PricingActivity) => {
+    setSelectedActivity(activity)
+    setIsCommentsModalOpen(true)
+  }
+
+  // ... (rest of the functions)
 
   const handleSuccess = (newOrUpdatedActivity: PricingActivity) => {
     setIsModalOpen(false)
@@ -202,6 +216,7 @@ export default function DashboardClient({ session, initialActivities, lookups, p
             handleInlineUpdate={handleInlineUpdate}
             handleEdit={handleEdit}
             handleStorageOpen={handleStorageOpen}
+            handleCommentsOpen={handleCommentsOpen}
             isReadOnly={isReadOnly}
           />
 
@@ -233,6 +248,19 @@ export default function DashboardClient({ session, initialActivities, lookups, p
             onClose={() => setIsStorageModalOpen(false)}
             activity={selectedActivity}
             currentUserId={session.id}
+            currentUserRole={session.role}
+          />
+        )
+      }
+
+      {
+        isCommentsModalOpen && selectedActivity && (
+          <CommentsModal
+            isOpen={isCommentsModalOpen}
+            onClose={() => setIsCommentsModalOpen(false)}
+            activity={selectedActivity}
+            currentUserId={session.id}
+            currentUserRole={session.role}
           />
         )
       }

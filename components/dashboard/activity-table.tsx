@@ -25,7 +25,9 @@ interface ActivityTableProps {
     handleInlineUpdate: (activity: PricingActivity, field: string, value: string) => Promise<void>
     handleEdit: (activity: PricingActivity) => void
     handleStorageOpen: (activity: PricingActivity) => void
+    handleCommentsOpen: (activity: PricingActivity) => void
     isReadOnly: boolean
+    fieldConfigs?: Record<string, any>
 }
 
 export function ActivityTable({
@@ -47,7 +49,9 @@ export function ActivityTable({
     handleInlineUpdate,
     handleEdit,
     handleStorageOpen,
-    isReadOnly
+    handleCommentsOpen,
+    isReadOnly,
+    fieldConfigs = {}
 }: ActivityTableProps) {
     const totalVisibleRows = Object.values(groupedActivities).reduce((acc, curr) => acc + curr.length, 0)
     const forceAbove = totalVisibleRows < 3
@@ -69,13 +73,17 @@ export function ActivityTable({
                                 filterRef={filterRef}
                                 forceAbove={forceAbove}
                             />
-                            <th className="px-4 py-3 align-middle w-[8%] sticky top-0 z-20 bg-muted/95 backdrop-blur-sm shadow-sm border-b border-border">ACV</th>
-                            <th className="px-4 py-3 align-middle w-[8%] sticky top-0 z-20 bg-muted/95 backdrop-blur-sm shadow-sm border-b border-border">Due Date</th>
+                            <th className="px-4 py-3 align-middle w-[8%] sticky top-0 z-20 bg-muted/95 backdrop-blur-sm shadow-sm border-b border-border">
+                                {fieldConfigs?.acv?.fieldName === 'THOUSANDS' ? 'ACV (K)' :
+                                    fieldConfigs?.acv?.fieldName === 'MILLIONS' ? 'ACV (M)' :
+                                        fieldConfigs?.acv?.fieldName === 'BILLIONS' ? 'ACV (B)' : 'ACV'}
+                            </th>
+                            <th className="px-4 py-3 align-middle w-[14%] sticky top-0 z-20 bg-muted/95 backdrop-blur-sm shadow-sm border-b border-border">Due Date</th>
 
                             <RenderFilterHeader
                                 label="Version"
                                 field="versionId"
-                                width="w-[12%]"
+                                width="w-[10%]"
                                 options={lookups.versions.map((v) => ({ label: v.version, value: v.id.toString(), className: "bg-popover text-popover-foreground" }))}
                                 filters={filters}
                                 activeFilter={activeFilter}
@@ -83,6 +91,11 @@ export function ActivityTable({
                                 handleFilterChange={handleFilterChange}
                                 filterRef={filterRef}
                                 forceAbove={forceAbove}
+                                linkedFilter={{
+                                    field: 'categoryId',
+                                    label: 'Category',
+                                    options: lookups.categories.map((c: any) => ({ label: c.category, value: c.id.toString() }))
+                                }}
                             />
 
                             <LocationFilterHeader
@@ -99,7 +112,7 @@ export function ActivityTable({
                             <RenderFilterHeader
                                 label="Status"
                                 field="statusId"
-                                width="w-[12%]"
+                                width="w-[10%]"
                                 options={lookups.statuses.map((s) => ({ label: s.status, value: s.id.toString(), className: "bg-popover text-popover-foreground" }))}
                                 filters={filters}
                                 activeFilter={activeFilter}
@@ -120,7 +133,7 @@ export function ActivityTable({
                                 forceAbove={forceAbove}
                             />
 
-                            <th className="px-4 py-3 align-middle w-[6%] sticky top-0 z-20 bg-muted/95 backdrop-blur-sm shadow-sm border-b border-border">Edit</th>
+                            <th className="px-4 py-3 align-middle w-[8%] sticky top-0 z-20 bg-muted/95 backdrop-blur-sm shadow-sm border-b border-border">Edit</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
@@ -153,6 +166,8 @@ export function ActivityTable({
                                                 handleInlineUpdate={handleInlineUpdate}
                                                 handleEdit={handleEdit}
                                                 handleStorageOpen={handleStorageOpen}
+                                                handleCommentsOpen={handleCommentsOpen}
+                                                handleFilterChange={handleFilterChange}
                                                 isReadOnly={isReadOnly}
                                             />
                                         ))}

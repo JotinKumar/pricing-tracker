@@ -36,6 +36,7 @@ export function AdminTable({ activeTab, data, loading, handleEdit, handleCreate,
                             {activeTab === 'User' && <th className="px-3 py-3 w-[8%]">Manager</th>}
                             {activeTab === 'User' && <th className="px-3 py-3 w-[10%]">Role</th>}
                             {activeTab === 'User' && <th className="px-3 py-3 w-[20%]">Designation / Teams</th>}
+                            {activeTab === 'Location' && <th className="px-3 py-3 w-[10%]">Currency</th>}
 
                             <th className="px-3 py-3 text-center w-[8%] hidden md:table-cell">Status</th>
                             <th className="px-3 py-3 text-right w-[8%]">Actions</th>
@@ -132,6 +133,13 @@ export function AdminTable({ activeTab, data, loading, handleEdit, handleCreate,
                                                     <span className="text-muted-foreground/30 text-[10px]">-</span>
                                                 )}
                                             </div>
+                                        </td>
+                                    )}
+
+                                    {/* Location Currency */}
+                                    {activeTab === 'Location' && (
+                                        <td className="px-3 py-3 text-muted-foreground font-mono text-xs">
+                                            {item.currency || '-'}
                                         </td>
                                     )}
 

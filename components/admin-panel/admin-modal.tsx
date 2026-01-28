@@ -21,9 +21,10 @@ interface AdminModalProps {
     onClose: () => void
     data: any[]
     availableTeams?: any[]
+    defaultCurrency?: string
 }
 
-export function AdminModal({ editItem, activeTab, fields, handleSave, onClose, data, availableTeams = [] }: AdminModalProps) {
+export function AdminModal({ editItem, activeTab, fields, handleSave, onClose, data, availableTeams = [], defaultCurrency = '$' }: AdminModalProps) {
     const isUserTab = activeTab === 'User'
     const schema = isUserTab ? adminUserSchema : adminLookupSchema
 
@@ -49,7 +50,8 @@ export function AdminModal({ editItem, activeTab, fields, handleSave, onClose, d
         teams: editItem?.teams?.map((t: any) => t.id) || [],
         display: editItem?.display || '',
         isActive: editItem?.isActive ?? true,
-        [fields.key]: editItem?.[fields.key] || ''
+        [fields.key]: editItem?.[fields.key] || '',
+        currency: editItem?.currency || defaultCurrency
     }
 
     const form = useForm<any>({
@@ -285,6 +287,21 @@ export function AdminModal({ editItem, activeTab, fields, handleSave, onClose, d
                                         </FormItem>
                                     )}
                                 />
+                                {activeTab === 'Location' && (
+                                    <FormField
+                                        control={form.control}
+                                        name="currency"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Currency</FormLabel>
+                                                <FormControl>
+                                                    <Input {...field} placeholder="e.g. USD ($)" className="h-10 font-mono text-sm" />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                )}
                                 <FormField
                                     control={form.control}
                                     name="display"

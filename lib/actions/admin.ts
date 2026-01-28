@@ -119,7 +119,8 @@ export async function saveAdminData(type: AdminDataType, data: any) {
             const cleanData = {
                 [fieldName]: data[fieldName],
                 display: data.display,
-                isActive: data.isActive
+                isActive: data.isActive,
+                ...(type === 'Location' && { currency: data.currency })
             }
 
             if (numId) {

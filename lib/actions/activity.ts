@@ -282,6 +282,9 @@ export async function getActivities(params: {
         } else if (key === 'verticalId') where.verticalId = parseInt(value)
         else if (key === 'statusId') where.statusId = parseInt(value)
         else if (key === 'versionId') where.versionId = parseInt(value)
+        else if (key === 'categoryId') where.categoryId = parseInt(value)
+        else if (key === 'id1') where.id1 = value
+        else if (key === 'id2') where.id2 = value
         else if (key === 'clientName') where.clientName = value
         else if (key === 'projectName') where.projectName = value
         else if (key === 'annualContractValue') where.annualContractValue = parseInt(value)
@@ -326,14 +329,7 @@ export async function getActivities(params: {
             prisma.pricingActivity.count({ where })
         ])
 
-        // Fetch attachment counts - Updated to use id1 (assuming attachment links to id1 now?)
-        // Schema for Attachment still says 'salesForceId String'. 
-        // We verified earlier Attachment schema has 'salesForceId'.
-        // If the activity uses 'id1' (which IS salesForceId), we can still join on it if the logic holds.
-        // But the attachment table schema might need update if we renamed it everywhere?
-        // Step 546 showed Schema has 'salesForceId String' in Attachment.
-        // And 'id1 String' in PricingActivity.
-        // So they match by value.
+        // Fetch attachment counts
         const sfIds = activities.map(a => a.id1).filter(Boolean)
         const attachmentCounts = await prisma.attachment.groupBy({
             by: ['salesForceId'],
@@ -367,3 +363,64 @@ export async function getActivities(params: {
         return { success: false, message: 'Failed to fetch activities' }
     }
 }
+
+export async function getUniqueClients() {
+    try {
+        const clients = await prisma.pricingActivity.findMany({
+            select: { clientName: true },
+            distinct: ['clientName'],
+            orderBy: { clientName: 'asc' }
+        })
+        return { success: true, data: clients.map(c => c.clientName).filter(Boolean) }
+    } catch (error) {
+        console.error("Error fetching clients:", error)
+        return { success: false, data: [] }
+    }
+}
+
+export async function addComment(activityId: number, text: string) {
+    const session = await getSession()
+    if (!session) return { success: false, message: 'Unauthorized' }
+
+    if (!text || text.trim().length === 0) return { success: false, message: 'Comment text required' }
+
+    try {
+        const comment = await prisma.comment.create({
+            data: {
+                text,
+                activityId,
+                userId: session.id
+            },
+            include: {
+                user: true
+            }
+        })
+        return { success: true, comment }
+    } catch (error) {
+        console.error("Error adding comment:", error)
+        return { success: false, message: 'Failed to add comment' }
+    }
+}
+
+export async function deleteComment(commentId: number) {
+    const session = await getSession()
+    if (!session) return { success: false, message: 'Unauthorized' }
+
+    return prisma.$transaction(async (tx) => {
+        const comment = await tx.comment.findUnique({
+            where: { id: commentId },
+            select: { userId: true }
+        })
+
+        if (!comment) return { success: false, message: 'Comment not found' }
+
+        // Allow delete if author or ADMIN
+        if (comment.userId !== session.id && session.role !== 'ADMIN') {
+            return { success: false, message: 'Forbidden' }
+        }
+
+        await tx.comment.delete({ where: { id: commentId } })
+        return { success: true }
+    })
+}
+

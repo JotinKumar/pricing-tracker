@@ -7,10 +7,12 @@ import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/toast-custom'
 import { getSystemSetting, updateSystemSetting } from '@/lib/actions/admin'
 import { FieldConfigSection } from '../field-config-section'
+import { Plus, Minus } from 'lucide-react'
 
 export function SettingsTab() {
     const { addToast } = useToast()
     const [financialYearStart, setFinancialYearStart] = useState<string>('0')
+    const [isCollapsed, setIsCollapsed] = useState(true)
 
     const months = [
         "January", "February", "March", "April", "May", "June",
@@ -46,37 +48,51 @@ export function SettingsTab() {
 
     return (
         <div className="space-y-8 h-full overflow-auto">
-            {/* Financial Year Section */}
-            <div className="space-y-6">
-                <div className="flex-none">
-                    <h3 className="text-lg font-bold">Financial Year Settings</h3>
-                    <p className="text-sm text-muted-foreground">Configure global financial year of your organization</p>
-                </div>
-
-                <div className="space-y-4 bg-muted/30 p-6 rounded-lg max-w-4xl border border-border/50">
-                    <div className="flex items-end gap-4">
-                        <div className="space-y-2 w-64">
-                            <Label>Financial Year</Label>
-                            <Select value={financialYearStart} onValueChange={setFinancialYearStart}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select Month" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {fyOptions.map((opt) => (
-                                        <SelectItem key={opt.value} value={opt.value}>
-                                            {opt.label}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        <Button onClick={handleSaveFYSettings}>Set Financial Year</Button>
-                    </div>
-                </div>
-            </div>
-
             {/* Field Config Section */}
             <FieldConfigSection />
+
+            {/* Financial Year Section */}
+
+            {/* Financial Year Section */}
+            <div className="border border-border rounded-xl p-4 bg-card">
+                <div
+                    className="flex justify-between items-center cursor-pointer group"
+                    onClick={() => setIsCollapsed(!isCollapsed)}
+                >
+                    <div className="flex items-center gap-2">
+                        <h3 className="text-lg font-bold group-hover:text-primary transition-colors">Financial Year Settings</h3>
+                        {!isCollapsed && (
+                            <span className="text-xs text-muted-foreground font-normal ml-2">Configure global financial year of your organization</span>
+                        )}
+                    </div>
+                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        {isCollapsed ? <Plus className="h-4 w-4" /> : <Minus className="h-4 w-4" />}
+                    </Button>
+                </div>
+
+                {!isCollapsed && (
+                    <div className="space-y-4 bg-muted/30 p-6 rounded-lg max-w-4xl border border-border/50 mt-4">
+                        <div className="flex items-end gap-4">
+                            <div className="space-y-2 w-64">
+                                <Label>Financial Year</Label>
+                                <Select value={financialYearStart} onValueChange={setFinancialYearStart}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select Month" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {fyOptions.map((opt) => (
+                                            <SelectItem key={opt.value} value={opt.value}>
+                                                {opt.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            <Button onClick={handleSaveFYSettings}>Set Financial Year</Button>
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     )
 }

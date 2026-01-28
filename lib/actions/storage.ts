@@ -21,6 +21,7 @@ export async function uploadAttachment(formData: FormData) {
     const fileType = formData.get('fileType') as string
     const salesForceId = formData.get('salesForceId') as string
     const userId = parseInt(formData.get('userId') as string)
+    const notes = formData.get('notes') as string | null
 
     if (!file || !fileType || !salesForceId || !userId) {
         throw new Error('Missing required fields')
@@ -49,26 +50,22 @@ export async function uploadAttachment(formData: FormData) {
             filePath: storageFileName, // Store relative filename/path
             fileSize: file.size,
             salesForceId: salesForceId,
-            userId: userId
+            userId: userId,
+            notes: notes || undefined
         }
     })
 
     revalidatePath('/dashboard')
 }
 
-export async function addNote(salesForceId: string, userId: number, noteContent: string) {
-    if (!noteContent || !salesForceId || !userId) {
-        throw new Error('Missing required fields')
+export async function updateAttachmentNotes(attachmentId: number, notes: string) {
+    if (!attachmentId) {
+        throw new Error('Missing attachment ID')
     }
 
-    await prisma.attachment.create({
-        data: {
-            fileName: 'Note',
-            fileType: 'Note',
-            salesForceId: salesForceId,
-            userId: userId,
-            notes: noteContent
-        }
+    await prisma.attachment.update({
+        where: { id: attachmentId },
+        data: { notes }
     })
 
     revalidatePath('/dashboard')

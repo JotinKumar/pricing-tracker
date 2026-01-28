@@ -61,24 +61,24 @@ export const documentTypes = [
 ];
 
 export const locations = [
-    { id: 1, country: 'India', display: 'IN', isActive: true },
-    { id: 2, country: 'China', display: 'CN', isActive: true },
-    { id: 3, country: 'Japan', display: 'JP', isActive: true },
-    { id: 4, country: 'Malaysia', display: 'MY', isActive: true },
-    { id: 5, country: 'Philippines', display: 'PH', isActive: true },
-    { id: 6, country: 'Singapore', display: 'SG', isActive: true },
-    { id: 7, country: 'Bulgaria', display: 'BG', isActive: true },
-    { id: 8, country: 'Kosovo', display: 'XK', isActive: true },
-    { id: 9, country: 'United Kingdom', display: 'GB', isActive: true },
-    { id: 10, country: 'Colombia', display: 'CO', isActive: true },
-    { id: 11, country: 'Mexico', display: 'MX', isActive: true },
-    { id: 12, country: 'Egypt', display: 'EG', isActive: true },
-    { id: 13, country: 'Saudi Arabia', display: 'SA', isActive: true },
-    { id: 14, country: 'South Africa', display: 'ZA', isActive: true },
-    { id: 15, country: 'UAE', display: 'AE', isActive: true },
-    { id: 16, country: 'Canada', display: 'CA', isActive: true },
-    { id: 17, country: 'Jamaica', display: 'JM', isActive: true },
-    { id: 18, country: 'United States', display: 'US', isActive: true }
+    { id: 1, country: 'India', display: 'IN', isActive: true, currency: 'INR (₹)' },
+    { id: 2, country: 'China', display: 'CN', isActive: true, currency: 'CNY (¥)' },
+    { id: 3, country: 'Japan', display: 'JP', isActive: true, currency: 'JPY (¥)' },
+    { id: 4, country: 'Malaysia', display: 'MY', isActive: true, currency: 'MYR (RM)' },
+    { id: 5, country: 'Philippines', display: 'PH', isActive: true, currency: 'PHP (₱)' },
+    { id: 6, country: 'Singapore', display: 'SG', isActive: true, currency: 'SGD (S$)' },
+    { id: 7, country: 'Bulgaria', display: 'BG', isActive: true, currency: 'BGN (лв)' },
+    { id: 8, country: 'Kosovo', display: 'XK', isActive: true, currency: 'EUR (€)' },
+    { id: 9, country: 'United Kingdom', display: 'GB', isActive: true, currency: 'GBP (£)' },
+    { id: 10, country: 'Colombia', display: 'CO', isActive: true, currency: 'COP ($)' },
+    { id: 11, country: 'Mexico', display: 'MX', isActive: true, currency: 'MXN ($)' },
+    { id: 12, country: 'Egypt', display: 'EG', isActive: true, currency: 'EGP (E£)' },
+    { id: 13, country: 'Saudi Arabia', display: 'SA', isActive: true, currency: 'SAR (﷼)' },
+    { id: 14, country: 'South Africa', display: 'ZA', isActive: true, currency: 'ZAR (R)' },
+    { id: 15, country: 'UAE', display: 'AE', isActive: true, currency: 'AED (د.إ)' },
+    { id: 16, country: 'Canada', display: 'CA', isActive: true, currency: 'CAD ($)' },
+    { id: 17, country: 'Jamaica', display: 'JM', isActive: true, currency: 'JMD (J$)' },
+    { id: 18, country: 'United States', display: 'US', isActive: true, currency: 'USD ($)' }
 ];
 
 export const outcomes = [

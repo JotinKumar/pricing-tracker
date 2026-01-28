@@ -71,6 +71,7 @@ model Location {
   country   String   @unique
   display   String?  @unique
   isActive  Boolean  @default(true)
+  currency  String?
   
   clientActivities   PricingActivity[] @relation("ClientLocations")
   deliveryActivities PricingActivity[] @relation("DeliveryLocations")
@@ -240,6 +241,7 @@ model FieldConfig {
   hasPrefix   Boolean  @default(false)
   prefix      String?
   isActive    Boolean  @default(true)
+  displayOnDashboard Boolean @default(true)
 
   updatedAt   DateTime @updatedAt
 }
