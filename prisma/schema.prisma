@@ -29,6 +29,12 @@ model User {
   defaultAssignments DefaultAssignment[]
 
   createdAt DateTime @default(now())
+  preferenceTheme String?  // "light", "dark", "system"
+  preferenceCurrency String? // "USD", "EUR", etc. or null for global default
+  preferenceDateFormat String? // "MM/DD/YYYY", etc. or null for global default
+  preferenceAcvUnit String? // "ACTUAL", "THOUSANDS", "MILLIONS", "BILLIONS"
+  preferenceAcvDecimals String? // "0", "1", "2"
+
   updatedAt DateTime @updatedAt
 }
 

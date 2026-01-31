@@ -15,6 +15,8 @@ import {
     LayoutGrid,
     ChevronLeft,
     ChevronRight,
+    ShieldCheck,
+    Sliders,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -33,7 +35,8 @@ const ICON_MAP: Record<string, any> = {
     'Status': Activity,
     'Outcome': CheckCircle,
     'DocumentType': FileText,
-    'Settings': Settings
+    'Defaults': ShieldCheck,
+    'Preferences': Sliders
 }
 
 export interface AdminSidebarProps {

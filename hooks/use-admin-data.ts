@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { getAdminData } from '@/lib/actions/admin'
 
-type TabType = 'User' | 'Team' | 'Vertical' | 'Horizontal' | 'Location' | 'Category' | 'Version' | 'Status' | 'Outcome' | 'DocumentType' | 'Defaults'
+type TabType = 'User' | 'Team' | 'Vertical' | 'Horizontal' | 'Location' | 'Category' | 'Version' | 'Status' | 'Outcome' | 'DocumentType' | 'Defaults' | 'Preferences'
 
 interface UseAdminDataProps {
     activeTab: TabType
@@ -18,8 +18,8 @@ export function useAdminData({ activeTab, searchTerm, fields, onError }: UseAdmi
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        // Settings/Defaults don't need generic fetch
-        if (activeTab !== 'Defaults') {
+        // Settings/Defaults/Preferences don't need generic fetch
+        if (activeTab !== 'Defaults' && activeTab !== 'Preferences') {
             fetchData()
         }
     }, [activeTab])
@@ -38,7 +38,7 @@ export function useAdminData({ activeTab, searchTerm, fields, onError }: UseAdmi
     // Memoized filtered data for performance
     const filteredData = useMemo(() => {
         if (!searchTerm) return data
-        
+
         const searchLower = searchTerm.toLowerCase()
 
         return data.filter(item => {

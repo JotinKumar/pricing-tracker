@@ -39,7 +39,7 @@ export function useActivityAutoAssignment({
 
                 if (res.data.length > 0) {
                     const currentMembers = form.getValues('teamMembers') || []
-                    let newMembers = [...currentMembers]
+                    const newMembers = [...currentMembers]
                     let changed = false
 
                     res.data.forEach((user: any) => {

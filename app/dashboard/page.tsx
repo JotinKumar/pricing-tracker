@@ -1,8 +1,9 @@
 import { getSession } from '@/lib/actions/auth'
 import { TEAM_ORDER } from '@/lib/constants'
-import { getActivities } from '@/lib/actions/activity'
+import { getActivities, getUniqueClients, getActivityStats } from '@/lib/actions/activity'
 import prisma from '@/lib/db'
 import { redirect } from 'next/navigation'
+import { getFieldConfigs } from '@/lib/actions/field-config'
 import DashboardClient from '@/components/dashboard-client'
 
 interface DashboardPageProps {
@@ -26,7 +27,7 @@ export default async function DashboardPage(props: DashboardPageProps) {
     const { page: _p, limit: _l, search: _s, viewMode: _v, ...filters } = searchParams
 
     // Fetch Lookups
-    const [users, verticals, horizontals, locations, statuses, versions, categories, outcomes, teams] = await Promise.all([
+    const [users, verticals, horizontals, locations, statuses, versions, categories, outcomes, teams, fieldConfigs, currentUserData, acvStats] = await Promise.all([
         prisma.user.findMany({
             where: { isActive: true },
             orderBy: { name: 'asc' },
@@ -42,7 +43,10 @@ export default async function DashboardPage(props: DashboardPageProps) {
         prisma.version.findMany({ orderBy: { id: 'asc' } }),
         prisma.category.findMany({ where: { isActive: true }, orderBy: { category: 'asc' } }),
         prisma.outcome.findMany({ where: { isActive: true }, orderBy: { outcome: 'asc' } }),
-        prisma.team.findMany({ where: { isActive: true }, include: { users: true } }) // Removed default orderBy to apply custom sort
+        prisma.team.findMany({ where: { isActive: true }, include: { users: true } }),
+        getFieldConfigs(),
+        prisma.user.findUnique({ where: { id: session.id } }),
+        getActivityStats()
     ])
 
     // Custom Sort for Teams
@@ -74,7 +78,11 @@ export default async function DashboardPage(props: DashboardPageProps) {
     return (
         <div className="min-h-screen">
             <DashboardClient
-                session={session}
+                session={{
+                    ...session,
+                    ...currentUserData, // Merge latest DB data including prefs
+                    image: currentUserData?.avatar || session.image
+                }}
                 initialActivities={activities}
                 lookups={{
                     statuses,
@@ -87,7 +95,17 @@ export default async function DashboardPage(props: DashboardPageProps) {
                     users,
                     teams
                 }}
+                acvRange={acvStats.success ? acvStats.data : { minAcv: 0, maxAcv: 0 }}
                 pagination={metadata}
+                config={{
+                    global: fieldConfigs.success && fieldConfigs.data ? fieldConfigs.data : [],
+                    user: {
+                        currency: currentUserData?.preferenceCurrency,
+                        dateFormat: currentUserData?.preferenceDateFormat,
+                        acvUnit: currentUserData?.preferenceAcvUnit,
+                        acvDecimals: currentUserData?.preferenceAcvDecimals
+                    }
+                }}
             />
         </div>
     )

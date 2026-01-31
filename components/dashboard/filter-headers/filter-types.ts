@@ -37,4 +37,13 @@ export interface DealTeamFilterHeaderProps extends CommonHeaderProps {
 export interface ProjectFilterHeaderProps extends CommonHeaderProps {
     activities: PricingActivity[]
     lookups: Lookups
+    config?: {
+        global: any[]
+        user: {
+            currency?: string | null
+            dateFormat?: string | null
+            acvUnit?: string | null
+            acvDecimals?: string | null
+        }
+    }
 }

@@ -7,12 +7,13 @@ import { Button } from '@/components/ui/button'
 import { Plus, X } from 'lucide-react'
 import { useToast } from '@/components/ui/toast-custom'
 import { getDefaults, saveDefault, deleteDefault } from '@/lib/actions/defaults'
+import { getFieldConfigs, saveFieldConfig } from '@/lib/actions/field-config'
 import { getAdminData } from '@/lib/actions/admin'
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog'
 
 export function DefaultsTab() {
     const { addToast } = useToast()
-    
+
     // State
     const [defaultsList, setDefaultsList] = useState<any[]>([])
     const [users, setUsers] = useState<any[]>([])
@@ -20,7 +21,19 @@ export function DefaultsTab() {
     const [defaultRefId, setDefaultRefId] = useState<string>('')
     const [defaultUserId, setDefaultUserId] = useState<string>('')
     const [defaultOptions, setDefaultOptions] = useState<any[]>([])
-    
+
+    // Financial Year State
+    const [fiscalConfig, setFiscalConfig] = useState({
+        targetField: 'fiscal',
+        fieldName: 'January - December',
+        fieldType: 'FISCAL',
+        hasPrefix: false,
+        prefix: '',
+        isActive: true,
+        displayOnDashboard: true
+    })
+    const [loadingFiscal, setLoadingFiscal] = useState(false)
+
     const [confirmConfig, setConfirmConfig] = useState<{
         isOpen: boolean;
         title: string;
@@ -33,12 +46,6 @@ export function DefaultsTab() {
         onConfirm: () => { }
     });
 
-    // Initial Data Fetch
-    useEffect(() => {
-        loadDefaults()
-        loadUsers()
-    }, [])
-
     const loadDefaults = async () => {
         const res = await getDefaults()
         if (res.success) setDefaultsList(res.data || [])
@@ -48,6 +55,27 @@ export function DefaultsTab() {
         const res = await getAdminData('User')
         if (res.success) setUsers(res.data || [])
     }
+
+    const loadFiscalConfig = async () => {
+        const res = await getFieldConfigs()
+        if (res.success && res.data) {
+            const fiscal = res.data.find((c: any) => c.targetField === 'fiscal')
+            if (fiscal) {
+                setFiscalConfig(prev => ({
+                    ...prev,
+                    fieldName: fiscal.fieldName || 'January - December',
+                    ...(fiscal.prefix === null ? { ...fiscal, prefix: '' } : fiscal) as any
+                }))
+            }
+        }
+    }
+
+    // Initial Data Fetch
+    useEffect(() => {
+        loadDefaults()
+        loadUsers()
+        loadFiscalConfig()
+    }, [])
 
     const handleDefaultTypeChange = async (val: string) => {
         setDefaultType(val)
@@ -99,9 +127,73 @@ export function DefaultsTab() {
         })
     }
 
+    const handleSaveFiscal = async () => {
+        setLoadingFiscal(true)
+        const res = await saveFieldConfig(fiscalConfig)
+        if (res.success) {
+            addToast({ type: 'success', title: 'Saved', message: 'Financial year updated' })
+        } else {
+            addToast({ type: 'error', title: 'Error', message: res.message || 'Failed to save' })
+        }
+        setLoadingFiscal(false)
+    }
+
     return (
         <div className="space-y-6 h-full flex flex-col">
             <div className="flex-none">
+                <h3 className="text-lg font-bold">System Defaults</h3>
+                <p className="text-sm text-muted-foreground">Configure global defaults for the application.</p>
+            </div>
+
+            {/* Financial Year Setting */}
+            <div className="flex-none border border-border rounded-xl p-4 bg-card mb-4">
+                <div className="flex items-center gap-2 mb-4">
+                    <h3 className="text-base font-bold">Financial Year</h3>
+                    <span className="text-xs text-muted-foreground font-normal">Set the financial year cycle</span>
+                </div>
+
+                <div className="space-y-4 bg-muted/30 p-6 rounded-lg border border-border/50">
+                    <div className="flex items-end gap-4">
+                        <div className="space-y-1">
+                            <Label className="text-xs text-muted-foreground">Cycle</Label>
+                            <Select
+                                value={fiscalConfig.fieldName}
+                                onValueChange={(val) => setFiscalConfig({ ...fiscalConfig, fieldName: val })}
+                            >
+                                <SelectTrigger className="h-9 w-56">
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="January - December">January - December</SelectItem>
+                                    <SelectItem value="April - March">April - March</SelectItem>
+                                    <SelectItem value="July - June">July - June</SelectItem>
+                                    <SelectItem value="October - September">October - September</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        <div className="text-sm text-muted-foreground pb-2">
+                            Current Period: <span className="font-semibold text-foreground">
+                                {(() => {
+                                    const now = new Date()
+                                    const year = now.getFullYear()
+                                    const format = fiscalConfig.fieldName
+                                    if (format === 'April - March') return `Apr ${year} - Mar ${year + 1}`
+                                    if (format === 'July - June') return `Jul ${year} - Jun ${year + 1}`
+                                    if (format === 'October - September') return `Oct ${year} - Sep ${year + 1}`
+                                    return `Jan ${year} - Dec ${year}`
+                                })()}
+                            </span>
+                        </div>
+
+                        <Button onClick={handleSaveFiscal} disabled={loadingFiscal} size="sm" className="h-9 mb-[1px]">
+                            Set
+                        </Button>
+                    </div>
+                </div>
+            </div>
+
+            <div className="flex-none pt-4 border-t border-border">
                 <h3 className="text-lg font-bold">Default User Assignments</h3>
                 <p className="text-sm text-muted-foreground">Configure auto-assignment rules based on criteria.</p>
             </div>

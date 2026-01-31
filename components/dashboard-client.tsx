@@ -1,8 +1,8 @@
 
 'use client'
 
-import { useState, useEffect } from 'react'
-import { submitActivity } from '@/lib/actions/activity'
+import { useState, useEffect, useRef, useCallback } from 'react'
+import { submitActivity, getActivities } from '@/lib/actions/activity'
 import dynamic from 'next/dynamic'
 import { toast } from "sonner"
 
@@ -11,7 +11,6 @@ import { ActivityTable } from './dashboard/activity-table'
 import { useActivityGrouping } from '@/hooks/use-activity-grouping'
 import { LookupItem, Lookups, PricingActivity, UserSession } from '@/types'
 import { getDateColor, getFirstName } from '@/lib/utils'
-import { PaginationControls } from './dashboard/pagination-controls'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { StorageModal } from './dashboard/storage-modal'
 import { CommentsModal } from './dashboard/comments-modal'
@@ -28,32 +27,48 @@ interface DashboardClientProps {
     currentPage: number
     limit: number
   }
-
+  acvRange: {
+    minAcv: number
+    maxAcv: number
+  }
+  config: {
+    global: any[]
+    user: {
+      currency?: string | null
+      dateFormat?: string | null
+      acvUnit?: string | null
+      acvDecimals?: string | null
+    }
+  }
 }
 
-export default function DashboardClient({ session, initialActivities, lookups, pagination }: DashboardClientProps) {
+export default function DashboardClient({ session, initialActivities, lookups, pagination, config, acvRange }: DashboardClientProps) {
   const isReadOnly = session.role === 'READ_ONLY';
   const router = useRouter()
   const searchParams = useSearchParams()
 
   const [activities, setActivities] = useState<PricingActivity[]>(initialActivities)
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(pagination.totalPages > 1)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
+
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedActivity, setSelectedActivity] = useState<PricingActivity | null>(null)
   const [isStorageModalOpen, setIsStorageModalOpen] = useState(false)
 
   const [isMounted, setIsMounted] = useState(false)
 
-  // Sync activities when server prop changes (navigating pages/filters)
+  // Sync activities when initialActivities change (due to top-level filter change)
   useEffect(() => {
     setActivities(initialActivities)
-  }, [initialActivities])
+    setPage(1)
+    setHasMore(pagination.totalPages > 1)
+  }, [initialActivities, pagination.totalPages])
 
   // URL State management
   const search = searchParams.get('search') || ''
   const viewMode = (searchParams.get('viewMode') as 'pipeline' | 'closed' | 'inactive') || 'pipeline'
-  const activeFilter = searchParams.get('activeFilter') // Optional: Keep track of which dropdown is open? Or just visual.
-  // Actually, keeping 'activeFilter' in URL for open dropdown state is overkill and bad UX (back button closes dropdown?). 
-  // Let's keep dropdown open state local, but filter values in URL.
+  const activeFilter = searchParams.get('activeFilter')
   const [activeFilterDropdown, setActiveFilterDropdown] = useState<string | null>(null)
 
   // Extract filters for the Table component
@@ -73,8 +88,9 @@ export default function DashboardClient({ session, initialActivities, lookups, p
         params.set(key, value)
       }
     })
-    // Reset to page 1 on filter change usually? Yes, unless it's just a page change.
-    if (!newParams.page) params.set('page', '1')
+
+    // Always reset to page 1 on filter change
+    if (params.has('page')) params.delete('page')
 
     router.push(`?${params.toString()}`)
   }
@@ -85,6 +101,31 @@ export default function DashboardClient({ session, initialActivities, lookups, p
   const handleFilterChange = (field: string, value: string) => {
     updateUrl({ [field]: value })
   }
+
+  const loadMore = useCallback(async () => {
+    if (isLoadingMore || !hasMore) return
+
+    setIsLoadingMore(true)
+    const nextPage = page + 1
+
+    const result = await getActivities({
+      page: nextPage,
+      limit: pagination.limit, // Keep consistent limit
+      search,
+      viewMode,
+      filters
+    })
+
+    if (result.success && result.data) {
+      setActivities(prev => [...prev, ...result.data])
+      setPage(nextPage)
+      setHasMore(nextPage < result.metadata.totalPages)
+    } else {
+      setHasMore(false)
+    }
+    setIsLoadingMore(false)
+  }, [page, hasMore, isLoadingMore, pagination.limit, search, viewMode, filters])
+
 
   const {
     groupBy, setGroupBy,
@@ -179,6 +220,8 @@ export default function DashboardClient({ session, initialActivities, lookups, p
     router.refresh() // Reload data from server to reflect changes safely
   }
 
+  const filterRef = useRef(null)
+
   return (
     <div className="min-h-screen font-sans text-foreground transition-colors duration-300">
       <main className="mx-auto max-w-7xl p-6">
@@ -209,7 +252,7 @@ export default function DashboardClient({ session, initialActivities, lookups, p
             setActiveFilter={setActiveFilterDropdown}
             handleFilterChange={handleFilterChange}
             handleBulkFilterChange={updateUrl}
-            filterRef={null} // Ref handling for click outside needs lifting or removal
+            filterRef={filterRef}
             groupBy={groupBy}
             getDateColor={getDateColor}
             getFirstName={getFirstName}
@@ -218,11 +261,11 @@ export default function DashboardClient({ session, initialActivities, lookups, p
             handleStorageOpen={handleStorageOpen}
             handleCommentsOpen={handleCommentsOpen}
             isReadOnly={isReadOnly}
-          />
-
-          <PaginationControls
-            totalPages={pagination.totalPages}
-            currentPage={pagination.currentPage}
+            config={config}
+            acvRange={acvRange}
+            loadMore={loadMore}
+            hasMore={hasMore}
+            isLoadingMore={isLoadingMore}
           />
 
         </div>
@@ -267,3 +310,4 @@ export default function DashboardClient({ session, initialActivities, lookups, p
     </div >
   )
 }
+

@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useActivityAutoAssignment } from '@/hooks/use-activity-auto-assignment'
 import { useActivityComments } from '@/hooks/use-activity-comments'
 import { useActivitySubmit } from '@/hooks/use-activity-submit'
+import { useActivityOptions } from '@/hooks/use-activity-options'
 import {
     PrimaryDetails,
     LocationDetails,
@@ -33,27 +34,18 @@ interface ActivityFormProps {
     isEdit?: boolean
 }
 
-export default function ActivityForm({ 
-    activity, 
-    lookups, 
-    onClose, 
-    onSuccess, 
-    session, 
-    isEdit = false 
+export default function ActivityForm({
+    activity,
+    lookups,
+    onClose,
+    onSuccess,
+    session,
+    isEdit = false
 }: ActivityFormProps) {
-    const [clientNames, setClientNames] = useState<string[]>([])
+    const { clientNames } = useActivityOptions()
     const [initialVersionId, setInitialVersionId] = useState<string>('')
 
-    // Fetch unique clients on mount
-    useEffect(() => {
-        import('@/lib/actions/activity').then(({ getUniqueClients }) => {
-            getUniqueClients().then(res => {
-                if (res.success && res.data) {
-                    setClientNames(res.data)
-                }
-            })
-        })
-    }, [])
+    // Track initial version for change detection
 
     // Track initial version for change detection
     useEffect(() => {
@@ -132,93 +124,97 @@ export default function ActivityForm({
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div className="max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-2xl bg-background shadow-2xl">
-                <Form {...form}>
-                    <form onSubmit={onFormSubmit} className="p-8 space-y-6">
-                        <ActivityFormHeader isEdit={isEdit} onClose={onClose} />
+            <div className="max-h-[90vh] w-full max-w-4xl flex flex-col overflow-hidden rounded-2xl bg-background shadow-2xl">
+                <div className="px-8 pt-6 pb-2 border-b border-border bg-background z-10">
+                    <ActivityFormHeader isEdit={isEdit} onClose={onClose} />
+                </div>
+                <div className="flex-1 overflow-y-auto">
+                    <Form {...form}>
+                        <form onSubmit={onFormSubmit} className="p-8 pt-4 space-y-6">
 
-                        <PrimaryDetails
-                            lookups={lookups}
-                            session={session}
-                            clientNames={clientNames}
-                        />
+                            <PrimaryDetails
+                                lookups={lookups}
+                                session={session}
+                                clientNames={clientNames}
+                            />
 
-                        <LocationDetails
-                            lookups={lookups}
-                            session={session}
-                        />
-
-                        <FinancialDetails
-                            lookups={lookups}
-                            session={session}
-                        />
-
-                        <DateDetails
-                            lookups={lookups}
-                            session={session}
-                        />
-
-                        <div className="pt-4 border-t border-border">
-                            <StatusDetails
+                            <LocationDetails
                                 lookups={lookups}
                                 session={session}
                             />
-                        </div>
 
-                        <div className="flex items-center justify-end gap-4 pt-4 border-t border-border">
-                            <Button type="button" variant="outline" onClick={onClose} disabled={loading}>
-                                Cancel
-                            </Button>
-                            <Button
-                                type="submit"
-                                disabled={loading || session.role === 'READ_ONLY'}
-                                className="shadow-lg shadow-primary/20"
-                            >
-                                {loading ? 'Saving...' : 'Save Activity'}
-                            </Button>
-                        </div>
-
-                        <div className="pt-4 border-t border-border">
-                            <StakeholderDetails
+                            <FinancialDetails
                                 lookups={lookups}
                                 session={session}
-                                lockedUserIds={lockedUserIds}
                             />
-                        </div>
 
-                        <CommentsSection
-                            comments={localComments}
-                            onAddComment={(text) => handleAddComment(text, activity?.id)}
-                            isReadOnly={session.role === 'READ_ONLY'}
-                            commentText={form.watch('newComment')}
-                            onCommentChange={(text) => form.setValue('newComment', text, { shouldDirty: true })}
-                            onDeleteComment={handleDeleteComment}
-                            currentUserId={session.id}
-                            currentUserRole={session.role}
-                        />
+                            <DateDetails
+                                lookups={lookups}
+                                session={session}
+                            />
 
-                        <FileStorageSection
-                            activity={activity || null}
-                            currentUserId={session.id}
-                            currentUserRole={session.role}
-                        />
+                            <div className="pt-4 border-t border-border">
+                                <StatusDetails
+                                    lookups={lookups}
+                                    session={session}
+                                />
+                            </div>
 
-                        {error && <div className="text-destructive text-sm font-medium">{error}</div>}
+                            <div className="flex items-center justify-end gap-4 pt-4 border-t border-border">
+                                <Button type="button" variant="outline" onClick={onClose} disabled={loading}>
+                                    Cancel
+                                </Button>
+                                <Button
+                                    type="submit"
+                                    disabled={loading || session.role === 'READ_ONLY'}
+                                    className="shadow-lg shadow-primary/20"
+                                >
+                                    {loading ? 'Saving...' : 'Save Activity'}
+                                </Button>
+                            </div>
 
-                        <div className="flex items-center justify-end gap-4 pt-4 border-t border-border">
-                            <Button type="button" variant="outline" onClick={onClose} disabled={loading}>
-                                Cancel
-                            </Button>
-                            <Button
-                                type="submit"
-                                disabled={loading || session.role === 'READ_ONLY'}
-                                className="shadow-lg shadow-primary/20"
-                            >
-                                {loading ? 'Saving...' : 'Save Activity'}
-                            </Button>
-                        </div>
-                    </form>
-                </Form>
+                            <div className="pt-4 border-t border-border">
+                                <StakeholderDetails
+                                    lookups={lookups}
+                                    session={session}
+                                    lockedUserIds={lockedUserIds}
+                                />
+                            </div>
+
+                            <CommentsSection
+                                comments={localComments}
+                                onAddComment={(text) => handleAddComment(text, activity?.id)}
+                                isReadOnly={session.role === 'READ_ONLY'}
+                                commentText={form.watch('newComment')}
+                                onCommentChange={(text) => form.setValue('newComment', text, { shouldDirty: true })}
+                                onDeleteComment={handleDeleteComment}
+                                currentUserId={session.id}
+                                currentUserRole={session.role}
+                            />
+
+                            <FileStorageSection
+                                activity={activity || null}
+                                currentUserId={session.id}
+                                currentUserRole={session.role}
+                            />
+
+                            {error && <div className="text-destructive text-sm font-medium">{error}</div>}
+
+                            <div className="flex items-center justify-end gap-4 pt-4 border-t border-border">
+                                <Button type="button" variant="outline" onClick={onClose} disabled={loading}>
+                                    Cancel
+                                </Button>
+                                <Button
+                                    type="submit"
+                                    disabled={loading || session.role === 'READ_ONLY'}
+                                    className="shadow-lg shadow-primary/20"
+                                >
+                                    {loading ? 'Saving...' : 'Save Activity'}
+                                </Button>
+                            </div>
+                        </form>
+                    </Form>
+                </div>
             </div>
 
             <VersionConfirmModal
@@ -238,6 +234,6 @@ export default function ActivityForm({
                 onConfirm={confirmDeleteComment}
                 onCancel={() => setDeleteCommentId(null)}
             />
-        </div>
+        </div >
     )
 }

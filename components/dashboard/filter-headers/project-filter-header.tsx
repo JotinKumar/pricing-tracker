@@ -5,21 +5,57 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button'
 import { FilterTrigger } from './filter-trigger'
 import { ProjectFilterHeaderProps } from './filter-types'
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
+import { getFieldConfigs } from '@/lib/actions/field-config'
+import { FieldConfig } from '@/types'
+import { useIdFormat } from '@/hooks/use-id-format'
 
-export function ProjectFilterHeader({ 
-    activities, 
-    lookups, 
-    filters, 
-    activeFilter, 
-    setActiveFilter, 
-    handleFilterChange, 
-    handleBulkFilterChange 
+// Default field configurations
+const DEFAULT_CONFIGS: Record<string, FieldConfig> = {
+    id1: { fieldName: 'ID1', fieldType: 'STRING', prefix: '', hasPrefix: false, isActive: true, displayOnDashboard: true },
+    id2: { fieldName: 'ID2', fieldType: 'STRING', prefix: '', hasPrefix: false, isActive: true, displayOnDashboard: true },
+}
+
+export function ProjectFilterHeader({
+    activities,
+    lookups,
+    filters,
+    activeFilter,
+    setActiveFilter,
+    handleFilterChange,
+    handleBulkFilterChange,
+    config
 }: ProjectFilterHeaderProps) {
     const isActive = activeFilter === 'project'
     const hasValue = filters['clientName'] || filters['verticalId'] || filters['id1'] || filters['id2']
 
-    const uniqueClients = useMemo(() => 
+    // Config Logic similar to ActivityRow
+    const [clientConfigs, setClientConfigs] = useState<Record<string, FieldConfig>>(DEFAULT_CONFIGS)
+    const { formatId } = useIdFormat()
+
+    useEffect(() => {
+        if (!config) {
+            getFieldConfigs().then(res => {
+                if (res.success && res.data) {
+                    const map: Record<string, FieldConfig> = {}
+                    res.data.forEach((c: FieldConfig) => map[c.targetField || ''] = c)
+                    setClientConfigs(prev => ({ ...prev, ...map }))
+                }
+            })
+        }
+    }, [config])
+
+    const configs = useMemo(() => {
+        if (config?.global) {
+            const map: Record<string, any> = {}
+            config.global.forEach((c: any) => map[c.targetField] = c)
+            return map
+        }
+        return clientConfigs
+    }, [config, clientConfigs])
+
+
+    const uniqueClients = useMemo(() =>
         Array.from(new Set(activities.map(a => a.clientName).filter(Boolean))).sort(),
         [activities]
     )
@@ -38,8 +74,8 @@ export function ProjectFilterHeader({
                                 {filters['id1'] && (
                                     <div className="flex items-center justify-between bg-muted/50 rounded px-2 py-1.5">
                                         <span className="text-xs">
-                                            <span className="text-muted-foreground">ID1:</span>{' '}
-                                            <span className="font-medium">{filters['id1']}</span>
+                                            <span className="text-muted-foreground">{configs.id1?.fieldName || 'ID1'}:</span>{' '}
+                                            <span className="font-medium">{formatId(filters['id1'], configs.id1)}</span>
                                         </span>
                                         <Button
                                             variant="ghost"
@@ -54,8 +90,8 @@ export function ProjectFilterHeader({
                                 {filters['id2'] && (
                                     <div className="flex items-center justify-between bg-muted/50 rounded px-2 py-1.5">
                                         <span className="text-xs">
-                                            <span className="text-muted-foreground">ID2:</span>{' '}
-                                            <span className="font-medium">{filters['id2']}</span>
+                                            <span className="text-muted-foreground">{configs.id2?.fieldName || 'ID2'}:</span>{' '}
+                                            <span className="font-medium">{formatId(filters['id2'], configs.id2)}</span>
                                         </span>
                                         <Button
                                             variant="ghost"

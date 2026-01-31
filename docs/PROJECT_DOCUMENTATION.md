@@ -540,4 +540,51 @@ The application successfully balances complexity with usability, offering powerf
 
 ---
 
-*Documentation updated on January 28, 2026 - Reflecting post-refactoring architecture and improvements.*
+*Documentation updated on January 29, 2026 - Reflecting post-refactoring architecture, improvements, and guidelines compliance review.*
+
+## Guidelines Compliance Review (January 2026)
+
+### Guidelines Compliance Review (January 2026)
+
+### Status
+- **Strict Enforcement**: The project now operates under mandatory adherence to `docs/STYLE_GUIDE.md` and `docs/REFACTOR_GUIDE.md`.
+- **Style Guide**: Project structure adheres to `kebab-case` naming conventions for files and directories (Enforced).
+- **Refactor Guide**: Large components identified and refactored. `activity-form.tsx` size reduced by extracting logic (Enforced).
+- **Linting**: Automated lint fixes applied. Remaining lint warnings are tracked for future sprints.
+
+### Key Changes
+- Extracted client fetching logic to `hooks/use-activity-options.ts`.
+- Enforced component size limits.
+- Validated project structure against `STYLE_GUIDE.md`.
+
+
+### Jan 29 Updates: User Preferences & UI Enhancements
+
+#### User Preferences System
+- **Schema Update**: Added `preferenceTheme`, `preferenceCurrency`, and `preferenceDateFormat` to User model.
+- **UI Implementation**: Created `UserPreferencesModal` accessible via Navbar avatar.
+- **Backend**: Implemented `updatePreferences` server action for persisting user settings.
+
+#### Admin Panel Refactoring
+- **New Preferences Tab**: Migrated display settings from generic "Defaults" to dedicated "Preferences" tab.
+- **Financial Year Config**: Added "System Defaults" section in "Defaults" tab for global fiscal year cycle configuration.
+- **UI Polish**: Updated sidebar icons (`ShieldCheck` for Defaults, `Sliders` for Preferences) for better visual hierarchy.
+
+#### Dashboard Improvements
+- **Jitter Fix**: Implemented SSR fetching of field configs in `app/dashboard/page.tsx` to eliminate client-side hydration flicker.
+- **Sticky Header**: Refactored `ActivityForm` to ensure header remains fixed while content scrolls.
+- **Bug Fixes**: Resolved strict type mismatches for `UserRole` and `React.RefObject` in dashboard components.
+
+### Jan 30 Updates: Design & Refactoring
+
+#### Component Architecture
+- **Navbar Refactoring**: Extracted `NavbarLogo` and `AnimatedNavLink` into separate components (`components/navbar-logo.tsx`, `components/animated-nav-link.tsx`), reducing `Navbar` complexity by ~40% and complying with Size Limit rules.
+- **Compliance Check**: Verified project structure against naming conventions (kebab-case) and verified component sizing.
+
+#### UI & UX Enhancements
+- **Glassmorphic Navigation**: Implemented enhanced glassmorphism for the Navbar with adaptive transparency for dark/light modes.
+- **Logo Interactions**: Added "Zoom on Hover" (2x scale) and "Vertical Slide" text animations to align with the design system.
+- **Dark Mode Refinement**: Optimized contrast ratios for dark mode components, specifically in `Navbar` and `ActivityTable`.
+
+#### Code Quality
+- **Linting**: Auto-fixed formatting issues via ESLint. Identified legacy lint debt (200+ warnings) prioritized for future technical debt sprints.

@@ -34,7 +34,7 @@ export function StorageModal({ isOpen, onClose, activity, currentUserId, current
                     <FileStorageSection
                         activity={activity}
                         currentUserId={currentUserId}
-                        currentUserRole={currentUserRole}
+                        currentUserRole={currentUserRole || 'USER'}
                     />
                 </div>
             </div>

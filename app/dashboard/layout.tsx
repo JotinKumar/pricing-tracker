@@ -1,4 +1,5 @@
 import { getSession } from '@/lib/actions/auth'
+import prisma from '@/lib/db'
 import { redirect } from 'next/navigation'
 import { Navbar } from '@/components/navbar'
 
@@ -13,6 +14,14 @@ export default async function DashboardLayout({
     const session = await getSession()
 
     if (!session) {
+        redirect('/login')
+    }
+
+    const user = await prisma.user.findUnique({
+        where: { id: session.id }
+    })
+
+    if (!user) {
         redirect('/login')
     }
 
@@ -45,8 +54,8 @@ export default async function DashboardLayout({
             </div>
 
             <div className="relative z-10 flex flex-col flex-1">
-                <Navbar session={session} />
-                <main className="flex-1">
+                <Navbar session={user} />
+                <main className="flex-1 pt-20 overflow-x-hidden">
                     {children}
                 </main>
             </div>

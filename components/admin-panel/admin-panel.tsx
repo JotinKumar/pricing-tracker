@@ -19,6 +19,7 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 // New Tab Components
 import { DefaultsTab } from './tabs/defaults-tab'
 import { SettingsTab } from './tabs/settings-tab'
+import { PreferencesTab } from './tabs/preferences-tab'
 import { useAdminData } from '@/hooks/use-admin-data'
 import { getFieldConfigs } from '@/lib/actions/field-config'
 
@@ -27,7 +28,8 @@ interface AdminPanelProps {
 }
 
 // Updated Tabs list matching new Schema
-const TABS = ['User', 'Team', 'Vertical', 'Horizontal', 'Location', 'Category', 'Version', 'Status', 'Outcome', 'DocumentType', 'Defaults'] as const
+// Updated Tabs list matching new Schema
+const TABS = ['User', 'Team', 'Vertical', 'Horizontal', 'Location', 'Category', 'Version', 'Status', 'Outcome', 'DocumentType', 'Defaults', 'Preferences'] as const
 type TabType = typeof TABS[number]
 
 function AdminPanelContent() {
@@ -202,40 +204,14 @@ function AdminPanelContent() {
                         />
                     </div>
 
-                    {/* Content Area */}
                     <div className="flex-1 bg-card overflow-hidden flex flex-col h-full rounded-xl border border-border/50">
                         {activeTab === 'Defaults' ? (
                             <div className="p-8 h-full overflow-hidden flex flex-col">
-                                <Tabs value={activeSubTab} onValueChange={setActiveSubTab} className="h-full flex flex-col">
-                                    <div className="flex-none mb-6">
-                                        <TabsList className="bg-background border border-border p-1 rounded-lg">
-                                            <TabsTrigger
-                                                value="default-users"
-                                                className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border-primary border border-transparent"
-                                            >
-                                                Default Users
-                                            </TabsTrigger>
-                                            <TabsTrigger
-                                                value="advanced-settings"
-                                                className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border-primary border border-transparent"
-                                            >
-                                                Advanced Settings
-                                            </TabsTrigger>
-                                        </TabsList>
-                                    </div>
-
-                                    <div className="flex-1 overflow-auto">
-                                        {/* Tab 1: Default Users (Default Assignments) */}
-                                        <TabsContent value="default-users" className="mt-0 space-y-6 h-full flex flex-col">
-                                            <DefaultsTab />
-                                        </TabsContent>
-
-                                        {/* Tab 2: Advanced Settings (FY & IDs) */}
-                                        <TabsContent value="advanced-settings" className="mt-0 space-y-8">
-                                            <SettingsTab />
-                                        </TabsContent>
-                                    </div>
-                                </Tabs>
+                                <DefaultsTab />
+                            </div>
+                        ) : activeTab === 'Preferences' ? (
+                            <div className="p-8 h-full overflow-hidden flex flex-col">
+                                <PreferencesTab />
                             </div>
                         ) : (
                             <div className="flex flex-col h-full">

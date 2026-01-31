@@ -15,6 +15,7 @@ A comprehensive Next.js application for managing and tracking pricing activities
 
 ### User Interface
 - **Responsive Design**: Mobile-friendly layout with dark/light theme support
+- **Enhanced Navigation**: Glassmorphic navbar with micro-interactions and adaptive animations
 - **Activity Table**: Sortable, filterable table with inline status updates
 - **Admin Panel**: Manage users, teams, and lookup tables (statuses, categories, etc.)
 - **Interactive Forms**: Rich form components with validation using React Hook Form and Zod
@@ -261,9 +262,19 @@ The application supports light and dark themes. Theme preference is persisted us
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
+## 📏 Development Standards
+
+To maintain code quality and consistency, all contributors must strictly follow our internal guides:
+
+- **[Refactoring Guide](docs/REFACTOR_GUIDE.md)**: Standards for component structure, hooks, and performance.
+- **[Style Guide](docs/STYLE_GUIDE.md)**: Naming conventions for files, folders, and components.
+
+Please read these documents **before** making any changes.
+
+
 ## 📄 License
 
-This project is private and proprietary.
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE.txt) file for details.
 
 ## 👤 Author
 

@@ -4,8 +4,10 @@ import { Pencil, Info, Folder, FolderOpen, MessageSquare } from 'lucide-react'
 import { PricingActivity, Lookups, FieldConfig } from '@/types'
 import { StatusSelect } from './status-select'
 import { DealTeamAvatars } from './deal-team-avatars'
+import { useIdFormat } from '@/hooks/use-id-format'
 import { getFieldConfigs } from '@/lib/actions/field-config'
-import { useState, useEffect, useCallback, memo } from 'react'
+import { useState, useEffect, useCallback, useMemo, memo } from 'react'
+import { useAcvFormat } from '@/hooks/use-acv-format'
 
 interface ActivityRowProps {
     activity: PricingActivity
@@ -19,6 +21,15 @@ interface ActivityRowProps {
     handleCommentsOpen: (activity: PricingActivity) => void
     handleFilterChange: (field: string, value: string) => void
     isReadOnly: boolean
+    config?: {
+        global: any[]
+        user: {
+            currency?: string | null
+            dateFormat?: string | null
+            acvUnit?: string | null
+            acvDecimals?: string | null
+        }
+    }
 }
 
 // Clickable filter style
@@ -32,42 +43,9 @@ const DEFAULT_CONFIGS: Record<string, FieldConfig> = {
     date: { fieldName: 'MM/DD/YYYY' }
 }
 
-// Helper functions moved outside component
-const formatId1 = (val: string | null, configs: Record<string, FieldConfig>) => {
-    if (!val) return ''
-    const prefix = configs.id1?.hasPrefix ? configs.id1?.prefix : ''
-    if (prefix && val.startsWith(prefix)) return val
-    return `${prefix}${val}`
-}
-
-const formatId2 = (val: string | null, configs: Record<string, FieldConfig>) => {
-    if (!val) return ''
-    const prefix = configs.id2?.hasPrefix ? configs.id2?.prefix : ''
-    if (prefix && val.startsWith(prefix)) return val
-    return `${prefix}${val}`
-}
-
-const formatACV = (value: number | null, configs: Record<string, FieldConfig>) => {
-    const currency = configs.acv?.prefix || '$'
-    if (!value) return `${currency}0`
-    const format = configs.acv?.fieldName || 'ACTUAL'
-    const decimals = parseInt(configs.acv?.fieldType || '0') || 0
-    
-    switch (format) {
-        case 'THOUSANDS':
-            return `${currency}${(value / 1000).toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}K`
-        case 'MILLIONS':
-            return `${currency}${(value / 1000000).toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}M`
-        case 'BILLIONS':
-            return `${currency}${(value / 1000000000).toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}B`
-        default:
-            return `${currency}${value.toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}`
-    }
-}
-
-const formatDate = (dateValue: string | Date, configs: Record<string, FieldConfig>) => {
+const formatDate = (dateValue: string | Date, config: any, userDateFormat?: string | null) => {
     const date = new Date(dateValue)
-    const format = configs.date?.fieldName || 'MM/DD/YYYY'
+    const format = userDateFormat || config?.fieldName || 'MM/DD/YYYY'
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     const d = date.getDate().toString().padStart(2, '0')
     const m = (date.getMonth() + 1).toString().padStart(2, '0')
@@ -94,19 +72,34 @@ export const ActivityRow = memo(function ActivityRow({
     handleStorageOpen,
     handleCommentsOpen,
     handleFilterChange,
-    isReadOnly
+    isReadOnly,
+    config
 }: ActivityRowProps) {
-    const [configs, setConfigs] = useState<Record<string, FieldConfig>>(DEFAULT_CONFIGS)
+    const [clientConfigs, setClientConfigs] = useState<Record<string, FieldConfig>>(DEFAULT_CONFIGS)
+    const { formatAcv } = useAcvFormat()
+    const { formatId } = useIdFormat()
 
     useEffect(() => {
-        getFieldConfigs().then(res => {
-            if (res.success && res.data) {
-                const map: Record<string, FieldConfig> = {}
-                res.data.forEach((c: FieldConfig) => map[c.targetField || ''] = c)
-                setConfigs(prev => ({ ...prev, ...map }))
-            }
-        })
-    }, [])
+        // Only fetch if config prop is missing (backward compatibility or error)
+        if (!config) {
+            getFieldConfigs().then(res => {
+                if (res.success && res.data) {
+                    const map: Record<string, FieldConfig> = {}
+                    res.data.forEach((c: FieldConfig) => map[c.targetField || ''] = c)
+                    setClientConfigs(prev => ({ ...prev, ...map }))
+                }
+            })
+        }
+    }, [config])
+
+    const configs = useMemo(() => {
+        if (config?.global) {
+            const map: Record<string, any> = {}
+            config.global.forEach((c: any) => map[c.targetField] = c)
+            return map
+        }
+        return clientConfigs
+    }, [config, clientConfigs])
 
     // Memoized handlers
     const handleVerticalFilter = useCallback((e: React.MouseEvent) => {
@@ -154,9 +147,9 @@ export const ActivityRow = memo(function ActivityRow({
 
     // Helper to render ID display
     const renderIdDisplay = useCallback((id: 'id1' | 'id2', value: string | null) => {
-        const config = configs[id]
-        if (!config?.isActive || config?.displayOnDashboard === false) return null
-        const formatted = id === 'id1' ? formatId1(value, configs) : formatId2(value, configs)
+        const fieldConfig = configs[id]
+        if (!fieldConfig?.isActive || fieldConfig?.displayOnDashboard === false) return null
+        const formatted = formatId(value, fieldConfig)
         if (!formatted) return null
 
         const handleClick = (e: React.MouseEvent) => {
@@ -164,11 +157,11 @@ export const ActivityRow = memo(function ActivityRow({
             if (value) handleFilterChange(id, value)
         }
 
-        if (config.hasPrefix && config.prefix) {
+        if (fieldConfig.hasPrefix && fieldConfig.prefix) {
             return <span className={`font-medium ${clickableStyle}`} onClick={handleClick} title={`Filter by ${id.toUpperCase()}: ${formatted}`}>{formatted}</span>
         }
-        return <span className="font-medium">{config.fieldName || id.toUpperCase()}: <span className={clickableStyle} onClick={handleClick} title={`Filter by ${config.fieldName || id.toUpperCase()}`}>{formatted}</span></span>
-    }, [configs, handleFilterChange])
+        return <span className="font-medium">{fieldConfig.fieldName || id.toUpperCase()}: <span className={clickableStyle} onClick={handleClick} title={`Filter by ${fieldConfig.fieldName || id.toUpperCase()}`}>{formatted}</span></span>
+    }, [configs, handleFilterChange, formatId])
 
     return (
         <tr className="group transition hover:bg-muted/20">
@@ -209,11 +202,11 @@ export const ActivityRow = memo(function ActivityRow({
                 </div>
             </td>
 
-            <td className="px-4 py-3 font-medium text-foreground">{formatACV(activity.annualContractValue, configs)}</td>
+            <td className="px-4 py-3 font-medium text-foreground">{formatAcv(activity.annualContractValue, config?.user, configs.acv)}</td>
 
             <td className="px-4 py-3">
                 <span suppressHydrationWarning className={`inline-flex items-center rounded-sm px-2 py-0.5 text-xs font-bold border ${getDateColor(activity.dueDate)}`}>
-                    {formatDate(activity.dueDate, configs)}
+                    {formatDate(activity.dueDate, configs.date, config?.user.dateFormat)}
                 </span>
             </td>
 

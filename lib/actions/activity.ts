@@ -288,6 +288,14 @@ export async function getActivities(params: {
         else if (key === 'clientName') where.clientName = value
         else if (key === 'projectName') where.projectName = value
         else if (key === 'annualContractValue') where.annualContractValue = parseInt(value)
+        else if (key === 'annualContractValue_min') {
+            if (!where.annualContractValue) where.annualContractValue = {}
+            where.annualContractValue.gte = parseInt(value)
+        }
+        else if (key === 'annualContractValue_max') {
+            if (!where.annualContractValue) where.annualContractValue = {}
+            where.annualContractValue.lte = parseInt(value)
+        }
     })
 
     if (where.AND.length === 0) delete where.AND
@@ -423,4 +431,38 @@ export async function deleteComment(commentId: number) {
         return { success: true }
     })
 }
+export async function getActivityStats() {
+    const session = await getSession()
+    if (!session) return { success: false, data: { minAcv: 0, maxAcv: 0 } }
 
+    try {
+        const where: any = {}
+        // Copy Role-based logic
+        if (session.role !== 'ADMIN') {
+            if (!where.AND) where.AND = [];
+            where.AND.push({
+                OR: [
+                    { userId: session.id },
+                    { teamMembers: { some: { userId: session.id } } }
+                ]
+            });
+        }
+
+        const aggregations = await prisma.pricingActivity.aggregate({
+            _min: { annualContractValue: true },
+            _max: { annualContractValue: true },
+            where
+        })
+
+        return {
+            success: true,
+            data: {
+                minAcv: aggregations._min.annualContractValue || 0,
+                maxAcv: aggregations._max.annualContractValue || 0
+            }
+        }
+    } catch (error) {
+        console.error("Error fetching activity stats:", error)
+        return { success: false, data: { minAcv: 0, maxAcv: 0 } }
+    }
+}
