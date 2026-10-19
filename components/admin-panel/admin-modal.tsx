@@ -2,7 +2,7 @@
 
 import { UserModal } from './user-modal'
 import { LookupModal } from './lookup-modal'
-import { AdminUserFormValues, AdminLookupFormValues, ApiResponse, Team } from '@/types'
+import { AdminUserFormValues, AdminLookupFormValues, ApiResponse, Team, Vertical } from '@/types'
 
 interface AdminModalProps {
     editItem: AdminUserFormValues | AdminLookupFormValues | null
@@ -12,10 +12,11 @@ interface AdminModalProps {
     onClose: () => void
     data: (AdminUserFormValues | AdminLookupFormValues)[]
     availableTeams?: Team[]
+    availableVerticals?: Vertical[]
     defaultCurrency?: string
 }
 
-export function AdminModal({ editItem, activeTab, fields, handleSave, onClose, data, availableTeams = [], defaultCurrency = '$' }: AdminModalProps) {
+export function AdminModal({ editItem, activeTab, fields, handleSave, onClose, data, availableTeams = [], availableVerticals = [], defaultCurrency = '$' }: AdminModalProps) {
     const isUserTab = activeTab === 'User'
 
     if (isUserTab) {
@@ -39,6 +40,7 @@ export function AdminModal({ editItem, activeTab, fields, handleSave, onClose, d
             onClose={onClose}
             data={data as AdminLookupFormValues[]}
             defaultCurrency={defaultCurrency}
+            availableVerticals={availableVerticals}
         />
     )
 }

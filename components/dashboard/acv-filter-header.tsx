@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Filter } from 'lucide-react'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Slider } from '@/components/ui/slider'
@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useDebounce } from '@/hooks/use-debounce'
 import { useAcvFormat } from '@/hooks/use-acv-format'
+import { FieldConfig } from '@/types'
 
 interface AcvFilterHeaderProps {
     min: number
@@ -16,7 +17,7 @@ interface AcvFilterHeaderProps {
     handleFilterChange: (field: string, value: string) => void
     handleBulkFilterChange: (changes: Record<string, string | null>) => void
     config?: {
-        global: any[]
+        global: FieldConfig[]
         user: {
             currency?: string | null
             acvUnit?: string | null
@@ -36,18 +37,23 @@ export function AcvFilterHeader({
     const [open, setOpen] = useState(false)
     const [range, setRange] = useState<[number, number]>([min, max])
     const { formatAcv } = useAcvFormat()
+    // Only commit to the URL when the user actually moved the slider, so that
+    // faceted bound changes (new min/max) don't inject spurious filters.
+    const userInteractedRef = useRef(false)
 
-    // Load initial values from filters
+    // Sync range from filters (active selection) or the current facet bounds.
     useEffect(() => {
         const currentMin = filters['annualContractValue_min'] ? parseInt(filters['annualContractValue_min']) : min
         const currentMax = filters['annualContractValue_max'] ? parseInt(filters['annualContractValue_max']) : max
         setRange([currentMin, currentMax])
     }, [filters, min, max])
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- useDebounce schedules setState via setTimeout, not synchronously in the effect body
     const debouncedRange = useDebounce(range, 500)
 
     useEffect(() => {
-        // Only trigger update if values are different from current filters and popover is open or values changed
+        if (!userInteractedRef.current) return
+
         const currentMin = filters['annualContractValue_min'] ? parseInt(filters['annualContractValue_min']) : min
         const currentMax = filters['annualContractValue_max'] ? parseInt(filters['annualContractValue_max']) : max
 
@@ -57,12 +63,14 @@ export function AcvFilterHeader({
                 'annualContractValue_max': debouncedRange[1].toString()
             })
         }
+        userInteractedRef.current = false
     }, [debouncedRange, handleBulkFilterChange, filters, min, max])
 
     const isActive = !!filters['annualContractValue_min'] || !!filters['annualContractValue_max']
 
     const clearFilter = (e: React.MouseEvent) => {
         e.stopPropagation()
+        userInteractedRef.current = false
         setRange([min, max])
         handleBulkFilterChange({
             'annualContractValue_min': null,
@@ -73,8 +81,8 @@ export function AcvFilterHeader({
 
     // Helper for Header Title
     const getHeaderTitle = () => {
-        const currency = config?.user.currency || config?.global?.find((c: any) => c.targetField === 'acv')?.prefix || '$'
-        const unit = config?.user.acvUnit || config?.global?.find((c: any) => c.targetField === 'acv')?.fieldName || 'ACTUAL'
+        const currency = config?.user.currency || config?.global?.find((c) => c.targetField === 'acv')?.prefix || '$'
+        const unit = config?.user.acvUnit || config?.global?.find((c) => c.targetField === 'acv')?.fieldName || 'ACTUAL'
 
         if (unit === 'THOUSANDS') return `ACV (${currency}K)`
         if (unit === 'MILLIONS') return `ACV (${currency}M)`
@@ -87,7 +95,7 @@ export function AcvFilterHeader({
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <div className={cn(
-                    "flex items-center gap-1.5 cursor-pointer hover:bg-muted/50 rounded px-1 active:bg-muted transition-colors group",
+                    "flex items-center gap-1.5 cursor-pointer hover:bg-muted/50 rounded px-1 active:bg-muted transition-colors group whitespace-nowrap",
                     open && "bg-muted/50"
                 )}>
                     <span>{getHeaderTitle()}</span>
@@ -116,12 +124,15 @@ export function AcvFilterHeader({
                             min={min}
                             max={max}
                             step={100} // Dynamic step?
-                            onValueChange={(vals) => setRange([vals[0], vals[1]])}
+                            onValueChange={(vals) => {
+                                userInteractedRef.current = true
+                                setRange([vals[0], vals[1]])
+                            }}
                         />
                     </div>
                     <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>{formatAcv(range[0], config?.user, config?.global?.find((c: any) => c.targetField === 'acv'))}</span>
-                        <span>{formatAcv(range[1], config?.user, config?.global?.find((c: any) => c.targetField === 'acv'))}</span>
+                        <span>{formatAcv(range[0], config?.user, config?.global?.find((c) => c.targetField === 'acv'))}</span>
+                        <span>{formatAcv(range[1], config?.user, config?.global?.find((c) => c.targetField === 'acv'))}</span>
                     </div>
                 </div>
             </PopoverContent>

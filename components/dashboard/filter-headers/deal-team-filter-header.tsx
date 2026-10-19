@@ -8,7 +8,7 @@ import { DealTeamFilterHeaderProps } from './filter-types'
 import { useMemo } from 'react'
 
 export function DealTeamFilterHeader({ 
-    activities, 
+    facets, 
     filters, 
     activeFilter, 
     setActiveFilter, 
@@ -17,11 +17,9 @@ export function DealTeamFilterHeader({
 }: DealTeamFilterHeaderProps) {
     const isActive = activeFilter === 'dealTeam'
 
-    const teamsFromActivities = useMemo(() => 
-        Array.from(new Set(
-            activities.flatMap(a => a.teamMembers?.map((tm) => tm.team.teamname) || [])
-        )) as string[],
-        [activities]
+    const teamsFromFacets = useMemo(() => 
+        Array.from(new Set(facets.teamMembers.map((tm) => tm.team))),
+        [facets.teamMembers]
     )
 
     const teamsWithActiveFilters = useMemo(() => 
@@ -33,10 +31,10 @@ export function DealTeamFilterHeader({
 
     const allTeamNames = useMemo(() => {
         const teamOrder = ['Pricing', 'Sales', 'Solutions', 'Business Finance']
-        const allTeamNamesSet = new Set([...teamsFromActivities, ...teamsWithActiveFilters])
+        const allTeamNamesSet = new Set([...teamsFromFacets, ...teamsWithActiveFilters])
         return teamOrder.filter(t => allTeamNamesSet.has(t))
             .concat([...allTeamNamesSet].filter(t => !teamOrder.includes(t)).sort())
-    }, [teamsFromActivities, teamsWithActiveFilters])
+    }, [teamsFromFacets, teamsWithActiveFilters])
 
     const activeTeamFilters = useMemo(() => 
         allTeamNames.filter(t => filters[`team_${t}`]),
@@ -54,10 +52,16 @@ export function DealTeamFilterHeader({
                     <div className="space-y-3">
                         {allTeamNames.map(teamName => {
                             const usersInTeam = Array.from(new Set(
-                                activities.flatMap(a =>
-                                    a.teamMembers?.filter((tm) => tm.team.teamname === teamName).map((tm) => tm.user.name) || []
-                                )
+                                facets.teamMembers
+                                    .filter((tm) => tm.team === teamName)
+                                    .map((tm) => tm.user)
                             )).filter(Boolean).sort()
+
+                            // Retain the active selection even if it is not in the current facet set.
+                            const selected = filters[`team_${teamName}`]
+                            if (selected && selected !== 'Unassigned' && !usersInTeam.includes(selected)) {
+                                usersInTeam.push(selected)
+                            }
 
                             return (
                                 <div key={teamName}>

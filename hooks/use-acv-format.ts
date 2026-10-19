@@ -1,5 +1,6 @@
 
 import { useCallback } from 'react'
+import { FieldConfig } from '@/types'
 
 interface AcvFormatConfig {
     currency?: string | null
@@ -8,7 +9,7 @@ interface AcvFormatConfig {
 }
 
 export function useAcvFormat() {
-    const formatAcv = useCallback((value: number | null, config?: AcvFormatConfig, fallbackConfig?: any) => {
+    const formatAcv = useCallback((value: number | null, config?: AcvFormatConfig, fallbackConfig?: FieldConfig) => {
         const currency = config?.currency || fallbackConfig?.prefix || '$'
 
         if (value === null || value === undefined) return `${currency}0`

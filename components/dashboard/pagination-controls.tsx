@@ -23,7 +23,7 @@ export function PaginationControls({ totalPages, currentPage }: PaginationContro
     if (totalPages <= 1) return null
 
     return (
-        <div className="flex items-center justify-end gap-2 p-4">
+        <div className="flex items-center justify-end gap-2 px-4 py-2">
             <span className="text-xs text-muted-foreground">
                 Page {currentPage} of {totalPages}
             </span>

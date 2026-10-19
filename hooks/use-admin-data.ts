@@ -1,7 +1,18 @@
 import { useState, useEffect, useMemo } from 'react'
 import { getAdminData } from '@/lib/actions/admin'
+import { AdminUserFormValues, AdminLookupFormValues } from '@/lib/schemas'
 
-type TabType = 'User' | 'Team' | 'Vertical' | 'Horizontal' | 'Location' | 'Category' | 'Version' | 'Status' | 'Outcome' | 'DocumentType' | 'Defaults' | 'Preferences'
+type TabType = 'User' | 'Team' | 'Vertical' | 'Subvertical' | 'Horizontal' | 'Location' | 'Category' | 'Version' | 'Status' | 'Outcome' | 'DocumentType' | 'SalesforceStage' | 'Defaults' | 'Preferences'
+
+// Shape used for heterogeneous search filtering across admin rows.
+interface AdminSearchRow {
+    id?: number
+    name?: string | null
+    display?: string | null
+    shortName?: string | null
+    email?: string | null
+    [key: string]: unknown
+}
 
 interface UseAdminDataProps {
     activeTab: TabType
@@ -14,7 +25,7 @@ interface UseAdminDataProps {
 }
 
 export function useAdminData({ activeTab, searchTerm, fields, onError }: UseAdminDataProps) {
-    const [data, setData] = useState<any[]>([])
+    const [data, setData] = useState<(AdminUserFormValues | AdminLookupFormValues)[]>([])
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
@@ -26,9 +37,9 @@ export function useAdminData({ activeTab, searchTerm, fields, onError }: UseAdmi
 
     const fetchData = async () => {
         setLoading(true)
-        const result = await getAdminData(activeTab as any)
+        const result = await getAdminData(activeTab as Exclude<TabType, 'Defaults' | 'Preferences'>)
         if (result.success) {
-            setData(result.data || [])
+            setData((result.data as (AdminUserFormValues | AdminLookupFormValues)[]) || [])
         } else {
             onError(result.message || 'Error fetching data')
         }
@@ -36,25 +47,29 @@ export function useAdminData({ activeTab, searchTerm, fields, onError }: UseAdmi
     }
 
     // Memoized filtered data for performance
+    // eslint-disable-next-line react-hooks/immutability -- useMemo over already-declared state (data, searchTerm)
     const filteredData = useMemo(() => {
         if (!searchTerm) return data
 
         const searchLower = searchTerm.toLowerCase()
 
         return data.filter(item => {
+            const row = item as unknown as AdminSearchRow
+
             // Search in ID
-            if (String(item.id).includes(searchLower)) return true
+            if (typeof row.id !== 'undefined' && String(row.id).includes(searchLower)) return true
 
             // Search in Name/Key
-            if (item.name && item.name.toLowerCase().includes(searchLower)) return true
-            if (item[fields.key] && String(item[fields.key]).toLowerCase().includes(searchLower)) return true
+            if (typeof row.name === 'string' && row.name.toLowerCase().includes(searchLower)) return true
+            const keyed = row[fields.key]
+            if (keyed != null && String(keyed).toLowerCase().includes(searchLower)) return true
 
             // Search in Display/Initials
-            if (item.display && item.display.toLowerCase().includes(searchLower)) return true
-            if (item.shortName && item.shortName.toLowerCase().includes(searchLower)) return true
+            if (typeof row.display === 'string' && row.display.toLowerCase().includes(searchLower)) return true
+            if (typeof row.shortName === 'string' && row.shortName.toLowerCase().includes(searchLower)) return true
 
             // Search in Email (User)
-            if (item.email && item.email.toLowerCase().includes(searchLower)) return true
+            if (typeof row.email === 'string' && row.email.toLowerCase().includes(searchLower)) return true
 
             return false
         })

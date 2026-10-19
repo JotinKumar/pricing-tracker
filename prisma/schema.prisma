@@ -18,22 +18,26 @@ model User {
   manager   User?    @relation("UserHierarchy", fields: [managerId], references: [id])
   role      String   // "ADMIN", "MANAGER", "USER", "READ_ONLY"
   teams      Team[]
-  
+
   isActive  Boolean  @default(true)
-  
+
   reports   User[]   @relation("UserHierarchy")
   activities PricingActivity[]
   activityMembers ActivityTeamMember[]
   attachments     Attachment[]
   comments        Comment[]
   defaultAssignments DefaultAssignment[]
+  activityHistory  ActivityHistory[]
 
   createdAt DateTime @default(now())
   preferenceTheme String?  // "light", "dark", "system"
-  preferenceCurrency String? // "USD", "EUR", etc. or null for global default
   preferenceDateFormat String? // "MM/DD/YYYY", etc. or null for global default
   preferenceAcvUnit String? // "ACTUAL", "THOUSANDS", "MILLIONS", "BILLIONS"
   preferenceAcvDecimals String? // "0", "1", "2"
+  preferenceCurrency String? // Preferred currency code, or null for global default
+  preferenceSortOrder String? // JSON map of { vertical, horizontal, location, team } -> id[]
+  statusMessage String? // User status text shown in collaboration surfaces
+  statusIndicator String? // "ONLINE", "AWAY", "OFFLINE", etc.
 
   updatedAt DateTime @updatedAt
 }
@@ -42,6 +46,7 @@ model Team {
   id        Int      @id @default(autoincrement())
   teamname  String   @unique
   display   String?  @unique
+  displayOrder Int   @default(0)
   isActive  Boolean  @default(true)
   users     User[]
   activityMembers ActivityTeamMember[]
@@ -53,6 +58,7 @@ model DocumentType {
   id        Int      @id @default(autoincrement())
   type      String   @unique
   display   String?  @unique
+  displayOrder Int   @default(0)
   isActive  Boolean  @default(true)
 }
 
@@ -60,14 +66,28 @@ model Vertical {
   id        Int      @id @default(autoincrement())
   vertical  String   @unique
   display   String?  @unique
+  displayOrder Int   @default(0)
   isActive  Boolean  @default(true)
   activities PricingActivity[]
+  subverticals Subvertical[]
+}
+
+model Subvertical {
+  id           Int      @id @default(autoincrement())
+  subvertical  String   @unique
+  display      String?  @unique
+  displayOrder Int      @default(0)
+  isActive     Boolean  @default(true)
+  vertical     Vertical @relation(fields: [verticalId], references: [id])
+  verticalId   Int
+  activities   PricingActivity[]
 }
 
 model Horizontal {
   id        Int      @id @default(autoincrement())
   horizontal String   @unique
   display   String?  @unique
+  displayOrder Int   @default(0)
   isActive  Boolean  @default(true)
   activities PricingActivity[]
 }
@@ -76,8 +96,9 @@ model Location {
   id        Int      @id @default(autoincrement())
   country   String   @unique
   display   String?  @unique
+  currency  String?  @unique
+  displayOrder Int   @default(0)
   isActive  Boolean  @default(true)
-  currency  String?
   
   clientActivities   PricingActivity[] @relation("ClientLocations")
   deliveryActivities PricingActivity[] @relation("DeliveryLocations")
@@ -87,14 +108,17 @@ model Status {
   id        Int      @id @default(autoincrement())
   status    String   @unique
   display   String?  @unique
+  displayOrder Int   @default(0)
   isActive  Boolean  @default(true)
   activities PricingActivity[]
+  activityHistory ActivityHistory[]
 }
 
 model Category {
   id        Int      @id @default(autoincrement())
   category  String   @unique
   display   String?  @unique
+  displayOrder Int   @default(0)
   isActive  Boolean  @default(true)
   activities PricingActivity[]
 }
@@ -103,16 +127,29 @@ model Version {
   id        Int      @id @default(autoincrement())
   version   String   @unique
   display   String?  @unique
+  displayOrder Int   @default(0)
   isActive  Boolean  @default(true)
   activities PricingActivity[]
+  activityHistory ActivityHistory[]
 }
 
 model Outcome {
   id        Int      @id @default(autoincrement())
   outcome   String   @unique
   display   String?  @unique
+  displayOrder Int   @default(0)
   isActive  Boolean  @default(true)
   activities PricingActivity[]
+  activityHistory ActivityHistory[]
+}
+
+model SalesforceStage {
+  id          Int      @id @default(autoincrement())
+  stage       String   @unique
+  description String?
+  display     String?  @unique
+  displayOrder Int     @default(0)
+  isActive    Boolean  @default(true)
 }
 
 // Main Transactional Table
@@ -128,10 +165,15 @@ model PricingActivity {
   vertical             Vertical @relation(fields: [verticalId], references: [id])
   verticalId           Int
   
+  subvertical          Subvertical? @relation(fields: [subverticalId], references: [id])
+  subverticalId        Int?
+  
   horizontal           Horizontal @relation(fields: [horizontalId], references: [id])
   horizontalId         Int
   
   annualContractValue  Float
+  tcv                  Float?
+  dealDuration         Int?
   dueDate              DateTime
   
   clientLocations      Location[] @relation("ClientLocations")
@@ -154,16 +196,34 @@ model PricingActivity {
   
   comments             Comment[]
 
-  outcome              Outcome? @relation(fields: [outcomeId], references: [id])
-  outcomeId            Int?
+  outcome              Outcome @relation(fields: [outcomeId], references: [id])
+  outcomeId            Int
 
   user                 User @relation(fields: [userId], references: [id]) // Creator
   userId               Int
 
+  history              ActivityHistory[]
 
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model ActivityHistory {
+  id          Int      @id @default(autoincrement())
+  activity    PricingActivity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  activityId  Int
+  version     Version  @relation(fields: [versionId], references: [id])
+  versionId   Int
+  status      Status   @relation(fields: [statusId], references: [id])
+  statusId    Int
+  outcome     Outcome  @relation(fields: [outcomeId], references: [id])
+  outcomeId   Int
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int
+  createdAt   DateTime @default(now())
+
+  @@index([activityId])
 }
 
 model Comment {
@@ -192,6 +252,8 @@ model ActivityTeamMember {
   team      Team     @relation(fields: [teamId], references: [id])
   teamId    Int
 
+  isAutoAdded Boolean @default(false)
+
   @@index([activityId])
   @@index([userId])
   @@index([teamId])
@@ -203,17 +265,18 @@ model Attachment {
   fileName  String 
   filePath  String?
   fileSize  Int?
+  location  String?
 
   notes     String?
   
-  salesForceId String
+  id1       String
   
   user      User     @relation(fields: [userId], references: [id])
   userId    Int
 
   createdAt DateTime @default(now())
 
-  @@index([salesForceId])
+  @@index([id1])
 }
 
 

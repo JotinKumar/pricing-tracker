@@ -85,7 +85,10 @@ Create a `.env` file in the root directory:
 
 ```env
 DATABASE_URL="file:./dev.db"
+SESSION_SECRET=
 ```
+
+Set `SESSION_SECRET` to a unique, private random value before starting the app. It signs session cookies, is required for login, and must stay in your local `.env` file.
 
 ### 4. Database Setup
 
@@ -236,7 +239,7 @@ npx prisma migrate dev --name migration_name
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
 - `npx prisma studio` - Open Prisma Studio
-- `npx prisma db seed` - Seed database
+- `npx prisma db seed` - Seed database (runs `prisma/seed.ts`)
 
 ## 🎨 Customization
 

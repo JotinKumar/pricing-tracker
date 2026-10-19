@@ -30,6 +30,7 @@ interface CommentsSectionProps {
     onDeleteComment?: (id: number) => void
     currentUserId?: number
     currentUserRole?: string
+    className?: string
 }
 
 export function CommentsSection({
@@ -40,7 +41,8 @@ export function CommentsSection({
     onCommentChange,
     onDeleteComment,
     currentUserId,
-    currentUserRole
+    currentUserRole,
+    className
 }: CommentsSectionProps) {
     const [internalComment, setInternalComment] = useState('')
 
@@ -76,7 +78,7 @@ export function CommentsSection({
     }
 
     return (
-        <div className="space-y-4 pt-4 border-t border-border">
+        <div className={cn("space-y-4 pt-4 border-t border-border", className)}>
             <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Comments</h3>
 
             <div className="grid grid-cols-1 gap-4">

@@ -4,11 +4,6 @@ import React, { useState, useRef, useEffect } from 'react'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from '@/components/ui/popover'
 import { Input } from '@/components/ui/input'
 
 export interface ClientComboboxProps {
@@ -23,13 +18,27 @@ export function ClientCombobox({ value, onChange, options = [], placeholder = "S
     const [open, setOpen] = useState(false)
     const [inputValue, setInputValue] = useState(value)
     const inputRef = useRef<HTMLInputElement>(null)
+    const containerRef = useRef<HTMLDivElement>(null)
 
     // Sync input value if external value changes (e.g. form reset), but only if not focused to avoid typing interference
     useEffect(() => {
         if (value !== inputValue) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- sync external prop to local state; guarded by inequality to avoid a render loop
             setInputValue(value)
         }
     }, [value])
+
+    // Close dropdown when clicking outside the combobox
+    useEffect(() => {
+        if (!open) return
+        const handleClickOutside = (e: MouseEvent) => {
+            if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+                setOpen(false)
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, [open])
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newVal = e.target.value
@@ -50,14 +59,13 @@ export function ClientCombobox({ value, onChange, options = [], placeholder = "S
     )
 
     return (
-        <div className="relative w-full">
+        <div className="relative w-full" ref={containerRef}>
             <div className="relative">
                 <Input
                     ref={inputRef}
                     value={inputValue}
                     onChange={handleInputChange}
                     onFocus={() => setOpen(true)}
-                    // onBlur={() => setTimeout(() => setOpen(false), 200)} // Delay to allow click
                     placeholder={placeholder}
                     disabled={disabled}
                     className="w-full pr-10"
@@ -86,7 +94,7 @@ export function ClientCombobox({ value, onChange, options = [], placeholder = "S
                     <div className="max-h-[200px] overflow-y-auto p-1">
                         {filteredOptions.length === 0 && inputValue.trim() !== "" && (
                             <div className="py-2 px-2 text-sm text-muted-foreground text-center">
-                                New client "{inputValue}" will be created.
+                                New client &quot;{inputValue}&quot; will be created.
                             </div>
                         )}
                         {filteredOptions.length === 0 && inputValue.trim() === "" && options.length === 0 && (
@@ -133,10 +141,6 @@ export function ClientCombobox({ value, onChange, options = [], placeholder = "S
                         ))}
                     </div>
                 </div>
-            )}
-            {/* Backdrop to close */}
-            {open && (
-                <div className="fixed inset-0 z-40 bg-transparent" onClick={() => setOpen(false)} />
             )}
         </div>
     )

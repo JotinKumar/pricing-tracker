@@ -3,7 +3,7 @@
 import { CommentsSection } from '@/components/activity-form/comments-section'
 import { Button } from '@/components/ui/button'
 import { X, MessageSquare } from 'lucide-react'
-import { PricingActivity } from '@/types'
+import { PricingActivity, Comment } from '@/types'
 import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import { addComment, deleteComment } from '@/lib/actions/activity'
@@ -19,7 +19,7 @@ interface CommentsModalProps {
 }
 
 export function CommentsModal({ isOpen, onClose, activity, currentUserId, currentUserRole }: CommentsModalProps) {
-    const [localComments, setLocalComments] = useState<any[]>([])
+    const [localComments, setLocalComments] = useState<Comment[]>([])
     const [commentText, setCommentText] = useState('')
     const [deleteCommentId, setDeleteCommentId] = useState<number | null>(null)
 

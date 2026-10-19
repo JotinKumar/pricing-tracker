@@ -1,4 +1,4 @@
-import { PricingActivity, Lookups } from '@/types'
+import { Lookups, FieldConfig, DashboardFacets } from '@/types'
 
 export interface FilterProps {
     filters: Record<string, string>
@@ -28,17 +28,18 @@ export interface RenderFilterHeaderProps extends CommonHeaderProps {
 
 export interface LocationFilterHeaderProps extends CommonHeaderProps {
     lookups: Lookups
+    facets: DashboardFacets
 }
 
 export interface DealTeamFilterHeaderProps extends CommonHeaderProps {
-    activities: PricingActivity[]
+    facets: DashboardFacets
 }
 
 export interface ProjectFilterHeaderProps extends CommonHeaderProps {
-    activities: PricingActivity[]
     lookups: Lookups
+    facets: DashboardFacets
     config?: {
-        global: any[]
+        global: FieldConfig[]
         user: {
             currency?: string | null
             dateFormat?: string | null

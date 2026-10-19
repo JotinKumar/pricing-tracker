@@ -12,6 +12,9 @@ export const activitySchema = z.object({
     verticalId: z.coerce.string().min(1, "Vertical is required"),
     horizontalId: z.preprocess((val) => val === null ? undefined : val, z.coerce.string().optional()),
     annualContractValue: z.coerce.number().min(0, "Value cannot be negative"), // Use coerce for number inputs
+    tcv: z.preprocess((val) => val === null || val === '' || val === undefined ? undefined : val, z.coerce.number().min(0, "Value cannot be negative").optional()),
+    dealDuration: z.preprocess((val) => val === null || val === '' || val === undefined ? undefined : val, z.coerce.number().min(0, "Value cannot be negative").optional()),
+    subverticalId: z.preprocess((val) => val === null || val === '' || val === undefined ? undefined : val, z.coerce.string().optional()),
     dueDate: z.coerce.date(),
 
     // Multi-selects (IDs)
@@ -21,7 +24,8 @@ export const activitySchema = z.object({
     // Dynamic Team Members
     teamMembers: z.array(z.object({
         teamId: z.coerce.number(),
-        userId: z.coerce.number()
+        userId: z.coerce.number(),
+        isAutoAdded: z.boolean().default(false)
     })).default([]),
 
     assignDate: z.preprocess((val) => val === null ? undefined : val, z.coerce.date().optional()),
@@ -56,6 +60,7 @@ export type AdminUserFormValues = z.infer<typeof adminUserSchema>
 export const adminLookupSchema = z.object({
     id: z.number().optional(),
     display: z.string().optional(),
+    description: z.string().optional(),
     isActive: z.boolean().default(true)
     // Dynamic fields will be added or allowed via .passthrough()
 }).passthrough()

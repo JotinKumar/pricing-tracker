@@ -10,13 +10,14 @@ import { getUniqueCurrencies } from '@/lib/actions/location'
 import { useRouter } from 'next/navigation'
 import { Plus, Minus } from 'lucide-react'
 import { toast } from 'sonner'
+import { FieldConfigSection } from '../field-config-section'
 
 interface FieldConfig {
     targetField: string
     fieldName: string
     fieldType: string
     hasPrefix: boolean
-    prefix?: string
+    prefix?: string | null
     isActive: boolean
     displayOnDashboard: boolean
 }
@@ -35,12 +36,8 @@ export function PreferencesTab() {
         setCollapsed(prev => ({ ...prev, [section]: !prev[section] }))
     }
 
-    useEffect(() => {
-        loadConfigs()
-        loadCurrencies()
-    }, [])
-
     const [availableCurrencies, setAvailableCurrencies] = useState<string[]>([])
+
     const loadCurrencies = async () => {
         const res = await getUniqueCurrencies()
         if (res.success && res.data) {
@@ -53,7 +50,7 @@ export function PreferencesTab() {
         const res = await getFieldConfigs()
         if (res.success && res.data) {
             const nextConfigs = { ...configs }
-            res.data.forEach((cfg: any) => {
+            res.data.forEach((cfg: FieldConfig) => {
                 if (configs[cfg.targetField]) {
                     nextConfigs[cfg.targetField] = {
                         targetField: cfg.targetField,
@@ -71,7 +68,14 @@ export function PreferencesTab() {
         setLoading(false)
     }
 
-    const handleChange = (target: string, field: keyof FieldConfig, value: any) => {
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- async data-loading on mount; setState happens after await, not synchronously
+        loadConfigs()
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- async data-loading on mount
+        loadCurrencies()
+    }, [])
+
+    const handleChange = (target: string, field: keyof FieldConfig, value: string | boolean) => {
         setConfigs(prev => ({
             ...prev,
             [target]: { ...prev[target], [field]: value }
@@ -104,7 +108,7 @@ export function PreferencesTab() {
         <div className="space-y-8 h-full overflow-auto p-1">
             <div className="flex-none">
                 <h3 className="text-lg font-bold">System Preferences</h3>
-                <p className="text-sm text-muted-foreground">Configure global display formats for currency and dates.</p>
+                <p className="text-sm text-muted-foreground">Configure global display formats for currency, dates, and identifiers.</p>
             </div>
 
             {/* ACV Display Format */}
@@ -295,6 +299,9 @@ export function PreferencesTab() {
                     </div>
                 )}
             </div>
+
+            {/* ID Field Names */}
+            <FieldConfigSection />
         </div>
     )
 }

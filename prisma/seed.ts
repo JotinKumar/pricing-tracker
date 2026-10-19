@@ -2,10 +2,12 @@
 import { PrismaClient } from '@prisma/client'
 import {
     teams, verticals, horizontals, statuses, categories, versions,
-    documentTypes, locations, outcomes
+    documentTypes, locations, outcomes, salesforceStages
 } from './seed-data'
 import { users } from './seed-user'
 import { activities } from './seed-activity'
+import { activityTeamMembers } from './seed-activity-team-members'
+import { comments } from './seed-comments'
 
 const prisma = new PrismaClient()
 
@@ -32,6 +34,7 @@ async function cleanDatabase() {
     await prisma.documentType.deleteMany({});
     await prisma.location.deleteMany({});
     await prisma.outcome.deleteMany({});
+    await prisma.salesforceStage.deleteMany({});
 
     console.log('Database cleaned.');
 }
@@ -71,6 +74,9 @@ async function main() {
     for (const o of outcomes) {
         await prisma.outcome.create({ data: o })
     }
+    for (const s of salesforceStages) {
+        await prisma.salesforceStage.create({ data: s })
+    }
 
     // 2. Seed Users
     console.log(`Seeding ${users.length} Users...`)
@@ -81,7 +87,7 @@ async function main() {
             data: {
                 ...userData,
                 teams: {
-                    connect: userTeams.map((t: any) => ({ id: t.id }))
+                    connect: userTeams.map(t => ({ id: t.id }))
                 }
             }
         })
@@ -93,7 +99,9 @@ async function main() {
     for (const activity of activities) {
         // Destructure comments to handle them as nested write
         // Note: activities coming from seed-activity.ts now have 'comments' as array of objects
-        const { teamMembers, clientLocations, deliveryLocations, comments, ...activityData } = activity;
+        // Destructure comments to handle them as nested write
+        // Note: activities coming from seed-activity.ts now have 'comments' as array of objects
+        const { clientLocations, deliveryLocations, ...activityData } = activity;
 
         // Sanitize id2 which might be null in seed data but is required in schema
         // Also ensure outcomeId is handled if needed, though it is optional in schema
@@ -105,18 +113,42 @@ async function main() {
         await prisma.pricingActivity.create({
             data: {
                 ...safeActivityData,
-                teamMembers: {
-                    create: teamMembers
-                },
+                // teamMembers handled separately below
                 clientLocations: {
                     connect: clientLocations
                 },
                 deliveryLocations: {
                     connect: deliveryLocations
                 },
-                comments: {
-                    create: comments // Nested create for comments
-                }
+            }
+        })
+    }
+
+    // 3.5 Seed Activity Team Members
+    console.log(`Seeding ${activityTeamMembers.length} Activity Team Members...`)
+    // We use createMany for speed if possible, but let's check unique constraints. 
+    // Usually safe.
+    await prisma.activityTeamMember.createMany({
+        data: activityTeamMembers.map(tm => ({
+            activityId: tm.activityId,
+            userId: tm.userId,
+            teamId: tm.teamId,
+            // isVisible removed from schema
+        }))
+    });
+
+    // 4. Seed Comments
+    console.log(`Seeding ${comments.length} Comments...`)
+    // Comments need to link to existing activities and users
+    // Since we just seeded activities with same IDs as in seed file, 
+    // and users are seeded with same IDs, we can just create them.
+    for (const comment of comments) {
+        await prisma.comment.create({
+            data: {
+                text: comment.text,
+                createdAt: comment.createdAt,
+                user: { connect: { id: comment.userId } },
+                activity: { connect: { id: comment.activityId } }
             }
         })
     }

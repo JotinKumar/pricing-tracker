@@ -4,6 +4,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
 import QueryProvider from "@/components/providers/query-provider"
+import { getSession } from "@/lib/actions/auth"
+import { ThemeSynchronizer } from "@/components/providers/theme-synchronizer"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,13 +22,14 @@ export const metadata: Metadata = {
   description: "Advanced pricing and deal management system",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getSession()
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -37,6 +40,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <ThemeSynchronizer userTheme={session?.preferenceTheme} />
             {children}
             <Toaster />
           </ThemeProvider>

@@ -17,8 +17,8 @@ const DEFAULT_CONFIGS: Record<string, FieldConfig> = {
 }
 
 export function ProjectFilterHeader({
-    activities,
     lookups,
+    facets,
     filters,
     activeFilter,
     setActiveFilter,
@@ -47,21 +47,29 @@ export function ProjectFilterHeader({
 
     const configs = useMemo(() => {
         if (config?.global) {
-            const map: Record<string, any> = {}
-            config.global.forEach((c: any) => map[c.targetField] = c)
+            const map: Record<string, FieldConfig> = {}
+            config.global.forEach((c) => map[c.targetField ?? ''] = c)
             return map
         }
         return clientConfigs
     }, [config, clientConfigs])
 
 
-    const uniqueClients = useMemo(() =>
-        Array.from(new Set(activities.map(a => a.clientName).filter(Boolean))).sort(),
-        [activities]
-    )
+    const uniqueClients = useMemo(() => {
+        const selected = filters['clientName']
+        const set = new Set(facets.clients)
+        if (selected) set.add(selected)
+        return Array.from(set).filter(Boolean).sort()
+    }, [facets.clients, filters])
+
+    const availableVerticals = useMemo(() => {
+        const selected = filters['verticalId']
+        const set = new Set(facets.verticalIds.map(String))
+        return lookups.verticals.filter(v => set.has(String(v.id)) || String(v.id) === selected)
+    }, [lookups.verticals, facets.verticalIds, filters])
 
     return (
-        <th className="px-4 py-3 align-middle w-[30%] relative group sticky top-0 z-20 bg-muted/95 backdrop-blur-sm shadow-sm border-b border-border">
+        <th className="px-4 py-3 align-middle w-[26%] relative group sticky top-0 z-20 bg-muted/95 backdrop-blur-sm shadow-sm border-b border-border">
             <Popover open={isActive} onOpenChange={(open) => setActiveFilter(open ? 'project' : null)}>
                 <PopoverTrigger asChild>
                     <div><FilterTrigger label="Project Name" isActive={isActive} hasValue={hasValue} /></div>
@@ -134,7 +142,7 @@ export function ProjectFilterHeader({
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">All</SelectItem>
-                                    {lookups.verticals.map((v) => (
+                                    {availableVerticals.map((v) => (
                                         <SelectItem key={v.id} value={String(v.id)}>{v.vertical}</SelectItem>
                                     ))}
                                 </SelectContent>

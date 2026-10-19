@@ -1,15 +1,14 @@
-
 'use client'
 
 import { useState, useEffect, Suspense } from 'react'
-import { getAdminData, saveAdminData, deleteAdminData } from '@/lib/actions/admin'
+import { getAdminData, saveAdminData, deleteAdminData, updateDisplayOrder } from '@/lib/actions/admin'
 import { AdminSidebar } from './admin-sidebar'
 import { SearchInput } from '@/components/ui/search-input'
 import { ToastProvider, useToast } from '@/components/ui/toast-custom'
 import { AdminTable } from './admin-table'
 import { AdminModal } from './admin-modal'
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog'
-import { UserSession } from '@/types'
+import { UserSession, AdminUserFormValues, AdminLookupFormValues, Team, AdminDataItem, AdminDataType, Vertical } from '@/types'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
@@ -22,17 +21,18 @@ import { SettingsTab } from './tabs/settings-tab'
 import { PreferencesTab } from './tabs/preferences-tab'
 import { useAdminData } from '@/hooks/use-admin-data'
 import { getFieldConfigs } from '@/lib/actions/field-config'
+import { FieldConfig } from '@/types'
 
 interface AdminPanelProps {
     session: UserSession
+    initialFiscalConfig?: FieldConfig | null
 }
 
 // Updated Tabs list matching new Schema
-// Updated Tabs list matching new Schema
-const TABS = ['User', 'Team', 'Vertical', 'Horizontal', 'Location', 'Category', 'Version', 'Status', 'Outcome', 'DocumentType', 'Defaults', 'Preferences'] as const
+const TABS = ['User', 'Team', 'Vertical', 'Subvertical', 'Horizontal', 'Location', 'Category', 'Version', 'Status', 'Outcome', 'DocumentType', 'SalesforceStage', 'Defaults', 'Preferences'] as const
 type TabType = typeof TABS[number]
 
-function AdminPanelContent() {
+function AdminPanelContent({ initialFiscalConfig }: { initialFiscalConfig?: FieldConfig | null }) {
     const { addToast } = useToast()
     const searchParams = useSearchParams()
     const router = useRouter()
@@ -70,7 +70,7 @@ function AdminPanelContent() {
     useEffect(() => {
         getFieldConfigs().then(res => {
             if (res.success && res.data) {
-                const acvConfig = res.data.find((c: any) => c.targetField === 'acv')
+                const acvConfig = res.data.find((c) => c.targetField === 'acv')
                 if (acvConfig?.prefix) setDefaultCurrency(acvConfig.prefix)
             }
         })
@@ -78,8 +78,9 @@ function AdminPanelContent() {
 
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [editItem, setEditItem] = useState<any>(null)
-    const [availableTeams, setAvailableTeams] = useState<any[]>([])
+    const [editItem, setEditItem] = useState<AdminUserFormValues | AdminLookupFormValues | null>(null)
+    const [availableTeams, setAvailableTeams] = useState<Team[]>([])
+    const [availableVerticals, setAvailableVerticals] = useState<Vertical[]>([])
     const [confirmConfig, setConfirmConfig] = useState<{
         isOpen: boolean;
         title: string;
@@ -100,6 +101,7 @@ function AdminPanelContent() {
         switch (activeTab) {
             case 'Team': return { key: 'teamname', label: 'Team Name' }
             case 'Vertical': return { key: 'vertical', label: 'Vertical' }
+            case 'Subvertical': return { key: 'subvertical', label: 'Subvertical' }
             case 'Horizontal': return { key: 'horizontal', label: 'Horizontal' }
             case 'Location': return { key: 'country', label: 'Country' }
             case 'Status': return { key: 'status', label: 'Status' }
@@ -107,6 +109,7 @@ function AdminPanelContent() {
             case 'Version': return { key: 'version', label: 'Version' }
             case 'Outcome': return { key: 'outcome', label: 'Outcome' }
             case 'DocumentType': return { key: 'type', label: 'Document Type' }
+            case 'SalesforceStage': return { key: 'stage', label: 'Stage' }
             default: return { key: 'name', label: 'Name' }
         }
     }
@@ -126,14 +129,21 @@ function AdminPanelContent() {
         setSearchTerm('')
 
         if (activeTab === 'User') {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- async data load; setState happens after await, not synchronously
             getAdminData('Team').then(res => {
-                if (res.success) setAvailableTeams(res.data || [])
+                if (res.success) setAvailableTeams((res.data as Team[]) || [])
+            })
+        }
+        if (activeTab === 'Subvertical') {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- async data load; setState happens after await, not synchronously
+            getAdminData('Vertical').then(res => {
+                if (res.success) setAvailableVerticals((res.data as Vertical[]) || [])
             })
         }
     }, [activeTab])
 
-    const handleEdit = (item: any) => {
-        setEditItem(item)
+    const handleEdit = (item: AdminDataItem) => {
+        setEditItem(item as unknown as AdminUserFormValues | AdminLookupFormValues)
         setIsModalOpen(true)
     }
 
@@ -148,7 +158,7 @@ function AdminPanelContent() {
             title: 'Delete Item',
             message: 'Are you sure you want to delete this item? This action cannot be undone.',
             onConfirm: async () => {
-                const res = await deleteAdminData(activeTab as any, id)
+                const res = await deleteAdminData(activeTab as AdminDataType, id)
                 if (res.success) {
                     fetchData()
                     addToast({ type: 'success', title: 'Deleted', message: 'Item deleted successfully' })
@@ -160,14 +170,14 @@ function AdminPanelContent() {
         })
     }
 
-    const handleSave = async (data: any) => {
-        const payload: any = { ...data }
+    const handleSave = async (data: AdminUserFormValues | AdminLookupFormValues) => {
+        const payload: AdminUserFormValues | AdminLookupFormValues = { ...data }
 
         if (editItem) {
             payload.id = editItem.id
         }
 
-        const res = await saveAdminData(activeTab as any, payload)
+        const res = await saveAdminData(activeTab as AdminDataType, payload)
 
         if (res.success) {
             setIsModalOpen(false)
@@ -183,10 +193,20 @@ function AdminPanelContent() {
         return res
     }
 
+    const handleReorder = async (newOrder: AdminDataItem[]) => {
+        const itemsToUpdate = newOrder.map((item, index) => ({ id: item.id, displayOrder: (index + 1) * 10 }));
 
+        const res = await updateDisplayOrder(activeTab as AdminDataType, itemsToUpdate);
+        if (res.success) {
+            addToast({ type: 'success', title: 'Order Updated', message: 'New order saved.' })
+            fetchData()
+        } else {
+            addToast({ type: 'error', title: 'Reorder Failed', message: res.message || 'Failed to save order' })
+        }
+    }
 
     return (
-        <div className="h-[calc(100vh-65px)] flex flex-col bg-transparent font-sans text-foreground overflow-hidden">
+        <div className="h-full flex flex-col bg-transparent font-sans text-foreground overflow-hidden">
             {/* Main Layout - Full Height with Padding */}
             <div className="flex-1 overflow-hidden flex flex-col max-w-7xl mx-auto w-full p-4 pb-8">
 
@@ -198,7 +218,7 @@ function AdminPanelContent() {
                         <AdminSidebar
                             tabs={TABS}
                             activeTab={activeTab}
-                            setActiveTab={setActiveTab}
+                            setActiveTab={setActiveTab as (tab: string) => void}
                             collapsed={isSidebarCollapsed}
                             toggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
                         />
@@ -207,7 +227,7 @@ function AdminPanelContent() {
                     <div className="flex-1 bg-card overflow-hidden flex flex-col h-full rounded-xl border border-border/50">
                         {activeTab === 'Defaults' ? (
                             <div className="p-8 h-full overflow-hidden flex flex-col">
-                                <DefaultsTab />
+                                <DefaultsTab initialFiscalConfig={initialFiscalConfig} />
                             </div>
                         ) : activeTab === 'Preferences' ? (
                             <div className="p-8 h-full overflow-hidden flex flex-col">
@@ -223,13 +243,15 @@ function AdminPanelContent() {
                                                 activeTab === 'Team' ? 'Teams' :
                                                     activeTab === 'Category' ? 'Categories' :
                                                         activeTab === 'Vertical' ? 'Verticals' :
-                                                            activeTab === 'Horizontal' ? 'Horizontals' :
-                                                                activeTab === 'Location' ? 'Locations' :
-                                                                    activeTab === 'Version' ? 'Versions' :
-                                                                        activeTab === 'Status' ? 'Statuses' :
-                                                                            activeTab === 'Outcome' ? 'Outcomes' :
-                                                                                activeTab === 'DocumentType' ? 'Document Types' :
-                                                                                    activeTab}
+                                                            activeTab === 'Subvertical' ? 'Subverticals' :
+                                                                activeTab === 'Horizontal' ? 'Horizontals' :
+                                                                    activeTab === 'Location' ? 'Locations' :
+                                                                        activeTab === 'Version' ? 'Versions' :
+                                                                            activeTab === 'Status' ? 'Statuses' :
+                                                                                activeTab === 'Outcome' ? 'Outcomes' :
+                                                                                    activeTab === 'DocumentType' ? 'Document Types' :
+                                                                                        activeTab === 'SalesforceStage' ? 'Salesforce Stages' :
+                                                                                            activeTab}
                                         </h2>
                                         <p className="text-xs text-muted-foreground mt-0.5">{filteredData.length} records found</p>
                                     </div>
@@ -250,10 +272,11 @@ function AdminPanelContent() {
                                 <div className="flex-1 overflow-auto relative">
                                     <AdminTable
                                         activeTab={activeTab}
-                                        data={filteredData}
+                                        data={filteredData as unknown as AdminDataItem[]}
                                         loading={loading}
                                         handleEdit={handleEdit}
                                         handleCreate={handleCreate}
+                                        handleReorder={handleReorder}
                                         fields={fields}
                                     />
                                 </div>
@@ -273,6 +296,7 @@ function AdminPanelContent() {
                         onClose={() => setIsModalOpen(false)}
                         data={data}
                         availableTeams={availableTeams}
+                        availableVerticals={availableVerticals}
                         defaultCurrency={defaultCurrency}
                     />
                 )}
@@ -289,11 +313,11 @@ function AdminPanelContent() {
     )
 }
 
-export default function AdminPanel(props: AdminPanelProps) {
+export default function AdminPanel({ session, initialFiscalConfig }: AdminPanelProps) {
     return (
         <ToastProvider>
             <Suspense fallback={<div className="p-8">Loading Admin Panel...</div>}>
-                <AdminPanelContent />
+                <AdminPanelContent initialFiscalConfig={initialFiscalConfig} />
             </Suspense>
         </ToastProvider>
     )

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { getFieldConfigs } from '@/lib/actions/field-config'
-import { PricingActivity } from '@/types'
+import { PricingActivity, FieldConfig } from '@/types'
 
 interface ActivityRefDisplayProps {
     activity: PricingActivity
@@ -10,7 +10,7 @@ interface ActivityRefDisplayProps {
 }
 
 export function ActivityRefDisplay({ activity, className }: ActivityRefDisplayProps) {
-    const [configs, setConfigs] = useState<Record<string, any>>({
+    const [configs, setConfigs] = useState<Record<string, FieldConfig>>({
         id1: { fieldName: 'ID1', fieldType: 'STRING', prefix: '', hasPrefix: false, isActive: true, displayOnDashboard: true },
         id2: { fieldName: 'ID2', fieldType: 'STRING', prefix: '', hasPrefix: false, isActive: true, displayOnDashboard: true }
     })
@@ -19,8 +19,8 @@ export function ActivityRefDisplay({ activity, className }: ActivityRefDisplayPr
     useEffect(() => {
         getFieldConfigs().then(res => {
             if (res.success && res.data) {
-                const map: any = {}
-                res.data.forEach((c: any) => map[c.targetField] = c)
+                const map: Record<string, FieldConfig> = {}
+                res.data.forEach((c) => map[c.targetField] = c)
                 setConfigs(prev => ({ ...prev, ...map }))
                 setLoaded(true)
             }
@@ -29,7 +29,7 @@ export function ActivityRefDisplay({ activity, className }: ActivityRefDisplayPr
 
     if (!loaded) return null
 
-    const formatValue = (idRaw: string | undefined | null, config: any) => {
+    const formatValue = (idRaw: string | undefined | null, config: FieldConfig) => {
         if (!idRaw) return ''
         const prefix = config.hasPrefix ? config.prefix : ''
         if (prefix && idRaw.startsWith(prefix)) return idRaw
@@ -51,8 +51,8 @@ export function ActivityRefDisplay({ activity, className }: ActivityRefDisplayPr
     }
 
     // Logic: Show ID1 if active. If ID2 also active, show separator.
-    const id1 = (activity as any).id1 || (activity as any).salesForceId
-    const id2 = (activity as any).id2 || (activity as any).dsrNumber
+    const id1 = activity.id1
+    const id2 = activity.id2
 
     const showId1 = configs.id1.isActive && id1
     const showId2 = configs.id2.isActive && id2

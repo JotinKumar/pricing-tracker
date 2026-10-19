@@ -1,6 +1,7 @@
 // Refresh types
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/db'
+import { getSession } from '@/lib/actions/auth'
 import { readFile } from 'fs/promises'
 import { join } from 'path'
 import { cwd } from 'process'
@@ -9,6 +10,12 @@ export async function GET(
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
+    // Auth: require an authenticated session for any attachment download.
+    const session = await getSession()
+    if (!session) {
+        return new NextResponse('Unauthorized', { status: 401 })
+    }
+
     try {
         const { id } = await params
         const attachmentId = parseInt(id)
@@ -17,7 +24,6 @@ export async function GET(
             return new NextResponse('Invalid ID', { status: 400 })
         }
 
-        // @ts-ignore
         const attachment = await prisma.attachment.findUnique({
             where: { id: attachmentId }
         })

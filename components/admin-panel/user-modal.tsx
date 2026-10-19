@@ -242,7 +242,7 @@ export function UserModal({ editItem, handleSave, onClose, data, availableTeams 
                                         <FormLabel className="text-sm font-semibold cursor-pointer text-foreground">
                                             Active Status
                                         </FormLabel>
-                                        <p className="text-xs text-muted-foreground">Inactive items won't appear in dropdowns</p>
+                                        <p className="text-xs text-muted-foreground">Inactive items won&apos;t appear in dropdowns</p>
                                     </div>
                                 </FormItem>
                             )}

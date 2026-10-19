@@ -3,15 +3,27 @@
 import { useFormContext } from 'react-hook-form'
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form'
 import { Select, SelectContent, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Input } from '@/components/ui/input'
 import { ActivityFormValues } from '@/lib/schemas'
 import { SectionProps, renderOptions } from './shared'
+import { PricingActivityWithHistory } from '@/types'
 
-export function StatusDetails({ lookups, session }: SectionProps) {
+interface StatusDetailsProps extends SectionProps {
+    activity?: PricingActivityWithHistory | null
+}
+
+export function StatusDetails({ lookups, session, activity }: StatusDetailsProps) {
     const { control } = useFormContext<ActivityFormValues>()
     const isReadOnly = session.role === 'READ_ONLY'
 
+    // Last activity date = latest history entry createdAt
+    const lastActivityDate = activity?.history?.[0]?.createdAt
+    const formattedLastActivityDate = lastActivityDate
+        ? new Date(lastActivityDate).toISOString().split('T')[0]
+        : ''
+
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <FormField
                 control={control}
                 name="versionId"
@@ -72,6 +84,18 @@ export function StatusDetails({ lookups, session }: SectionProps) {
                     </FormItem>
                 )}
             />
+            <FormItem>
+                <FormLabel className="uppercase text-xs text-muted-foreground">Last Activity Date</FormLabel>
+                <FormControl>
+                    <Input
+                        type="date"
+                        readOnly
+                        disabled
+                        value={formattedLastActivityDate}
+                        placeholder="No activity yet"
+                    />
+                </FormControl>
+            </FormItem>
         </div>
     )
 }

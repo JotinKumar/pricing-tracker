@@ -1,15 +1,20 @@
 'use client'
 
-import { Fragment, useMemo, useEffect } from 'react'
+import { Fragment, useMemo, useEffect, useRef, useCallback } from 'react'
 import { RenderFilterHeader, LocationFilterHeader, DealTeamFilterHeader, ProjectFilterHeader } from './filter-headers'
-import { PricingActivity, Lookups } from '@/types'
+import { DueDateFilterHeader } from './filter-headers/due-date-filter-header'
+import { PricingActivity, Lookups, FieldConfig, DashboardFacets } from '@/types'
 import { ActivityRow } from './activity-row'
 import { AcvFilterHeader } from './acv-filter-header'
-import { useIntersectionObserver } from '@/hooks/use-intersection-observer'
-import { Loader2 } from 'lucide-react'
+import { PaginationControls } from './pagination-controls'
+
+const ROW_HEIGHT_PX = 54
+const THEAD_HEIGHT_PX = 44
+const PAGINATION_HEIGHT_PX = 56
+const BUFFER_ROWS = 2
+const MIN_ROWS = 5
 
 interface ActivityTableProps {
-    activities: PricingActivity[]
     groupedActivities: Record<string, PricingActivity[]>
     groupKeys: string[]
     expandedGroups: Record<string, boolean>
@@ -30,7 +35,7 @@ interface ActivityTableProps {
     handleCommentsOpen: (activity: PricingActivity) => void
     isReadOnly: boolean
     config?: {
-        global: any[]
+        global: FieldConfig[]
         user: {
             currency?: string | null
             dateFormat?: string | null
@@ -41,14 +46,21 @@ interface ActivityTableProps {
     acvRange: {
         minAcv: number
         maxAcv: number
+        minDate: Date | null
+        maxDate: Date | null
     }
-    loadMore: () => void
-    hasMore: boolean
-    isLoadingMore: boolean
+    facets: DashboardFacets
+    pagination: {
+        totalCount: number
+        totalPages: number
+        currentPage: number
+        limit: number
+    }
+    onCapacityChange: (rows: number) => void
+    showAutoAdded?: boolean
 }
 
 export function ActivityTable({
-    activities,
     groupedActivities,
     groupKeys,
     expandedGroups,
@@ -70,10 +82,14 @@ export function ActivityTable({
     isReadOnly,
     config,
     acvRange,
-    loadMore,
-    hasMore,
-    isLoadingMore
+    facets,
+    pagination,
+    onCapacityChange,
+    showAutoAdded = false
 }: ActivityTableProps) {
+    const containerRef = useRef<HTMLDivElement | null>(null)
+    const lastReported = useRef<number>(0)
+
     // Memoize expensive calculations
     const totalVisibleRows = useMemo(() =>
         Object.values(groupedActivities).reduce((acc, curr) => acc + curr.length, 0),
@@ -81,53 +97,83 @@ export function ActivityTable({
     )
     const forceAbove = totalVisibleRows < 3
 
+    // Measure available height and report how many rows fit
+    const measureCapacity = useCallback(() => {
+        const el = containerRef.current
+        if (!el) return
+        const available = el.clientHeight - THEAD_HEIGHT_PX - PAGINATION_HEIGHT_PX
+        if (available <= 0) return
+        const rows = Math.max(MIN_ROWS, Math.floor(available / ROW_HEIGHT_PX) - BUFFER_ROWS)
+        if (rows !== lastReported.current) {
+            lastReported.current = rows
+            onCapacityChange(rows)
+        }
+    }, [onCapacityChange])
+
+    useEffect(() => {
+        const el = containerRef.current
+        if (!el) return
+        measureCapacity()
+        const ro = new ResizeObserver(() => measureCapacity())
+        ro.observe(el)
+        return () => ro.disconnect()
+    }, [measureCapacity])
+
+    // Keep only options available under the current facets, always retaining
+    // the currently-selected value so the user can still clear it.
+    const filterByFacet = <T extends { value: string }>(opts: T[], availableIds: number[], selected?: string): T[] => {
+        const available = new Set(availableIds.map(String))
+        return opts.filter(o => available.has(o.value) || o.value === selected)
+    }
+
     // Memoize options arrays to prevent unnecessary re-renders
     const versionOptions = useMemo(() =>
-        lookups.versions.map((v) => ({
-            label: v.version,
-            value: v.id.toString(),
-            className: "bg-popover text-popover-foreground"
-        })),
-        [lookups.versions]
+        filterByFacet(
+            lookups.versions.map((v) => ({
+                label: v.version,
+                value: v.id.toString(),
+                className: "bg-popover text-popover-foreground"
+            })),
+            facets.versionIds,
+            filters['versionId']
+        ),
+        [lookups.versions, facets.versionIds, filters]
     )
 
     const categoryOptions = useMemo(() =>
-        lookups.categories.map((c) => ({
-            label: c.category,
-            value: c.id.toString()
-        })),
-        [lookups.categories]
+        filterByFacet(
+            lookups.categories.map((c) => ({
+                label: c.category,
+                value: c.id.toString()
+            })),
+            facets.categoryIds,
+            filters['categoryId']
+        ),
+        [lookups.categories, facets.categoryIds, filters]
     )
 
     const statusOptions = useMemo(() =>
-        lookups.statuses.map((s) => ({
-            label: s.status,
-            value: s.id.toString(),
-            className: "bg-popover text-popover-foreground"
-        })),
-        [lookups.statuses]
+        filterByFacet(
+            lookups.statuses.map((s) => ({
+                label: s.status,
+                value: s.id.toString(),
+                className: "bg-popover text-popover-foreground"
+            })),
+            facets.statusIds,
+            filters['statusId']
+        ),
+        [lookups.statuses, facets.statusIds, filters]
     )
 
-    const [setNode, entry] = useIntersectionObserver({
-        threshold: 0.1,
-        rootMargin: '100px'
-    })
-
-    useEffect(() => {
-        if (entry?.isIntersecting && hasMore && !isLoadingMore) {
-            loadMore()
-        }
-    }, [entry, hasMore, isLoadingMore, loadMore])
-
     return (
-        <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden flex flex-col max-h-[75vh] min-h-[600px]">
-            <div className="overflow-x-auto h-full">
-                <table className="w-full text-left text-xs text-muted-foreground relative">
+        <div ref={containerRef} className="flex-1 min-h-0 rounded-xl border border-border bg-card shadow-sm overflow-hidden flex flex-col">
+            <div className="flex-1 min-h-0 overflow-x-auto no-scrollbar">
+                <table className="w-full text-left text-xs text-muted-foreground relative table-fixed">
                     <thead className="bg-muted border-b border-border text-[11px] font-bold uppercase tracking-wider text-muted-foreground sticky top-0 z-30 shadow-sm">
                         <tr>
                             <ProjectFilterHeader
-                                activities={activities}
                                 lookups={lookups}
+                                facets={facets}
                                 filters={filters}
                                 activeFilter={activeFilter}
                                 setActiveFilter={setActiveFilter}
@@ -137,7 +183,7 @@ export function ActivityTable({
                                 forceAbove={forceAbove}
                                 config={config}
                             />
-                            <th className="px-4 py-3 align-middle w-[8%] bg-muted/95 backdrop-blur-sm border-b border-border">
+                            <th className="px-4 py-3 align-middle w-[10%] bg-muted/95 backdrop-blur-sm border-b border-border">
                                 <AcvFilterHeader
                                     min={acvRange?.minAcv || 0}
                                     max={acvRange?.maxAcv || 10000000}
@@ -147,7 +193,14 @@ export function ActivityTable({
                                     config={config}
                                 />
                             </th>
-                            <th className="px-4 py-3 align-middle w-[14%] bg-muted/95 backdrop-blur-sm border-b border-border">Due Date</th>
+                            <th className="px-4 py-3 align-middle w-[12%] bg-muted/95 backdrop-blur-sm border-b border-border">
+                                <DueDateFilterHeader
+                                    filters={filters}
+                                    handleBulkFilterChange={handleBulkFilterChange}
+                                    minDate={acvRange?.minDate}
+                                    maxDate={acvRange?.maxDate}
+                                />
+                            </th>
 
                             <RenderFilterHeader
                                 label="Version"
@@ -158,6 +211,7 @@ export function ActivityTable({
                                 activeFilter={activeFilter}
                                 setActiveFilter={setActiveFilter}
                                 handleFilterChange={handleFilterChange}
+                                handleBulkFilterChange={handleBulkFilterChange}
                                 filterRef={filterRef}
                                 forceAbove={forceAbove}
                                 linkedFilter={{
@@ -169,6 +223,7 @@ export function ActivityTable({
 
                             <LocationFilterHeader
                                 lookups={lookups}
+                                facets={facets}
                                 filters={filters}
                                 activeFilter={activeFilter}
                                 setActiveFilter={setActiveFilter}
@@ -181,18 +236,8 @@ export function ActivityTable({
                             <RenderFilterHeader
                                 label="Status"
                                 field="statusId"
-                                width="w-[10%]"
+                                width="w-[12%]"
                                 options={statusOptions}
-                                filters={filters}
-                                activeFilter={activeFilter}
-                                setActiveFilter={setActiveFilter}
-                                handleFilterChange={handleFilterChange}
-                                filterRef={filterRef}
-                                forceAbove={forceAbove}
-                            />
-
-                            <DealTeamFilterHeader
-                                activities={activities}
                                 filters={filters}
                                 activeFilter={activeFilter}
                                 setActiveFilter={setActiveFilter}
@@ -202,7 +247,18 @@ export function ActivityTable({
                                 forceAbove={forceAbove}
                             />
 
-                            <th className="px-4 py-3 align-middle w-[8%] bg-muted/95 backdrop-blur-sm border-b border-border">Edit</th>
+                            <DealTeamFilterHeader
+                                facets={facets}
+                                filters={filters}
+                                activeFilter={activeFilter}
+                                setActiveFilter={setActiveFilter}
+                                handleFilterChange={handleFilterChange}
+                                handleBulkFilterChange={handleBulkFilterChange}
+                                filterRef={filterRef}
+                                forceAbove={forceAbove}
+                            />
+
+                            <th className="px-4 py-3 align-middle w-[10%] bg-muted/95 backdrop-blur-sm border-b border-border text-center">Edit</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
@@ -239,28 +295,17 @@ export function ActivityTable({
                                                 handleFilterChange={handleFilterChange}
                                                 isReadOnly={isReadOnly}
                                                 config={config}
+                                                showAutoAdded={showAutoAdded}
                                             />
                                         ))}
                                     </Fragment>
                                 );
                             })
                         )}
-                        {/* Sentinel for Infinite Scroll */}
-                        {hasMore && (
-                            <tr ref={setNode}>
-                                <td colSpan={9} className="py-4 text-center">
-                                    {isLoadingMore && (
-                                        <div className="flex justify-center items-center gap-2 text-muted-foreground">
-                                            <Loader2 className="h-4 w-4 animate-spin" />
-                                            <span>Loading more...</span>
-                                        </div>
-                                    )}
-                                </td>
-                            </tr>
-                        )}
                     </tbody>
                 </table>
             </div>
+            <PaginationControls totalPages={pagination.totalPages} currentPage={pagination.currentPage} />
         </div>
     )
 }

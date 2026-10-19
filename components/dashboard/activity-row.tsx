@@ -22,7 +22,7 @@ interface ActivityRowProps {
     handleFilterChange: (field: string, value: string) => void
     isReadOnly: boolean
     config?: {
-        global: any[]
+        global: FieldConfig[]
         user: {
             currency?: string | null
             dateFormat?: string | null
@@ -30,6 +30,7 @@ interface ActivityRowProps {
             acvDecimals?: string | null
         }
     }
+    showAutoAdded?: boolean
 }
 
 // Clickable filter style
@@ -43,7 +44,7 @@ const DEFAULT_CONFIGS: Record<string, FieldConfig> = {
     date: { fieldName: 'MM/DD/YYYY' }
 }
 
-const formatDate = (dateValue: string | Date, config: any, userDateFormat?: string | null) => {
+const formatDate = (dateValue: string | Date, config: FieldConfig, userDateFormat?: string | null) => {
     const date = new Date(dateValue)
     const format = userDateFormat || config?.fieldName || 'MM/DD/YYYY'
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -73,7 +74,8 @@ export const ActivityRow = memo(function ActivityRow({
     handleCommentsOpen,
     handleFilterChange,
     isReadOnly,
-    config
+    config,
+    showAutoAdded = false
 }: ActivityRowProps) {
     const [clientConfigs, setClientConfigs] = useState<Record<string, FieldConfig>>(DEFAULT_CONFIGS)
     const { formatAcv } = useAcvFormat()
@@ -94,8 +96,8 @@ export const ActivityRow = memo(function ActivityRow({
 
     const configs = useMemo(() => {
         if (config?.global) {
-            const map: Record<string, any> = {}
-            config.global.forEach((c: any) => map[c.targetField] = c)
+            const map: Record<string, FieldConfig> = {}
+            config.global.forEach((c) => map[c.targetField ?? ''] = c)
             return map
         }
         return clientConfigs
@@ -172,17 +174,6 @@ export const ActivityRow = memo(function ActivityRow({
                         {activity.projectName}
                     </span>
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                        {renderIdDisplay('id1', activity.id1)}
-                        {configs.id1?.isActive && configs.id1?.displayOnDashboard !== false &&
-                            configs.id2?.isActive && configs.id2?.displayOnDashboard !== false &&
-                            activity.id1 && activity.id2 && (
-                                <span className="text-muted-foreground/40">/</span>
-                            )}
-                        {renderIdDisplay('id2', activity.id2)}
-                        {((configs.id1?.isActive && configs.id1?.displayOnDashboard !== false && activity.id1) ||
-                            (configs.id2?.isActive && configs.id2?.displayOnDashboard !== false && activity.id2)) && (
-                                <span className="text-muted-foreground/40">/</span>
-                            )}
                         <span className="truncate">
                             {groupBy === 'client' ? (
                                 <>Vertical : <span
@@ -198,6 +189,17 @@ export const ActivityRow = memo(function ActivityRow({
                                 >{activity.clientName}</span></>
                             )}
                         </span>
+                        {((configs.id1?.isActive && configs.id1?.displayOnDashboard !== false && activity.id1) ||
+                            (configs.id2?.isActive && configs.id2?.displayOnDashboard !== false && activity.id2)) && (
+                                <span className="text-muted-foreground/40">/</span>
+                            )}
+                        {renderIdDisplay('id1', activity.id1)}
+                        {configs.id1?.isActive && configs.id1?.displayOnDashboard !== false &&
+                            configs.id2?.isActive && configs.id2?.displayOnDashboard !== false &&
+                            activity.id1 && activity.id2 && (
+                                <span className="text-muted-foreground/40">/</span>
+                            )}
+                        {renderIdDisplay('id2', activity.id2)}
                     </div>
                 </div>
             </td>
@@ -278,6 +280,7 @@ export const ActivityRow = memo(function ActivityRow({
                     <DealTeamAvatars
                         teamMembers={activity.teamMembers}
                         onMemberClick={handleTeamMemberClick}
+                        showAutoAdded={showAutoAdded}
                     />
                 </div>
             </td>
@@ -291,7 +294,7 @@ export const ActivityRow = memo(function ActivityRow({
                     >
                         <MessageSquare className={`h-3.5 w-3.5 ${activity.comments && activity.comments.length > 0 ? "fill-current text-primary" : ""}`} />
                         {(activity.comments?.length || 0) > 0 && (
-                            <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5 items-center justify-center rounded-full bg-primary text-[8px] font-bold text-primary-foreground">
+                            <span className="absolute -top-1.5 -right-1.5 flex h-3 w-3 items-center justify-center rounded-full bg-primary text-[9px] font-bold text-primary-foreground leading-none pt-[1px]">
                                 {activity.comments.length}
                             </span>
                         )}
@@ -308,7 +311,7 @@ export const ActivityRow = memo(function ActivityRow({
                             <Folder className="h-3.5 w-3.5" />
                         )}
                         {(activity.attachmentCount || 0) > 0 && (
-                            <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5 items-center justify-center rounded-full bg-primary text-[8px] font-bold text-primary-foreground">
+                            <span className="absolute -top-1.5 -right-1.5 flex h-3 w-3 items-center justify-center rounded-full bg-primary text-[9px] font-bold text-primary-foreground leading-none pt-[1px]">
                                 {activity.attachmentCount}
                             </span>
                         )}

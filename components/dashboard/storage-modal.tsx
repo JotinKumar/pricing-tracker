@@ -30,11 +30,12 @@ export function StorageModal({ isOpen, onClose, activity, currentUserId, current
                     </Button>
                 </div>
 
-                <div className="p-6 overflow-y-auto flex-1">
+                <div className="p-6 overflow-hidden flex-1 flex flex-col">
                     <FileStorageSection
                         activity={activity}
                         currentUserId={currentUserId}
                         currentUserRole={currentUserRole || 'USER'}
+                        className="border-0 shadow-none"
                     />
                 </div>
             </div>

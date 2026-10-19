@@ -22,8 +22,10 @@ interface DealTeamAvatarsProps {
     teamMembers: {
         user: { name: string | null }
         team: { display: string | null; teamname: string }
+        isAutoAdded?: boolean
     }[]
     onMemberClick?: (teamName: string, userName: string) => void
+    showAutoAdded?: boolean
 }
 
 function getInitials(name: string | null) {
@@ -35,9 +37,10 @@ function getInitials(name: string | null) {
 
 export function DealTeamAvatars({
     teamMembers,
-    onMemberClick
+    onMemberClick,
+    showAutoAdded = false
 }: DealTeamAvatarsProps) {
-    const members = teamMembers || []
+    const members = (teamMembers || []).filter(tm => showAutoAdded || !tm.isAutoAdded)
     if (members.length === 0) {
         return <span className="text-muted-foreground/50 text-xs italic">Unassigned</span>
     }
@@ -46,7 +49,7 @@ export function DealTeamAvatars({
     const allowedTeams = ['Sales', 'Solution', 'Finance', 'Pricing']
 
     // Helper to normalize team name checking
-    const isTeam = (tm: any, check: string) => {
+    const isTeam = (tm: DealTeamAvatarsProps['teamMembers'][number], check: string) => {
         const name = tm.team.teamname || '';
         return name.toLowerCase().includes(check.toLowerCase());
     }
@@ -62,7 +65,7 @@ export function DealTeamAvatars({
 
     // Sort others for consistent order: Sales, Solution, Finance
     const roleOrder = ['Sales', 'Solution', 'Finance']
-    const getRoleIndex = (tm: any) => {
+    const getRoleIndex = (tm: DealTeamAvatarsProps['teamMembers'][number]) => {
         const name = tm.team.teamname || '';
         const index = roleOrder.findIndex(role => name.toLowerCase().includes(role.toLowerCase()));
         return index === -1 ? 99 : index;

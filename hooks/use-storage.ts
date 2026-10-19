@@ -1,19 +1,30 @@
 import { useState, useEffect } from 'react'
 import { Attachment } from '@prisma/client'
 import { toast } from 'sonner'
-import { getAttachments, deleteAttachment } from '@/lib/actions/storage'
+import { getAttachments, deleteAttachment, getDocumentTypes } from '@/lib/actions/storage'
 
-export function useStorage(activityId: number | undefined) {
-    const [attachments, setAttachments] = useState<Attachment[]>([])
+type AttachmentWithUser = Attachment & { user?: { name: string | null; email: string; avatar: string | null } }
+
+export function useStorage(id1: string | undefined) {
+    const [attachments, setAttachments] = useState<AttachmentWithUser[]>([])
+    const [documentTypes, setDocumentTypes] = useState<string[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const [uploading, setUploading] = useState(false)
     const [uploadProgress, setUploadProgress] = useState(0)
 
     const fetchAttachments = async () => {
-        if (!activityId) return
+        // Fetch types regardless of activity
+        try {
+            const types = await getDocumentTypes()
+            setDocumentTypes(types)
+        } catch (error) {
+            console.error('Failed to load document types:', error)
+        }
+
+        if (!id1) return
         try {
             setIsLoading(true)
-            const data = await getAttachments(activityId.toString())
+            const data = await getAttachments(id1)
             if (data) {
                 setAttachments(data)
             }
@@ -26,7 +37,7 @@ export function useStorage(activityId: number | undefined) {
 
     useEffect(() => {
         fetchAttachments()
-    }, [activityId])
+    }, [id1])
 
     const handleDelete = async (fileId: number) => {
         try {
@@ -52,6 +63,7 @@ export function useStorage(activityId: number | undefined) {
 
     return {
         attachments,
+        documentTypes,
         isLoading,
         uploading,
         setUploading,
