@@ -26,16 +26,16 @@ export function SettingsTab() {
         return { value: String(i), label: `${currentMonthShort}-${nextMonthShort}` };
     });
 
-    useEffect(() => {
-        loadFYSettings()
-    }, [])
-
     const loadFYSettings = async () => {
         const res = await getSystemSetting('FY_START_MONTH')
         if (res.success && res.data) {
             setFinancialYearStart(res.data)
         }
     }
+
+    useEffect(() => {
+        loadFYSettings()
+    }, [])
 
     const handleSaveFYSettings = async () => {
         const res = await updateSystemSetting('FY_START_MONTH', financialYearStart)

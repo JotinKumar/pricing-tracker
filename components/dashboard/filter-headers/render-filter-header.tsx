@@ -6,16 +6,17 @@ import { Button } from '@/components/ui/button'
 import { FilterTrigger } from './filter-trigger'
 import { RenderFilterHeaderProps } from './filter-types'
 
-export function RenderFilterHeader({ 
-    label, 
-    field, 
-    options, 
-    width, 
-    filters, 
-    activeFilter, 
-    setActiveFilter, 
-    handleFilterChange, 
-    linkedFilter 
+export function RenderFilterHeader({
+    label,
+    field,
+    options,
+    width,
+    filters,
+    activeFilter,
+    setActiveFilter,
+    handleFilterChange,
+    handleBulkFilterChange,
+    linkedFilter
 }: RenderFilterHeaderProps) {
     const isActive = activeFilter === field
     const hasValue = filters[field] || (linkedFilter && filters[linkedFilter.field])
@@ -70,8 +71,14 @@ export function RenderFilterHeader({
                             variant="ghost"
                             className="w-full h-8 text-destructive hover:bg-destructive/10 hover:text-destructive font-medium"
                             onClick={() => {
-                                handleFilterChange(field, '')
-                                if (linkedFilter) handleFilterChange(linkedFilter.field, '')
+                                if (handleBulkFilterChange) {
+                                    const changes: Record<string, string | null> = { [field]: null }
+                                    if (linkedFilter) changes[linkedFilter.field] = null
+                                    handleBulkFilterChange(changes)
+                                } else {
+                                    handleFilterChange(field, '')
+                                    if (linkedFilter) handleFilterChange(linkedFilter.field, '')
+                                }
                                 setActiveFilter(null)
                             }}
                         >

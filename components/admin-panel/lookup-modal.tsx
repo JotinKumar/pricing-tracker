@@ -6,7 +6,8 @@ import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form'
-import { ApiResponse, AdminLookupFormValues } from '@/types'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { ApiResponse, AdminLookupFormValues, Vertical } from '@/types'
 
 interface LookupModalProps {
   editItem: AdminLookupFormValues | null
@@ -16,6 +17,7 @@ interface LookupModalProps {
   onClose: () => void
   data: AdminLookupFormValues[]
   defaultCurrency?: string
+  availableVerticals?: Vertical[]
 }
 
 export function LookupModal({
@@ -25,14 +27,17 @@ export function LookupModal({
   handleSave,
   onClose,
   data,
-  defaultCurrency = '$'
+  defaultCurrency = '$',
+  availableVerticals = []
 }: LookupModalProps) {
   const getDefaultValues = (): AdminLookupFormValues => {
     const values: AdminLookupFormValues = {
       id: editItem?.id,
       display: editItem?.display || '',
       isActive: editItem?.isActive ?? true,
-      currency: activeTab === 'Location' ? editItem?.currency || defaultCurrency : defaultCurrency
+      currency: activeTab === 'Location' ? editItem?.currency || defaultCurrency : defaultCurrency,
+      description: activeTab === 'SalesforceStage' ? editItem?.description || '' : undefined,
+      verticalId: activeTab === 'Subvertical' ? (editItem?.verticalId ?? '') : undefined
     }
     values[fields.key] = editItem?.[fields.key] || ''
     return values
@@ -50,18 +55,25 @@ export function LookupModal({
     const cleanVal = String(lookupValue).trim()
     if (!cleanVal) return
 
-    let candidate = cleanVal.substring(0, 2).toUpperCase()
+    let candidate: string
     const isCollision = (val: string) =>
       data.some((item) => item.id !== editItem?.id && item.display === val)
 
-    if (isCollision(candidate)) {
-      candidate = cleanVal.substring(0, 3).toUpperCase()
+    if (activeTab === 'SalesforceStage') {
+      // Extract trailing number from stage names like "Stage 1" or "10"
+      const match = cleanVal.match(/\d+$/)
+      candidate = match ? match[0] : ''
+    } else {
+      candidate = cleanVal.substring(0, 2).toUpperCase()
+      if (isCollision(candidate)) {
+        candidate = cleanVal.substring(0, 3).toUpperCase()
+      }
     }
 
-    if (candidate !== displayValue) {
+    if (candidate && candidate !== displayValue) {
       form.setValue('display', candidate, { shouldValidate: true })
     }
-  }, [lookupValue, data, editItem, form, displayValue])
+  }, [lookupValue, data, editItem, form, displayValue, activeTab])
 
   useEffect(() => {
     form.reset(getDefaultValues())
@@ -123,6 +135,62 @@ export function LookupModal({
                   </FormItem>
                 )}
               />
+
+              {activeTab === 'Subvertical' && (
+                <FormField
+                  control={form.control}
+                  name="verticalId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                        Vertical
+                      </FormLabel>
+                      <Select
+                        value={String(field.value || '')}
+                        onValueChange={field.onChange}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="h-10">
+                            <SelectValue placeholder="Select Vertical" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {availableVerticals.map((v) => (
+                            <SelectItem key={v.id} value={String(v.id)}>
+                              {v.vertical}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              {activeTab === 'SalesforceStage' && (
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                        Description
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          value={String(field.value || '')}
+                          onChange={(e) => field.onChange(e.target.value)}
+                          placeholder="Enter stage description"
+                          className="h-10"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
 
               {activeTab === 'Location' && (
                 <FormField
@@ -189,7 +257,7 @@ export function LookupModal({
                       Active Status
                     </FormLabel>
                     <p className="text-xs text-muted-foreground">
-                      Inactive items won't appear in dropdowns
+                      Inactive items won&apos;t appear in dropdowns
                     </p>
                   </div>
                 </FormItem>

@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { toast } from "sonner"
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { ActivityFormValues } from '@/lib/schemas'
 import { getFieldConfigs } from '@/lib/actions/field-config'
 import { SectionProps, renderOptions } from './shared'
@@ -13,14 +13,14 @@ import { ClientCombobox } from '../client-combobox'
 
 type FieldConfig = {
     fieldName: string
-    fieldType: 'STRING' | 'NUMBER'
-    prefix?: string
+    fieldType: string
+    prefix?: string | null
     hasPrefix?: boolean
     isActive?: boolean
 }
 
 export function PrimaryDetails({ lookups, session, clientNames = [] }: SectionProps) {
-    const { control } = useFormContext<ActivityFormValues>()
+    const { control, watch, setValue } = useFormContext<ActivityFormValues>()
     const isReadOnly = session.role === 'READ_ONLY'
 
     const [configs, setConfigs] = useState<Record<string, FieldConfig>>({
@@ -32,11 +32,31 @@ export function PrimaryDetails({ lookups, session, clientNames = [] }: SectionPr
         getFieldConfigs().then(res => {
             if (res.success && res.data) {
                 const map: Record<string, FieldConfig> = {}
-                res.data.forEach((c: any) => map[c.targetField] = c)
+                res.data.forEach((c) => map[c.targetField] = c)
                 setConfigs(prev => ({ ...prev, ...map }))
             }
         })
     }, [])
+
+    const watchedVerticalId = watch('verticalId')
+
+    // Subvertical options for the selected vertical
+    const subverticalOptions = useMemo(() => {
+        const all = lookups.subverticals || []
+        if (!watchedVerticalId) return []
+        return all.filter((s) => String(s.verticalId) === String(watchedVerticalId))
+    }, [lookups.subverticals, watchedVerticalId])
+
+    // Reset subverticalId when the vertical changes and the current subvertical
+    // no longer belongs to the selected vertical.
+    useEffect(() => {
+        const currentSubId = watch('subverticalId')
+        if (!currentSubId) return
+        const stillValid = subverticalOptions.some((s) => String(s.id) === String(currentSubId))
+        if (!stillValid) {
+            setValue('subverticalId', undefined, { shouldDirty: true })
+        }
+    }, [subverticalOptions, watch, setValue])
 
     return (
         <>
@@ -167,7 +187,7 @@ export function PrimaryDetails({ lookups, session, clientNames = [] }: SectionPr
                 />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className={subverticalOptions.length > 0 ? "grid grid-cols-1 md:grid-cols-3 gap-6" : "grid grid-cols-1 md:grid-cols-2 gap-6"}>
                 <FormField
                     control={control}
                     name="verticalId"
@@ -188,6 +208,36 @@ export function PrimaryDetails({ lookups, session, clientNames = [] }: SectionPr
                         </FormItem>
                     )}
                 />
+                {subverticalOptions.length > 0 && (
+                    <FormField
+                        control={control}
+                        name="subverticalId"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="uppercase text-xs text-muted-foreground">Sub-Vertical</FormLabel>
+                                <Select
+                                    value={field.value ?? ''}
+                                    onValueChange={field.onChange}
+                                    disabled={isReadOnly}
+                                >
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select Sub-Vertical" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        {subverticalOptions.map((s) => (
+                                            <SelectItem key={s.id} value={String(s.id)}>
+                                                {s.subvertical}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                )}
                 <FormField
                     control={control}
                     name="horizontalId"

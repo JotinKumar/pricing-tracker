@@ -2,12 +2,12 @@
 
 import { useState, useCallback } from 'react'
 import { ActivityFormValues } from '@/lib/schemas'
-import { PricingActivity } from '@/types'
+import { PricingActivityWithHistory } from '@/types'
 
 interface UseActivitySubmitProps {
     isEdit: boolean
     initialVersionId: string
-    onSuccess: (activity: PricingActivity) => void
+    onSuccess: (activity: PricingActivityWithHistory) => void
 }
 
 interface UseActivitySubmitReturn {

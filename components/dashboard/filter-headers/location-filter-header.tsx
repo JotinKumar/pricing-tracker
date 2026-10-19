@@ -5,9 +5,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button'
 import { FilterTrigger } from './filter-trigger'
 import { LocationFilterHeaderProps } from './filter-types'
+import { useMemo } from 'react'
 
 export function LocationFilterHeader({ 
     lookups, 
+    facets, 
     filters, 
     activeFilter, 
     setActiveFilter, 
@@ -16,6 +18,18 @@ export function LocationFilterHeader({
 }: LocationFilterHeaderProps) {
     const isActive = activeFilter === 'locations'
     const hasValue = filters['clientLocationIds'] || filters['deliveryLocationIds']
+
+    const clientLocations = useMemo(() => {
+        const set = new Set(facets.clientLocationIds.map(String))
+        const selected = filters['clientLocationIds']
+        return lookups.locations.filter(l => set.has(String(l.id)) || String(l.id) === selected)
+    }, [lookups.locations, facets.clientLocationIds, filters])
+
+    const deliveryLocations = useMemo(() => {
+        const set = new Set(facets.deliveryLocationIds.map(String))
+        const selected = filters['deliveryLocationIds']
+        return lookups.locations.filter(l => set.has(String(l.id)) || String(l.id) === selected)
+    }, [lookups.locations, facets.deliveryLocationIds, filters])
 
     return (
         <th className="px-4 py-3 align-middle w-[10%] relative group sticky top-0 z-20 bg-muted/95 backdrop-blur-sm shadow-sm border-b border-border">
@@ -36,7 +50,7 @@ export function LocationFilterHeader({
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">All</SelectItem>
-                                    {lookups.locations.map((l) => (
+                                    {clientLocations.map((l) => (
                                         <SelectItem key={`cl-${l.id}`} value={String(l.id)}>{l.country}</SelectItem>
                                     ))}
                                 </SelectContent>
@@ -53,7 +67,7 @@ export function LocationFilterHeader({
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">All</SelectItem>
-                                    {lookups.locations.map((l) => (
+                                    {deliveryLocations.map((l) => (
                                         <SelectItem key={`dl-${l.id}`} value={String(l.id)}>{l.country}</SelectItem>
                                     ))}
                                 </SelectContent>

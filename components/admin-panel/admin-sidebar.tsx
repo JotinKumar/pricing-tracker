@@ -4,6 +4,7 @@ import {
     Users,
     Briefcase,
     Layers,
+    Split,
     StretchHorizontal,
     MapPin,
     Tags,
@@ -17,17 +18,20 @@ import {
     ChevronRight,
     ShieldCheck,
     Sliders,
+    Target,
 } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 
 
 
 
-const ICON_MAP: Record<string, any> = {
+const ICON_MAP: Record<string, LucideIcon> = {
     'User': Users,
     'Team': LayoutGrid, // Better than briefcase for Team? Or UsersRound. Let's stick to LayoutGrid for now or maybe Briefcase.
     'Vertical': Layers,
+    'Subvertical': Split,
     'Horizontal': StretchHorizontal,
     'Location': MapPin,
     'Category': Tags,
@@ -35,6 +39,7 @@ const ICON_MAP: Record<string, any> = {
     'Status': Activity,
     'Outcome': CheckCircle,
     'DocumentType': FileText,
+    'SalesforceStage': Target,
     'Defaults': ShieldCheck,
     'Preferences': Sliders
 }
@@ -42,7 +47,7 @@ const ICON_MAP: Record<string, any> = {
 export interface AdminSidebarProps {
     tabs: readonly string[]
     activeTab: string
-    setActiveTab: (tab: any) => void
+    setActiveTab: (tab: string) => void
     collapsed: boolean
     toggleCollapse: () => void
 }

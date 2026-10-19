@@ -10,20 +10,38 @@ import { getDefaults, saveDefault, deleteDefault } from '@/lib/actions/defaults'
 import { getFieldConfigs, saveFieldConfig } from '@/lib/actions/field-config'
 import { getAdminData } from '@/lib/actions/admin'
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog'
+import { FieldConfig, User } from '@/types'
 
-export function DefaultsTab() {
+interface DefaultRule {
+    id: number
+    type: string
+    referenceId: number | null
+    referenceName?: string
+    user?: { id: number; name?: string; shortName?: string }
+}
+
+interface DefaultOption {
+    id: number
+    name?: string
+    vertical?: string
+    horizontal?: string
+    country?: string
+    display?: string
+}
+
+export function DefaultsTab({ initialFiscalConfig }: { initialFiscalConfig?: FieldConfig | null }) {
     const { addToast } = useToast()
 
     // State
-    const [defaultsList, setDefaultsList] = useState<any[]>([])
-    const [users, setUsers] = useState<any[]>([])
+    const [defaultsList, setDefaultsList] = useState<DefaultRule[]>([])
+    const [users, setUsers] = useState<User[]>([])
     const [defaultType, setDefaultType] = useState<string>('')
     const [defaultRefId, setDefaultRefId] = useState<string>('')
     const [defaultUserId, setDefaultUserId] = useState<string>('')
-    const [defaultOptions, setDefaultOptions] = useState<any[]>([])
+    const [defaultOptions, setDefaultOptions] = useState<DefaultOption[]>([])
 
     // Financial Year State
-    const [fiscalConfig, setFiscalConfig] = useState({
+    const [fiscalConfig, setFiscalConfig] = useState(initialFiscalConfig || {
         targetField: 'fiscal',
         fieldName: 'January - December',
         fieldType: 'FISCAL',
@@ -56,26 +74,29 @@ export function DefaultsTab() {
         if (res.success) setUsers(res.data || [])
     }
 
-    const loadFiscalConfig = async () => {
-        const res = await getFieldConfigs()
-        if (res.success && res.data) {
-            const fiscal = res.data.find((c: any) => c.targetField === 'fiscal')
-            if (fiscal) {
-                setFiscalConfig(prev => ({
-                    ...prev,
-                    fieldName: fiscal.fieldName || 'January - December',
-                    ...(fiscal.prefix === null ? { ...fiscal, prefix: '' } : fiscal) as any
-                }))
-            }
-        }
-    }
-
     // Initial Data Fetch
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- async data-loading on mount; setState happens after await, not synchronously
         loadDefaults()
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- async data-loading on mount
         loadUsers()
-        loadFiscalConfig()
-    }, [])
+        if (!initialFiscalConfig) {
+            const loadFiscalConfig = async () => {
+                const res = await getFieldConfigs()
+                if (res.success && res.data) {
+                    const fiscal = res.data.find((c: FieldConfig) => c.targetField === 'fiscal')
+                    if (fiscal) {
+                        setFiscalConfig((prev: FieldConfig) => ({
+                            ...prev,
+                            ...(fiscal.prefix === null ? { ...fiscal, prefix: '' } : fiscal),
+                            fieldName: fiscal.fieldName || 'January - December'
+                        }))
+                    }
+                }
+            }
+            loadFiscalConfig()
+        }
+    }, [initialFiscalConfig])
 
     const handleDefaultTypeChange = async (val: string) => {
         setDefaultType(val)
@@ -86,7 +107,7 @@ export function DefaultsTab() {
             typeToFetch = 'Location'
         }
 
-        const res = await getAdminData(typeToFetch as any)
+        const res = await getAdminData(typeToFetch as 'Vertical' | 'Horizontal' | 'Location')
         if (res.success) setDefaultOptions(res.data || [])
     }
 
@@ -120,7 +141,7 @@ export function DefaultsTab() {
                     loadDefaults()
                     addToast({ type: 'success', title: 'Deleted', message: 'Rule deleted' })
                 } else {
-                    addToast({ type: 'error', title: 'Error', message: res.message })
+                    addToast({ type: 'error', title: 'Error', message: res.message || 'Error' })
                 }
                 setConfirmConfig(prev => ({ ...prev, isOpen: false }))
             }
@@ -173,7 +194,7 @@ export function DefaultsTab() {
                         </div>
 
                         <div className="text-sm text-muted-foreground pb-2">
-                            Current Period: <span className="font-semibold text-foreground">
+                            Current Period: <span className="font-semibold text-foreground" suppressHydrationWarning>
                                 {(() => {
                                     const now = new Date()
                                     const year = now.getFullYear()

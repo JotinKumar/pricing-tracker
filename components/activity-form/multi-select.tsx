@@ -2,9 +2,10 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { Check, ChevronDown, X } from 'lucide-react'
+import { Location } from '@/types'
 
 interface MultiSelectProps {
-    options: any[]
+    options: Location[]
     selectedIds: number[]
     onChange: (ids: number[]) => void
     placeholder: string
@@ -33,7 +34,7 @@ export function MultiSelect({ options, selectedIds, onChange, placeholder, disab
         onChange(newSelected)
     }
 
-    const selectedOptions = options.filter((o: any) => selectedIds.includes(o.id))
+    const selectedOptions = options.filter((o) => selectedIds.includes(o.id))
 
     return (
         <div className="relative" ref={containerRef}>
@@ -42,7 +43,7 @@ export function MultiSelect({ options, selectedIds, onChange, placeholder, disab
                 onClick={() => !disabled && setIsOpen(!isOpen)}
             >
                 {selectedOptions.length === 0 && <span className="text-muted-foreground">{placeholder}</span>}
-                {selectedOptions.map((o: any) => (
+                {selectedOptions.map((o) => (
                     <span key={o.id} className="bg-primary/15 text-primary text-xs px-2 py-0.5 rounded-md flex items-center gap-1 font-medium">
                         {o.country} ({o.display})
                         {!disabled && (
@@ -64,7 +65,7 @@ export function MultiSelect({ options, selectedIds, onChange, placeholder, disab
 
             {isOpen && !disabled && (
                 <div className="absolute z-10 w-full mt-1 max-h-60 overflow-auto rounded-md border border-border bg-popover shadow-lg">
-                    {options.map((option: any) => {
+                    {options.map((option) => {
                         const isSelected = selectedIds.includes(option.id)
                         return (
                             <div

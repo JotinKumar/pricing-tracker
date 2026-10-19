@@ -3,20 +3,21 @@
 import { useState } from 'react'
 import { login } from '@/lib/actions/auth'
 import { useRouter } from 'next/navigation'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 export default function LoginPage() {
     const router = useRouter()
-    const [userId, setUserId] = useState<string>('')
+    const [email, setEmail] = useState<string>('')
     const [error, setError] = useState('')
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault()
         setError('')
         try {
-            const result = await login(userId) // userId here is effectively email
+            const result = await login(email)
             if (result.success) {
                 router.push('/dashboard')
             } else {
@@ -28,37 +29,42 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="flex h-screen items-center justify-center bg-background transition-colors duration-300">
-            <Card className="w-full max-w-md">
-                <CardHeader>
-                    <div className="flex justify-center mb-4">
-                        <img src="/logo.png" alt="Logo" className="h-12 w-12 object-contain" />
+        <div className="flex min-h-screen items-center justify-center bg-background px-4">
+            <Card className="w-full max-w-sm border-border shadow-sm">
+                <CardHeader className="space-y-3 text-center">
+                    <div className="mx-auto flex items-center justify-center w-11 h-11 rounded-lg border border-border bg-background overflow-hidden p-1">
+                        <img src="/logo.png" alt="Pricing Tracker" className="h-full w-full object-contain" />
                     </div>
-                    <CardTitle className="text-center text-2xl font-bold">
-                        <span style={{ color: '#0D47A1' }}>Pricing</span><span style={{ color: '#E91E63' }}>Tracker</span>
-                    </CardTitle>
+                    <div className="space-y-1">
+                        <h1 className="text-xl font-semibold tracking-tight text-foreground">
+                            <span className="text-primary">Pricing</span>Tracker
+                        </h1>
+                        <p className="text-xs text-muted-foreground">Sign in to manage your pricing activities</p>
+                    </div>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="space-y-4">
                     <form onSubmit={handleLogin} className="space-y-4">
                         <div className="space-y-2">
-                            <label htmlFor="email" className="text-sm font-medium text-muted-foreground">Email Address</label>
+                            <Label htmlFor="email" className="text-xs text-muted-foreground">Email Address</Label>
                             <Input
-                                type="text"
+                                type="email"
                                 id="email"
-                                value={userId}
-                                onChange={(e) => setUserId(e.target.value)}
-                                placeholder="e.g., admin@example.com"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="you@example.com"
                                 required
+                                autoComplete="email"
+                                className="h-10"
                             />
                         </div>
                         {error && <p className="text-sm text-destructive">{error}</p>}
-                        <Button type="submit" className="w-full font-bold">
-                            Login
+                        <Button type="submit" className="w-full h-10 font-medium">
+                            Sign in
                         </Button>
                     </form>
-                    <div className="mt-6 text-xs text-muted-foreground">
-                        <p className="font-semibold mb-1">Demo Users:</p>
-                        <ul className="list-disc pl-4 space-y-0.5">
+                    <div className="rounded-md border border-border bg-muted/40 p-3">
+                        <p className="text-[11px] font-medium text-muted-foreground mb-1.5">Demo accounts</p>
+                        <ul className="text-[11px] text-muted-foreground space-y-0.5 font-mono">
                             <li>admin@example.com</li>
                             <li>manager@example.com</li>
                         </ul>

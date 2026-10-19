@@ -10,8 +10,8 @@ interface FilterTriggerProps {
 
 export function FilterTrigger({ label, isActive, hasValue }: FilterTriggerProps) {
     return (
-        <div className={`flex items-center gap-1.5 cursor-pointer hover:bg-muted/50 rounded px-1 active:bg-muted ${isActive ? 'bg-muted/50' : ''}`}>
-            <span>{label}</span>
+        <div className={`flex items-center gap-1.5 cursor-pointer hover:bg-muted/50 rounded px-1 active:bg-muted whitespace-nowrap ${isActive ? 'bg-muted/50' : ''}`}>
+            <span className="whitespace-nowrap">{label}</span>
             <button
                 className={`transition-colors ${isActive || hasValue ? 'text-primary' : 'text-muted-foreground/50 hover:text-foreground'}`}
             >

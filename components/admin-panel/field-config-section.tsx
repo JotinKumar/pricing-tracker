@@ -43,7 +43,7 @@ export function FieldConfigSection() {
         const res = await getFieldConfigs()
         if (res.success && res.data) {
             const nextConfigs = { ...configs }
-            res.data.forEach((cfg: any) => {
+            res.data.forEach((cfg) => {
                 nextConfigs[cfg.targetField] = {
                     targetField: cfg.targetField,
                     fieldName: cfg.fieldName,
@@ -59,7 +59,8 @@ export function FieldConfigSection() {
         setLoading(false)
     }
 
-    const handleChange = (target: string, field: keyof FieldConfig, value: any) => {
+    const handleChange = (target: string, field: keyof FieldConfig, value: string | boolean) => {
+        // eslint-disable-next-line react-hooks/immutability -- standard functional updater reading prev; no mutation
         setConfigs(prev => ({
             ...prev,
             [target]: { ...prev[target], [field]: value }

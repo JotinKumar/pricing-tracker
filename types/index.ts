@@ -6,6 +6,3 @@ export * from './forms'
 
 // Re-export all API types
 export * from './api'
-
-// Re-export all shared types
-export * from './shared'

@@ -3,6 +3,15 @@ import { UseFormReturn } from 'react-hook-form'
 import { getApplicableDefaults } from '@/lib/actions/defaults'
 import { ActivityFormValues } from '@/lib/schemas'
 
+interface ApplicableUser {
+    id: number
+    name: string | null
+    email: string
+    initials?: string | null
+    manager?: { id: number; name: string | null }
+    teams?: { id: number; teamname: string }[]
+}
+
 interface UseActivityAutoAssignmentProps {
     form: UseFormReturn<ActivityFormValues>
     verticalId: string | undefined
@@ -33,16 +42,17 @@ export function useActivityAutoAssignment({
             })
 
             if (res.success && res.data) {
+                const users = res.data as ApplicableUser[]
                 // Update locked IDs based on current selection
-                const newLockedIds = res.data.map((u: any) => u.id)
+                const newLockedIds = users.map((u) => u.id)
                 setLockedUserIds(newLockedIds)
 
-                if (res.data.length > 0) {
+                if (users.length > 0) {
                     const currentMembers = form.getValues('teamMembers') || []
                     const newMembers = [...currentMembers]
                     let changed = false
 
-                    res.data.forEach((user: any) => {
+                    users.forEach((user) => {
                         // Check if user is already present (prevent duplicates)
                         const exists = newMembers.some(m => Number(m.userId) === Number(user.id))
 
@@ -53,7 +63,8 @@ export function useActivityAutoAssignment({
                             if (defaultTeamId) {
                                 newMembers.push({
                                     teamId: defaultTeamId,
-                                    userId: user.id
+                                    userId: user.id,
+                                    isAutoAdded: true
                                 })
                                 changed = true
                             }

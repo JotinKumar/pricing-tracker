@@ -2,8 +2,14 @@
 
 import prisma from '@/lib/db'
 import { revalidatePath } from 'next/cache'
+import { Prisma } from '@prisma/client'
+import { User } from '@/types'
+import { getSession } from './auth'
 
 export async function getDefaults(type?: string) {
+    const session = await getSession()
+    if (!session) return { success: false, message: 'Unauthorized' }
+
     try {
         const where = type ? { type } : {}
         const assignments = await prisma.defaultAssignment.findMany({
@@ -29,7 +35,7 @@ export async function getDefaults(type?: string) {
         const horizontalIds: number[] = []
         const locationIds: number[] = []
 
-        assignments.forEach((a: any) => {
+        assignments.forEach(a => {
             if (a.referenceId) {
                 if (a.type === 'Vertical') verticalIds.push(a.referenceId)
                 else if (a.type === 'Horizontal') horizontalIds.push(a.referenceId)
@@ -43,7 +49,7 @@ export async function getDefaults(type?: string) {
         const locations = locationIds.length ? await prisma.location.findMany({ where: { id: { in: locationIds } }, select: { id: true, country: true } }) : []
 
         // Map names back
-        const data = assignments.map((a: any) => {
+        const data = assignments.map(a => {
             let referenceName = ''
             if (a.referenceId) {
                 if (a.type === 'Vertical') referenceName = verticals.find(v => v.id === a.referenceId)?.vertical || ''
@@ -57,12 +63,17 @@ export async function getDefaults(type?: string) {
         })
 
         return { success: true, data }
-    } catch (error: any) {
-        return { success: false, message: error.message }
+    } catch (error: unknown) {
+        return { success: false, message: 'Failed to fetch defaults' }
     }
 }
 
 export async function saveDefault(data: { type: string, referenceId: string | null, userId: number }) {
+    const session = await getSession()
+    if (!session || session.role !== 'ADMIN') {
+        return { success: false, message: 'Unauthorized' }
+    }
+
     try {
         const referenceIdInt = data.referenceId ? parseInt(String(data.referenceId)) : null
 
@@ -76,7 +87,7 @@ export async function saveDefault(data: { type: string, referenceId: string | nu
                     // Let's rely on findFirst to be safe if unique fails or just try create.
                     // But actually, simpler to just allow create and catch error if duplicate.
                     userId: data.userId
-                } as any // Casting because Prisma types might need generation for the compound key input
+                }
             }
         })
 
@@ -96,23 +107,29 @@ export async function saveDefault(data: { type: string, referenceId: string | nu
 
         revalidatePath('/dashboard/admin')
         return { success: true, data: result }
-    } catch (error: any) {
-        if (error.code === 'P2002') {
+    } catch (error: unknown) {
+        const prismaError = error as { code?: string }
+        if (prismaError.code === 'P2002') {
             return { success: false, message: 'This default rule already exists.' }
         }
-        return { success: false, message: error.message }
+        return { success: false, message: 'Failed to save default' }
     }
 }
 
 export async function deleteDefault(id: number) {
+    const session = await getSession()
+    if (!session || session.role !== 'ADMIN') {
+        return { success: false, message: 'Unauthorized' }
+    }
+
     try {
         await prisma.defaultAssignment.delete({
             where: { id }
         })
         revalidatePath('/dashboard/admin')
         return { success: true }
-    } catch (error: any) {
-        return { success: false, message: error.message }
+    } catch {
+        return { success: false, message: 'Failed to delete default' }
     }
 }
 
@@ -125,10 +142,13 @@ export async function getApplicableDefaults(params: {
     clientLocationIds?: string[]
     deliveryLocationIds?: string[]
 }) {
+    const session = await getSession()
+    if (!session) return { success: false, message: 'Unauthorized' }
+
     try {
         const { verticalId, horizontalId, clientLocationIds, deliveryLocationIds } = params
 
-        const conditions: any[] = []
+        const conditions: Prisma.DefaultAssignmentWhereInput[] = []
 
         // Vertical Rules
         if (verticalId) {
@@ -197,16 +217,16 @@ export async function getApplicableDefaults(params: {
         })
 
         // Deduplicate users
-        const uniqueUsers = new Map()
-        defaults.forEach((d: any) => {
+        const uniqueUsers = new Map<number, User>()
+        defaults.forEach(d => {
             if (!uniqueUsers.has(d.userId)) {
-                uniqueUsers.set(d.userId, d.user)
+                uniqueUsers.set(d.userId, d.user as User)
             }
         })
 
         return { success: true, data: Array.from(uniqueUsers.values()) }
 
-    } catch (error: any) {
-        return { success: false, message: error.message }
+    } catch {
+        return { success: false, message: 'Failed to fetch applicable defaults' }
     }
 }

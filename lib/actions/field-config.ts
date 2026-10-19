@@ -2,8 +2,13 @@
 
 import prisma from '@/lib/db'
 import { revalidatePath } from 'next/cache'
+import { getSession } from './auth'
+import type { FieldConfig } from '@/types'
 
 export async function getFieldConfigs() {
+    const session = await getSession()
+    if (!session) return { success: false, message: 'Unauthorized' }
+
     try {
         const configs = await prisma.fieldConfig.findMany()
         return { success: true, data: configs }
@@ -13,34 +18,31 @@ export async function getFieldConfigs() {
     }
 }
 
-export async function saveFieldConfig(data: {
-    targetField: string
-    fieldName: string
-    fieldType: string
-    hasPrefix: boolean
-    prefix?: string
-    isActive: boolean
-    displayOnDashboard: boolean
-}) {
+export async function saveFieldConfig(data: FieldConfig) {
+    const session = await getSession()
+    if (!session || session.role !== 'ADMIN') {
+        return { success: false, message: 'Unauthorized' }
+    }
+
     try {
         const config = await prisma.fieldConfig.upsert({
-            where: { targetField: data.targetField },
+            where: { targetField: data.targetField ?? '' },
             update: {
                 fieldName: data.fieldName,
-                fieldType: data.fieldType,
-                hasPrefix: data.hasPrefix,
-                prefix: data.prefix,
-                isActive: data.isActive,
-                displayOnDashboard: data.displayOnDashboard
+                fieldType: data.fieldType ?? 'STRING',
+                hasPrefix: data.hasPrefix ?? false,
+                prefix: data.prefix ?? null,
+                isActive: data.isActive ?? true,
+                displayOnDashboard: data.displayOnDashboard ?? true
             },
             create: {
-                targetField: data.targetField,
+                targetField: data.targetField ?? '',
                 fieldName: data.fieldName,
-                fieldType: data.fieldType,
-                hasPrefix: data.hasPrefix,
-                prefix: data.prefix,
-                isActive: data.isActive,
-                displayOnDashboard: data.displayOnDashboard
+                fieldType: data.fieldType ?? 'STRING',
+                hasPrefix: data.hasPrefix ?? false,
+                prefix: data.prefix ?? null,
+                isActive: data.isActive ?? true,
+                displayOnDashboard: data.displayOnDashboard ?? true
             }
         })
         revalidatePath('/dashboard/admin')

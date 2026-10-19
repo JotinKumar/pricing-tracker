@@ -2,20 +2,17 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { submitActivity, getActivities } from '@/lib/actions/activity'
-import dynamic from 'next/dynamic'
+import { submitActivity } from '@/lib/actions/activity'
 import { toast } from "sonner"
 
 import { DashboardControls } from './dashboard/dashboard-controls'
 import { ActivityTable } from './dashboard/activity-table'
 import { useActivityGrouping } from '@/hooks/use-activity-grouping'
-import { LookupItem, Lookups, PricingActivity, UserSession } from '@/types'
+import { LookupItem, Lookups, PricingActivity, UserSession, FieldConfig, DashboardFacets } from '@/types'
 import { getDateColor, getFirstName } from '@/lib/utils'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { StorageModal } from './dashboard/storage-modal'
 import { CommentsModal } from './dashboard/comments-modal'
-
-const ActivityForm = dynamic(() => import('@/components/activity-form'), { ssr: false })
 
 interface DashboardClientProps {
   session: UserSession
@@ -30,9 +27,12 @@ interface DashboardClientProps {
   acvRange: {
     minAcv: number
     maxAcv: number
+    minDate: Date | null
+    maxDate: Date | null
   }
+  facets: DashboardFacets
   config: {
-    global: any[]
+    global: FieldConfig[]
     user: {
       currency?: string | null
       dateFormat?: string | null
@@ -42,28 +42,22 @@ interface DashboardClientProps {
   }
 }
 
-export default function DashboardClient({ session, initialActivities, lookups, pagination, config, acvRange }: DashboardClientProps) {
+export default function DashboardClient({ session, initialActivities, lookups, pagination, config, acvRange, facets }: DashboardClientProps) {
   const isReadOnly = session.role === 'READ_ONLY';
   const router = useRouter()
   const searchParams = useSearchParams()
 
   const [activities, setActivities] = useState<PricingActivity[]>(initialActivities)
-  const [page, setPage] = useState(1)
-  const [hasMore, setHasMore] = useState(pagination.totalPages > 1)
-  const [isLoadingMore, setIsLoadingMore] = useState(false)
+  const [showAutoAdded, setShowAutoAdded] = useState(false)
 
-  const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedActivity, setSelectedActivity] = useState<PricingActivity | null>(null)
   const [isStorageModalOpen, setIsStorageModalOpen] = useState(false)
 
-  const [isMounted, setIsMounted] = useState(false)
-
-  // Sync activities when initialActivities change (due to top-level filter change)
+  // Sync activities when initialActivities change (filter/page change on the server)
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sync server-rendered prop into local state on prop change
     setActivities(initialActivities)
-    setPage(1)
-    setHasMore(pagination.totalPages > 1)
-  }, [initialActivities, pagination.totalPages])
+  }, [initialActivities])
 
   // URL State management
   const search = searchParams.get('search') || ''
@@ -102,29 +96,24 @@ export default function DashboardClient({ session, initialActivities, lookups, p
     updateUrl({ [field]: value })
   }
 
-  const loadMore = useCallback(async () => {
-    if (isLoadingMore || !hasMore) return
+  const hasActiveFilters = Object.keys(filters).length > 0 || !!search
 
-    setIsLoadingMore(true)
-    const nextPage = page + 1
+  const clearAllFilters = () => {
+    const cleared: Record<string, string | null> = {}
+    Object.keys(filters).forEach((key) => { cleared[key] = null })
+    cleared.search = null
+    updateUrl(cleared)
+  }
 
-    const result = await getActivities({
-      page: nextPage,
-      limit: pagination.limit, // Keep consistent limit
-      search,
-      viewMode,
-      filters
-    })
-
-    if (result.success && result.data) {
-      setActivities(prev => [...prev, ...result.data])
-      setPage(nextPage)
-      setHasMore(nextPage < result.metadata.totalPages)
-    } else {
-      setHasMore(false)
-    }
-    setIsLoadingMore(false)
-  }, [page, hasMore, isLoadingMore, pagination.limit, search, viewMode, filters])
+  // Size the page to the viewport: the table reports how many rows fit and we
+  // set that as the server-side limit so the table never needs to scroll.
+  const setPageSize = useCallback((rows: number) => {
+    if (rows < 1 || rows === pagination.limit) return
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('limit', String(rows))
+    params.delete('page')
+    router.replace(`?${params.toString()}`)
+  }, [pagination.limit, searchParams, router])
 
 
   const {
@@ -135,10 +124,7 @@ export default function DashboardClient({ session, initialActivities, lookups, p
   } = useActivityGrouping(activities)
 
 
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
-
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- async event handler; setState runs after await, not in an effect
   const handleInlineUpdate = async (activity: PricingActivity, field: string, value: string) => {
     const intValue = parseInt(value)
 
@@ -155,8 +141,8 @@ export default function DashboardClient({ session, initialActivities, lookups, p
 
     const flatPayload = {
       id: activity.id,
-      id1: (activity as any).id1 || (activity as any).salesForceId || '',
-      id2: (activity as any).id2 || (activity as any).dsrNumber || '',
+      id1: activity.id1 || '',
+      id2: activity.id2 || '',
       clientName: activity.clientName,
       projectName: activity.projectName,
       verticalId: String(activity.verticalId),
@@ -165,10 +151,10 @@ export default function DashboardClient({ session, initialActivities, lookups, p
       dueDate: activity.dueDate, // Date object
       clientLocationIds: activity.clientLocations?.map((l) => l.id) || [],
       deliveryLocationIds: activity.deliveryLocations?.map((l) => l.id) || [],
-      teamMembers: (activity as any).teamMembers?.map((tm: any) => ({
+      teamMembers: activity.teamMembers?.map((tm) => ({
         teamId: tm.teamId,
         userId: tm.userId
-      })) || [],
+      })) ?? [],
       assignDate: activity.assignDate, // Date object
       statusId: String(activity.statusId),
       categoryId: String(activity.categoryId),
@@ -192,8 +178,7 @@ export default function DashboardClient({ session, initialActivities, lookups, p
   }
 
   const handleEdit = (activity: PricingActivity) => {
-    setSelectedActivity(activity)
-    setIsModalOpen(true)
+    router.push(`/dashboard/activity/${activity.id}`)
   }
 
   const handleStorageOpen = (activity: PricingActivity) => {
@@ -202,8 +187,7 @@ export default function DashboardClient({ session, initialActivities, lookups, p
   }
 
   const handleCreate = () => {
-    setSelectedActivity(null)
-    setIsModalOpen(true)
+    router.push('/dashboard/activity/new')
   }
 
   const [isCommentsModalOpen, setIsCommentsModalOpen] = useState(false)
@@ -215,74 +199,54 @@ export default function DashboardClient({ session, initialActivities, lookups, p
 
   // ... (rest of the functions)
 
-  const handleSuccess = (newOrUpdatedActivity: PricingActivity) => {
-    setIsModalOpen(false)
-    router.refresh() // Reload data from server to reflect changes safely
-  }
-
   const filterRef = useRef(null)
 
   return (
-    <div className="min-h-screen font-sans text-foreground transition-colors duration-300">
-      <main className="mx-auto max-w-7xl p-6">
-        <div className="flex flex-col gap-4">
+    <div className="h-full overflow-hidden font-sans text-foreground transition-colors duration-300">
+      <main className="mx-auto flex h-full max-w-7xl flex-col gap-2 overflow-hidden px-6 pt-2 pb-3">
+        <DashboardControls
+          search={search}
+          setSearch={setSearch}
+          groupBy={groupBy}
+          setGroupBy={setGroupBy}
+          viewMode={viewMode}
+          setViewMode={setViewMode}
+          isReadOnly={isReadOnly}
+          handleCreate={handleCreate}
+          hasActiveFilters={hasActiveFilters}
+          clearAllFilters={clearAllFilters}
+          showAutoAdded={showAutoAdded}
+          setShowAutoAdded={setShowAutoAdded}
+        />
 
-
-
-          <DashboardControls
-            search={search}
-            setSearch={setSearch}
-            groupBy={groupBy}
-            setGroupBy={setGroupBy}
-            viewMode={viewMode}
-            setViewMode={setViewMode}
-            isReadOnly={isReadOnly}
-            handleCreate={handleCreate}
-          />
-
-          <ActivityTable
-            activities={activities} // For unique values filter gen (Note: this is only current page now)
-            groupedActivities={groupedActivities}
-            groupKeys={groupKeys}
-            expandedGroups={expandedGroups}
-            toggleGroup={toggleGroup}
-            lookups={lookups}
-            filters={filters}
-            activeFilter={activeFilterDropdown}
-            setActiveFilter={setActiveFilterDropdown}
-            handleFilterChange={handleFilterChange}
-            handleBulkFilterChange={updateUrl}
-            filterRef={filterRef}
-            groupBy={groupBy}
-            getDateColor={getDateColor}
-            getFirstName={getFirstName}
-            handleInlineUpdate={handleInlineUpdate}
-            handleEdit={handleEdit}
-            handleStorageOpen={handleStorageOpen}
-            handleCommentsOpen={handleCommentsOpen}
-            isReadOnly={isReadOnly}
-            config={config}
-            acvRange={acvRange}
-            loadMore={loadMore}
-            hasMore={hasMore}
-            isLoadingMore={isLoadingMore}
-          />
-
-        </div>
+        <ActivityTable
+          groupedActivities={groupedActivities}
+          groupKeys={groupKeys}
+          expandedGroups={expandedGroups}
+          toggleGroup={toggleGroup}
+          lookups={lookups}
+          filters={filters}
+          activeFilter={activeFilterDropdown}
+          setActiveFilter={setActiveFilterDropdown}
+          handleFilterChange={handleFilterChange}
+          handleBulkFilterChange={updateUrl}
+          filterRef={filterRef}
+          groupBy={groupBy}
+          getDateColor={getDateColor}
+          getFirstName={getFirstName}
+          handleInlineUpdate={handleInlineUpdate}
+          handleEdit={handleEdit}
+          handleStorageOpen={handleStorageOpen}
+          handleCommentsOpen={handleCommentsOpen}
+          isReadOnly={isReadOnly}
+          config={config}
+          acvRange={acvRange}
+          facets={facets}
+          pagination={pagination}
+          onCapacityChange={setPageSize}
+          showAutoAdded={showAutoAdded}
+        />
       </main>
-
-      {
-        isModalOpen && (
-          <ActivityForm
-            onClose={() => setIsModalOpen(false)}
-            activity={selectedActivity}
-            lookups={lookups}
-            session={session}
-            onSuccess={handleSuccess}
-            isEdit={!!selectedActivity}
-          />
-        )
-      }
 
       {
         isStorageModalOpen && selectedActivity && (

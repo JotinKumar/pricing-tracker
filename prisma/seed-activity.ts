@@ -14,33 +14,8 @@ export const activities = [
         "statusId": 5,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-24249",
-                "userId": 23,
-                "createdAt": "2026-01-21T07:49:42.875Z"
-            }
-        ],
         "outcomeId": 1,
         "userId": 23,
-        "teamMembers": [
-            {
-                "userId": 5,
-                "teamId": 2
-            },
-            {
-                "userId": 25,
-                "teamId": 4
-            },
-            {
-                "userId": 51,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 14
@@ -72,33 +47,8 @@ export const activities = [
         "statusId": 6,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-53885",
-                "userId": 26,
-                "createdAt": "2025-12-22T08:46:41.036Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 3,
         "userId": 8,
-        "teamMembers": [
-            {
-                "userId": 7,
-                "teamId": 2
-            },
-            {
-                "userId": 26,
-                "teamId": 4
-            },
-            {
-                "userId": 44,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 13
@@ -124,33 +74,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-29587",
-                "userId": 17,
-                "createdAt": "2026-01-16T09:20:17.361Z"
-            }
-        ],
         "outcomeId": 2,
         "userId": 17,
-        "teamMembers": [
-            {
-                "userId": 20,
-                "teamId": 2
-            },
-            {
-                "userId": 34,
-                "teamId": 4
-            },
-            {
-                "userId": 49,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 11
@@ -176,27 +101,8 @@ export const activities = [
         "statusId": 1,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [],
         "outcomeId": 1,
         "userId": 13,
-        "teamMembers": [
-            {
-                "userId": 9,
-                "teamId": 2
-            },
-            {
-                "userId": 28,
-                "teamId": 4
-            },
-            {
-                "userId": 42,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 10
@@ -222,33 +128,8 @@ export const activities = [
         "statusId": 6,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-96558",
-                "userId": 58,
-                "createdAt": "2025-12-22T01:19:07.220Z"
-            }
-        ],
         "outcomeId": 3,
         "userId": 18,
-        "teamMembers": [
-            {
-                "userId": 21,
-                "teamId": 2
-            },
-            {
-                "userId": 31,
-                "teamId": 4
-            },
-            {
-                "userId": 43,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 7
@@ -274,33 +155,8 @@ export const activities = [
         "statusId": 2,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-91495",
-                "userId": 5,
-                "createdAt": "2025-12-01T15:52:07.479Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 2,
         "userId": 14,
-        "teamMembers": [
-            {
-                "userId": 5,
-                "teamId": 2
-            },
-            {
-                "userId": 29,
-                "teamId": 4
-            },
-            {
-                "userId": 39,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 6
@@ -329,27 +185,8 @@ export const activities = [
         "statusId": 5,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 3,
         "userId": 7,
-        "teamMembers": [
-            {
-                "userId": 19,
-                "teamId": 2
-            },
-            {
-                "userId": 31,
-                "teamId": 4
-            },
-            {
-                "userId": 45,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 8
@@ -367,7 +204,7 @@ export const activities = [
     {
         "id": 8,
         "id1": "41800",
-        "id2": null,
+        "id2": "",
         "clientName": "Initech",
         "projectName": "Initech Project 30",
         "verticalId": 6,
@@ -378,33 +215,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-41800",
-                "userId": 31,
-                "createdAt": "2026-01-10T23:56:29.933Z"
-            }
-        ],
         "outcomeId": 3,
         "userId": 15,
-        "teamMembers": [
-            {
-                "userId": 23,
-                "teamId": 2
-            },
-            {
-                "userId": 31,
-                "teamId": 4
-            },
-            {
-                "userId": 53,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 14
@@ -430,27 +242,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [],
         "outcomeId": 2,
         "userId": 17,
-        "teamMembers": [
-            {
-                "userId": 12,
-                "teamId": 2
-            },
-            {
-                "userId": 32,
-                "teamId": 4
-            },
-            {
-                "userId": 46,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 10
@@ -471,7 +264,7 @@ export const activities = [
     {
         "id": 10,
         "id1": "14874",
-        "id2": null,
+        "id2": "",
         "clientName": "Stark Ind",
         "projectName": "Stark Ind Project 8",
         "verticalId": 11,
@@ -482,27 +275,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [],
         "outcomeId": 1,
         "userId": 15,
-        "teamMembers": [
-            {
-                "userId": 16,
-                "teamId": 2
-            },
-            {
-                "userId": 33,
-                "teamId": 4
-            },
-            {
-                "userId": 53,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 13
@@ -531,33 +305,8 @@ export const activities = [
         "statusId": 2,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-22671",
-                "userId": 40,
-                "createdAt": "2026-01-02T08:25:21.521Z"
-            }
-        ],
         "outcomeId": 2,
         "userId": 12,
-        "teamMembers": [
-            {
-                "userId": 16,
-                "teamId": 2
-            },
-            {
-                "userId": 32,
-                "teamId": 4
-            },
-            {
-                "userId": 40,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 17
@@ -578,7 +327,7 @@ export const activities = [
     {
         "id": 12,
         "id1": "95286",
-        "id2": null,
+        "id2": "",
         "clientName": "Wayne Ent",
         "projectName": "Wayne Ent Project 77",
         "verticalId": 10,
@@ -589,38 +338,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-95286",
-                "userId": 50,
-                "createdAt": "2025-12-25T15:26:55.654Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-95286",
-                "userId": 8,
-                "createdAt": "2026-01-05T06:21:23.374Z"
-            }
-        ],
         "outcomeId": 3,
         "userId": 16,
-        "teamMembers": [
-            {
-                "userId": 8,
-                "teamId": 2
-            },
-            {
-                "userId": 34,
-                "teamId": 4
-            },
-            {
-                "userId": 50,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 5
@@ -652,27 +371,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [],
         "outcomeId": 3,
         "userId": 17,
-        "teamMembers": [
-            {
-                "userId": 18,
-                "teamId": 2
-            },
-            {
-                "userId": 37,
-                "teamId": 4
-            },
-            {
-                "userId": 50,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 1
@@ -690,7 +390,7 @@ export const activities = [
     {
         "id": 14,
         "id1": "51587",
-        "id2": null,
+        "id2": "",
         "clientName": "Stark Ind",
         "projectName": "Stark Ind Project 64",
         "verticalId": 11,
@@ -701,27 +401,8 @@ export const activities = [
         "statusId": 2,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 3,
         "userId": 24,
-        "teamMembers": [
-            {
-                "userId": 16,
-                "teamId": 2
-            },
-            {
-                "userId": 37,
-                "teamId": 4
-            },
-            {
-                "userId": 42,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 10
@@ -753,33 +434,8 @@ export const activities = [
         "statusId": 2,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-79689",
-                "userId": 9,
-                "createdAt": "2025-12-21T11:02:09.708Z"
-            }
-        ],
         "outcomeId": 2,
         "userId": 9,
-        "teamMembers": [
-            {
-                "userId": 21,
-                "teamId": 2
-            },
-            {
-                "userId": 38,
-                "teamId": 4
-            },
-            {
-                "userId": 46,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 16
@@ -797,7 +453,7 @@ export const activities = [
     {
         "id": 16,
         "id1": "75995",
-        "id2": null,
+        "id2": "",
         "clientName": "Umbrella Corp",
         "projectName": "Umbrella Corp Project 36",
         "verticalId": 5,
@@ -808,27 +464,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 1,
         "userId": 10,
-        "teamMembers": [
-            {
-                "userId": 19,
-                "teamId": 2
-            },
-            {
-                "userId": 26,
-                "teamId": 4
-            },
-            {
-                "userId": 43,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 15
@@ -854,33 +491,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-21430",
-                "userId": 54,
-                "createdAt": "2026-01-21T07:49:42.877Z"
-            }
-        ],
         "outcomeId": 2,
         "userId": 6,
-        "teamMembers": [
-            {
-                "userId": 13,
-                "teamId": 2
-            },
-            {
-                "userId": 26,
-                "teamId": 4
-            },
-            {
-                "userId": 50,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 3
@@ -895,7 +507,7 @@ export const activities = [
     {
         "id": 18,
         "id1": "84403",
-        "id2": null,
+        "id2": "",
         "clientName": "Acme Corp",
         "projectName": "Acme Corp Project 11",
         "verticalId": 5,
@@ -906,38 +518,8 @@ export const activities = [
         "statusId": 2,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-84403",
-                "userId": 46,
-                "createdAt": "2026-01-21T07:49:42.877Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-84403",
-                "userId": 10,
-                "createdAt": "2026-01-21T07:49:42.877Z"
-            }
-        ],
         "outcomeId": 1,
         "userId": 5,
-        "teamMembers": [
-            {
-                "userId": 10,
-                "teamId": 2
-            },
-            {
-                "userId": 37,
-                "teamId": 4
-            },
-            {
-                "userId": 46,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 14
@@ -966,27 +548,8 @@ export const activities = [
         "statusId": 5,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 2,
         "userId": 11,
-        "teamMembers": [
-            {
-                "userId": 24,
-                "teamId": 2
-            },
-            {
-                "userId": 38,
-                "teamId": 4
-            },
-            {
-                "userId": 45,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 13
@@ -1001,7 +564,7 @@ export const activities = [
     {
         "id": 20,
         "id1": "76573",
-        "id2": null,
+        "id2": "",
         "clientName": "Soylent Corp",
         "projectName": "Soylent Corp Project 94",
         "verticalId": 10,
@@ -1012,38 +575,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-76573",
-                "userId": 44,
-                "createdAt": "2026-01-10T21:34:45.891Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-76573",
-                "userId": 21,
-                "createdAt": "2026-01-10T23:11:08.954Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 5,
         "userId": 21,
-        "teamMembers": [
-            {
-                "userId": 14,
-                "teamId": 2
-            },
-            {
-                "userId": 29,
-                "teamId": 4
-            },
-            {
-                "userId": 44,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 13
@@ -1064,7 +597,7 @@ export const activities = [
     {
         "id": 21,
         "id1": "73153",
-        "id2": null,
+        "id2": "",
         "clientName": "Globex",
         "projectName": "Globex Project 31",
         "verticalId": 2,
@@ -1075,38 +608,8 @@ export const activities = [
         "statusId": 6,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-73153",
-                "userId": 29,
-                "createdAt": "2025-12-10T21:09:35.477Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-73153",
-                "userId": 59,
-                "createdAt": "2025-11-23T17:49:48.552Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 4,
         "userId": 17,
-        "teamMembers": [
-            {
-                "userId": 13,
-                "teamId": 2
-            },
-            {
-                "userId": 29,
-                "teamId": 4
-            },
-            {
-                "userId": 46,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 15
@@ -1135,27 +638,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [],
         "outcomeId": 1,
         "userId": 5,
-        "teamMembers": [
-            {
-                "userId": 16,
-                "teamId": 2
-            },
-            {
-                "userId": 38,
-                "teamId": 4
-            },
-            {
-                "userId": 41,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 5
@@ -1184,27 +668,8 @@ export const activities = [
         "statusId": 2,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [],
         "outcomeId": 2,
         "userId": 9,
-        "teamMembers": [
-            {
-                "userId": 11,
-                "teamId": 2
-            },
-            {
-                "userId": 26,
-                "teamId": 4
-            },
-            {
-                "userId": 52,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 18
@@ -1222,7 +687,7 @@ export const activities = [
     {
         "id": 24,
         "id1": "89064",
-        "id2": null,
+        "id2": "",
         "clientName": "Initech",
         "projectName": "Initech Project 73",
         "verticalId": 5,
@@ -1233,38 +698,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 1,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-89064",
-                "userId": 5,
-                "createdAt": "2025-12-08T15:34:04.939Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-89064",
-                "userId": 49,
-                "createdAt": "2025-12-04T19:55:16.808Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 3,
         "userId": 9,
-        "teamMembers": [
-            {
-                "userId": 5,
-                "teamId": 2
-            },
-            {
-                "userId": 35,
-                "teamId": 4
-            },
-            {
-                "userId": 49,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 10
@@ -1290,38 +725,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-15004",
-                "userId": 56,
-                "createdAt": "2026-01-21T07:49:42.877Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-15004",
-                "userId": 11,
-                "createdAt": "2026-01-17T23:39:01.987Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 5,
         "userId": 13,
-        "teamMembers": [
-            {
-                "userId": 11,
-                "teamId": 2
-            },
-            {
-                "userId": 29,
-                "teamId": 4
-            },
-            {
-                "userId": 43,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 18
@@ -1353,33 +758,8 @@ export const activities = [
         "statusId": 6,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-78032",
-                "userId": 5,
-                "createdAt": "2026-01-15T14:08:05.697Z"
-            }
-        ],
         "outcomeId": 3,
         "userId": 5,
-        "teamMembers": [
-            {
-                "userId": 7,
-                "teamId": 2
-            },
-            {
-                "userId": 37,
-                "teamId": 4
-            },
-            {
-                "userId": 40,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 5
@@ -1405,27 +785,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [],
         "outcomeId": 2,
         "userId": 13,
-        "teamMembers": [
-            {
-                "userId": 16,
-                "teamId": 2
-            },
-            {
-                "userId": 29,
-                "teamId": 4
-            },
-            {
-                "userId": 44,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 7
@@ -1454,33 +815,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-79732",
-                "userId": 19,
-                "createdAt": "2025-12-11T19:34:32.616Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 4,
         "userId": 13,
-        "teamMembers": [
-            {
-                "userId": 19,
-                "teamId": 2
-            },
-            {
-                "userId": 38,
-                "teamId": 4
-            },
-            {
-                "userId": 46,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 15
@@ -1512,38 +848,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-20670",
-                "userId": 57,
-                "createdAt": "2025-12-08T23:04:37.355Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-20670",
-                "userId": 57,
-                "createdAt": "2025-11-29T03:07:50.379Z"
-            }
-        ],
         "outcomeId": 2,
         "userId": 23,
-        "teamMembers": [
-            {
-                "userId": 10,
-                "teamId": 2
-            },
-            {
-                "userId": 28,
-                "teamId": 4
-            },
-            {
-                "userId": 43,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 12
@@ -1572,33 +878,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-25524",
-                "userId": 52,
-                "createdAt": "2026-01-05T01:59:25.166Z"
-            }
-        ],
         "outcomeId": 2,
         "userId": 23,
-        "teamMembers": [
-            {
-                "userId": 21,
-                "teamId": 2
-            },
-            {
-                "userId": 34,
-                "teamId": 4
-            },
-            {
-                "userId": 52,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 15
@@ -1619,7 +900,7 @@ export const activities = [
     {
         "id": 31,
         "id1": "45127",
-        "id2": null,
+        "id2": "",
         "clientName": "Wayne Ent",
         "projectName": "Wayne Ent Project 75",
         "verticalId": 2,
@@ -1630,38 +911,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-45127",
-                "userId": 50,
-                "createdAt": "2026-01-04T06:20:43.657Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-45127",
-                "userId": 57,
-                "createdAt": "2026-01-08T03:04:39.321Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 2,
         "userId": 6,
-        "teamMembers": [
-            {
-                "userId": 24,
-                "teamId": 2
-            },
-            {
-                "userId": 27,
-                "teamId": 4
-            },
-            {
-                "userId": 50,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 5
@@ -1687,33 +938,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-38291",
-                "userId": 12,
-                "createdAt": "2026-01-04T07:27:16.277Z"
-            }
-        ],
         "outcomeId": 3,
         "userId": 24,
-        "teamMembers": [
-            {
-                "userId": 12,
-                "teamId": 2
-            },
-            {
-                "userId": 37,
-                "teamId": 4
-            },
-            {
-                "userId": 42,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 12
@@ -1739,38 +965,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-19733",
-                "userId": 58,
-                "createdAt": "2026-01-20T10:13:32.290Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-19733",
-                "userId": 19,
-                "createdAt": "2026-01-21T07:49:42.877Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 4,
         "userId": 19,
-        "teamMembers": [
-            {
-                "userId": 19,
-                "teamId": 2
-            },
-            {
-                "userId": 30,
-                "teamId": 4
-            },
-            {
-                "userId": 44,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 4
@@ -1799,33 +995,8 @@ export const activities = [
         "statusId": 2,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-69420",
-                "userId": 38,
-                "createdAt": "2026-01-03T22:12:33.917Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 2,
         "userId": 8,
-        "teamMembers": [
-            {
-                "userId": 10,
-                "teamId": 2
-            },
-            {
-                "userId": 38,
-                "teamId": 4
-            },
-            {
-                "userId": 45,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 2
@@ -1854,33 +1025,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-42083",
-                "userId": 51,
-                "createdAt": "2025-12-03T18:24:04.708Z"
-            }
-        ],
         "outcomeId": 1,
         "userId": 8,
-        "teamMembers": [
-            {
-                "userId": 15,
-                "teamId": 2
-            },
-            {
-                "userId": 35,
-                "teamId": 4
-            },
-            {
-                "userId": 51,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 6
@@ -1909,33 +1055,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-35330",
-                "userId": 15,
-                "createdAt": "2026-01-08T21:32:55.347Z"
-            }
-        ],
         "outcomeId": 1,
         "userId": 15,
-        "teamMembers": [
-            {
-                "userId": 17,
-                "teamId": 2
-            },
-            {
-                "userId": 25,
-                "teamId": 4
-            },
-            {
-                "userId": 51,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 18
@@ -1964,33 +1085,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-52337",
-                "userId": 42,
-                "createdAt": "2025-12-09T17:23:13.830Z"
-            }
-        ],
         "outcomeId": 3,
         "userId": 12,
-        "teamMembers": [
-            {
-                "userId": 20,
-                "teamId": 2
-            },
-            {
-                "userId": 38,
-                "teamId": 4
-            },
-            {
-                "userId": 42,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 9
@@ -2022,27 +1118,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [],
         "outcomeId": 2,
         "userId": 9,
-        "teamMembers": [
-            {
-                "userId": 22,
-                "teamId": 2
-            },
-            {
-                "userId": 37,
-                "teamId": 4
-            },
-            {
-                "userId": 41,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 6
@@ -2057,7 +1134,7 @@ export const activities = [
     {
         "id": 39,
         "id1": "77080",
-        "id2": null,
+        "id2": "",
         "clientName": "Wayne Ent",
         "projectName": "Wayne Ent Project 20",
         "verticalId": 11,
@@ -2068,27 +1145,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 1,
         "versionId": 1,
-        "comments": [],
         "outcomeId": 1,
         "userId": 8,
-        "teamMembers": [
-            {
-                "userId": 24,
-                "teamId": 2
-            },
-            {
-                "userId": 33,
-                "teamId": 4
-            },
-            {
-                "userId": 40,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 1
@@ -2103,7 +1161,7 @@ export const activities = [
     {
         "id": 40,
         "id1": "79859",
-        "id2": null,
+        "id2": "",
         "clientName": "Soylent Corp",
         "projectName": "Soylent Corp Project 67",
         "verticalId": 2,
@@ -2114,38 +1172,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-79859",
-                "userId": 21,
-                "createdAt": "2025-12-30T17:34:23.692Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-79859",
-                "userId": 38,
-                "createdAt": "2025-12-25T07:54:49.564Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 1,
         "userId": 15,
-        "teamMembers": [
-            {
-                "userId": 21,
-                "teamId": 2
-            },
-            {
-                "userId": 38,
-                "teamId": 4
-            },
-            {
-                "userId": 52,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 3
@@ -2163,7 +1191,7 @@ export const activities = [
     {
         "id": 41,
         "id1": "92932",
-        "id2": null,
+        "id2": "",
         "clientName": "Umbrella Corp",
         "projectName": "Umbrella Corp Project 15",
         "verticalId": 7,
@@ -2174,38 +1202,8 @@ export const activities = [
         "statusId": 6,
         "categoryId": 1,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-92932",
-                "userId": 26,
-                "createdAt": "2025-12-13T05:18:58.083Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-92932",
-                "userId": 5,
-                "createdAt": "2025-12-06T04:36:13.397Z"
-            }
-        ],
         "outcomeId": 3,
         "userId": 5,
-        "teamMembers": [
-            {
-                "userId": 16,
-                "teamId": 2
-            },
-            {
-                "userId": 26,
-                "teamId": 4
-            },
-            {
-                "userId": 52,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 7
@@ -2223,7 +1221,7 @@ export const activities = [
     {
         "id": 42,
         "id1": "44954",
-        "id2": null,
+        "id2": "",
         "clientName": "Globex",
         "projectName": "Globex Project 3",
         "verticalId": 5,
@@ -2234,38 +1232,8 @@ export const activities = [
         "statusId": 2,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-44954",
-                "userId": 26,
-                "createdAt": "2025-12-03T17:45:10.004Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-44954",
-                "userId": 47,
-                "createdAt": "2025-12-06T03:49:19.425Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 2,
         "userId": 17,
-        "teamMembers": [
-            {
-                "userId": 9,
-                "teamId": 2
-            },
-            {
-                "userId": 26,
-                "teamId": 4
-            },
-            {
-                "userId": 47,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 12
@@ -2283,7 +1251,7 @@ export const activities = [
     {
         "id": 43,
         "id1": "53624",
-        "id2": null,
+        "id2": "",
         "clientName": "Globex",
         "projectName": "Globex Project 92",
         "verticalId": 8,
@@ -2294,38 +1262,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-53624",
-                "userId": 12,
-                "createdAt": "2025-12-01T23:03:21.961Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-53624",
-                "userId": 58,
-                "createdAt": "2025-12-07T18:46:25.213Z"
-            }
-        ],
         "outcomeId": 2,
         "userId": 24,
-        "teamMembers": [
-            {
-                "userId": 12,
-                "teamId": 2
-            },
-            {
-                "userId": 31,
-                "teamId": 4
-            },
-            {
-                "userId": 52,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 16
@@ -2357,38 +1295,8 @@ export const activities = [
         "statusId": 1,
         "categoryId": 1,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-66707",
-                "userId": 54,
-                "createdAt": "2025-12-18T11:50:40.209Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-66707",
-                "userId": 54,
-                "createdAt": "2025-12-23T21:58:39.286Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 4,
         "userId": 23,
-        "teamMembers": [
-            {
-                "userId": 7,
-                "teamId": 2
-            },
-            {
-                "userId": 32,
-                "teamId": 4
-            },
-            {
-                "userId": 52,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 17
@@ -2420,33 +1328,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-28982",
-                "userId": 31,
-                "createdAt": "2026-01-03T13:25:18.268Z"
-            }
-        ],
         "outcomeId": 1,
         "userId": 19,
-        "teamMembers": [
-            {
-                "userId": 12,
-                "teamId": 2
-            },
-            {
-                "userId": 31,
-                "teamId": 4
-            },
-            {
-                "userId": 48,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 12
@@ -2467,7 +1350,7 @@ export const activities = [
     {
         "id": 46,
         "id1": "43600",
-        "id2": null,
+        "id2": "",
         "clientName": "Stark Ind",
         "projectName": "Stark Ind Project 51",
         "verticalId": 2,
@@ -2478,27 +1361,8 @@ export const activities = [
         "statusId": 1,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [],
         "outcomeId": 3,
         "userId": 22,
-        "teamMembers": [
-            {
-                "userId": 15,
-                "teamId": 2
-            },
-            {
-                "userId": 25,
-                "teamId": 4
-            },
-            {
-                "userId": 45,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 16
@@ -2527,27 +1391,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [],
         "outcomeId": 1,
         "userId": 10,
-        "teamMembers": [
-            {
-                "userId": 24,
-                "teamId": 2
-            },
-            {
-                "userId": 35,
-                "teamId": 4
-            },
-            {
-                "userId": 39,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 5
@@ -2576,38 +1421,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-93928",
-                "userId": 33,
-                "createdAt": "2026-01-11T16:47:27.079Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-93928",
-                "userId": 49,
-                "createdAt": "2026-01-07T05:32:30.095Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 5,
         "userId": 19,
-        "teamMembers": [
-            {
-                "userId": 18,
-                "teamId": 2
-            },
-            {
-                "userId": 33,
-                "teamId": 4
-            },
-            {
-                "userId": 49,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 7
@@ -2636,27 +1451,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 4,
         "userId": 16,
-        "teamMembers": [
-            {
-                "userId": 24,
-                "teamId": 2
-            },
-            {
-                "userId": 31,
-                "teamId": 4
-            },
-            {
-                "userId": 53,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 11
@@ -2671,7 +1467,7 @@ export const activities = [
     {
         "id": 50,
         "id1": "28723",
-        "id2": null,
+        "id2": "",
         "clientName": "Globex",
         "projectName": "Globex Project 54",
         "verticalId": 10,
@@ -2682,27 +1478,8 @@ export const activities = [
         "statusId": 6,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [],
         "outcomeId": 1,
         "userId": 5,
-        "teamMembers": [
-            {
-                "userId": 24,
-                "teamId": 2
-            },
-            {
-                "userId": 28,
-                "teamId": 4
-            },
-            {
-                "userId": 44,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 15
@@ -2723,7 +1500,7 @@ export const activities = [
     {
         "id": 51,
         "id1": "44810",
-        "id2": null,
+        "id2": "",
         "clientName": "Wayne Ent",
         "projectName": "Wayne Ent Project 55",
         "verticalId": 4,
@@ -2734,27 +1511,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [],
         "outcomeId": 3,
         "userId": 12,
-        "teamMembers": [
-            {
-                "userId": 12,
-                "teamId": 2
-            },
-            {
-                "userId": 38,
-                "teamId": 4
-            },
-            {
-                "userId": 47,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 5
@@ -2786,33 +1544,8 @@ export const activities = [
         "statusId": 6,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-85029",
-                "userId": 43,
-                "createdAt": "2026-01-21T07:49:42.877Z"
-            }
-        ],
         "outcomeId": 1,
         "userId": 17,
-        "teamMembers": [
-            {
-                "userId": 21,
-                "teamId": 2
-            },
-            {
-                "userId": 26,
-                "teamId": 4
-            },
-            {
-                "userId": 43,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 3
@@ -2844,27 +1577,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [],
         "outcomeId": 2,
         "userId": 21,
-        "teamMembers": [
-            {
-                "userId": 10,
-                "teamId": 2
-            },
-            {
-                "userId": 36,
-                "teamId": 4
-            },
-            {
-                "userId": 50,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 3
@@ -2890,27 +1604,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [],
         "outcomeId": 1,
         "userId": 23,
-        "teamMembers": [
-            {
-                "userId": 8,
-                "teamId": 2
-            },
-            {
-                "userId": 26,
-                "teamId": 4
-            },
-            {
-                "userId": 50,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 16
@@ -2925,7 +1620,7 @@ export const activities = [
     {
         "id": 55,
         "id1": "26767",
-        "id2": null,
+        "id2": "",
         "clientName": "Initech",
         "projectName": "Initech Project 78",
         "verticalId": 11,
@@ -2936,27 +1631,8 @@ export const activities = [
         "statusId": 2,
         "categoryId": 1,
         "versionId": 1,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 2,
         "userId": 5,
-        "teamMembers": [
-            {
-                "userId": 8,
-                "teamId": 2
-            },
-            {
-                "userId": 27,
-                "teamId": 4
-            },
-            {
-                "userId": 42,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 2
@@ -2971,7 +1647,7 @@ export const activities = [
     {
         "id": 56,
         "id1": "77679",
-        "id2": null,
+        "id2": "",
         "clientName": "Globex",
         "projectName": "Globex Project 72",
         "verticalId": 6,
@@ -2982,27 +1658,8 @@ export const activities = [
         "statusId": 2,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [],
         "outcomeId": 2,
         "userId": 7,
-        "teamMembers": [
-            {
-                "userId": 19,
-                "teamId": 2
-            },
-            {
-                "userId": 31,
-                "teamId": 4
-            },
-            {
-                "userId": 39,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 4
@@ -3028,27 +1685,8 @@ export const activities = [
         "statusId": 6,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [],
         "outcomeId": 1,
         "userId": 15,
-        "teamMembers": [
-            {
-                "userId": 18,
-                "teamId": 2
-            },
-            {
-                "userId": 26,
-                "teamId": 4
-            },
-            {
-                "userId": 51,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 3
@@ -3074,27 +1712,8 @@ export const activities = [
         "statusId": 1,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [],
         "outcomeId": 3,
         "userId": 15,
-        "teamMembers": [
-            {
-                "userId": 23,
-                "teamId": 2
-            },
-            {
-                "userId": 36,
-                "teamId": 4
-            },
-            {
-                "userId": 40,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 13
@@ -3120,38 +1739,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 1,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-46114",
-                "userId": 28,
-                "createdAt": "2025-12-29T18:47:44.942Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-46114",
-                "userId": 22,
-                "createdAt": "2025-12-24T00:35:48.342Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 3,
         "userId": 23,
-        "teamMembers": [
-            {
-                "userId": 22,
-                "teamId": 2
-            },
-            {
-                "userId": 28,
-                "teamId": 4
-            },
-            {
-                "userId": 45,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 16
@@ -3180,38 +1769,8 @@ export const activities = [
         "statusId": 5,
         "categoryId": 1,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-83387",
-                "userId": 24,
-                "createdAt": "2026-01-21T07:49:42.878Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-83387",
-                "userId": 23,
-                "createdAt": "2026-01-21T07:49:42.878Z"
-            }
-        ],
         "outcomeId": 3,
         "userId": 24,
-        "teamMembers": [
-            {
-                "userId": 23,
-                "teamId": 2
-            },
-            {
-                "userId": 26,
-                "teamId": 4
-            },
-            {
-                "userId": 43,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 18
@@ -3237,33 +1796,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-73786",
-                "userId": 21,
-                "createdAt": "2025-12-26T09:38:12.710Z"
-            }
-        ],
         "outcomeId": 3,
         "userId": 21,
-        "teamMembers": [
-            {
-                "userId": 17,
-                "teamId": 2
-            },
-            {
-                "userId": 34,
-                "teamId": 4
-            },
-            {
-                "userId": 43,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 15
@@ -3289,27 +1823,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [],
         "outcomeId": 2,
         "userId": 18,
-        "teamMembers": [
-            {
-                "userId": 23,
-                "teamId": 2
-            },
-            {
-                "userId": 36,
-                "teamId": 4
-            },
-            {
-                "userId": 49,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 9
@@ -3338,33 +1853,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-62632",
-                "userId": 31,
-                "createdAt": "2025-12-12T09:13:37.460Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 2,
         "userId": 17,
-        "teamMembers": [
-            {
-                "userId": 7,
-                "teamId": 2
-            },
-            {
-                "userId": 31,
-                "teamId": 4
-            },
-            {
-                "userId": 47,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 12
@@ -3396,38 +1886,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-88384",
-                "userId": 12,
-                "createdAt": "2025-12-16T05:11:05.473Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-88384",
-                "userId": 15,
-                "createdAt": "2025-12-12T03:16:21.335Z"
-            }
-        ],
         "outcomeId": 1,
         "userId": 12,
-        "teamMembers": [
-            {
-                "userId": 15,
-                "teamId": 2
-            },
-            {
-                "userId": 38,
-                "teamId": 4
-            },
-            {
-                "userId": 52,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 3
@@ -3453,38 +1913,8 @@ export const activities = [
         "statusId": 5,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-70178",
-                "userId": 33,
-                "createdAt": "2026-01-02T07:06:28.430Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-70178",
-                "userId": 17,
-                "createdAt": "2025-12-11T19:13:09.284Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 3,
         "userId": 17,
-        "teamMembers": [
-            {
-                "userId": 7,
-                "teamId": 2
-            },
-            {
-                "userId": 33,
-                "teamId": 4
-            },
-            {
-                "userId": 50,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 8
@@ -3513,33 +1943,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-62597",
-                "userId": 40,
-                "createdAt": "2025-12-30T20:44:22.903Z"
-            }
-        ],
         "outcomeId": 1,
         "userId": 16,
-        "teamMembers": [
-            {
-                "userId": 17,
-                "teamId": 2
-            },
-            {
-                "userId": 35,
-                "teamId": 4
-            },
-            {
-                "userId": 40,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 17
@@ -3568,27 +1973,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 1,
         "versionId": 1,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 4,
         "userId": 15,
-        "teamMembers": [
-            {
-                "userId": 9,
-                "teamId": 2
-            },
-            {
-                "userId": 32,
-                "teamId": 4
-            },
-            {
-                "userId": 39,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 6
@@ -3620,33 +2006,8 @@ export const activities = [
         "statusId": 6,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-12570",
-                "userId": 16,
-                "createdAt": "2026-01-21T07:49:42.878Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 4,
         "userId": 9,
-        "teamMembers": [
-            {
-                "userId": 16,
-                "teamId": 2
-            },
-            {
-                "userId": 34,
-                "teamId": 4
-            },
-            {
-                "userId": 51,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 2
@@ -3672,27 +2033,8 @@ export const activities = [
         "statusId": 1,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [],
         "outcomeId": 3,
         "userId": 21,
-        "teamMembers": [
-            {
-                "userId": 5,
-                "teamId": 2
-            },
-            {
-                "userId": 29,
-                "teamId": 4
-            },
-            {
-                "userId": 53,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 11
@@ -3724,33 +2066,8 @@ export const activities = [
         "statusId": 5,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-11072",
-                "userId": 30,
-                "createdAt": "2025-12-14T02:19:47.136Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 3,
         "userId": 18,
-        "teamMembers": [
-            {
-                "userId": 22,
-                "teamId": 2
-            },
-            {
-                "userId": 30,
-                "teamId": 4
-            },
-            {
-                "userId": 52,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 13
@@ -3782,38 +2099,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-35700",
-                "userId": 56,
-                "createdAt": "2025-12-05T15:41:03.872Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-35700",
-                "userId": 12,
-                "createdAt": "2025-12-28T00:53:17.323Z"
-            }
-        ],
         "outcomeId": 2,
         "userId": 12,
-        "teamMembers": [
-            {
-                "userId": 18,
-                "teamId": 2
-            },
-            {
-                "userId": 35,
-                "teamId": 4
-            },
-            {
-                "userId": 53,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 2
@@ -3842,33 +2129,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-40427",
-                "userId": 27,
-                "createdAt": "2025-12-24T20:49:57.097Z"
-            }
-        ],
         "outcomeId": 2,
         "userId": 16,
-        "teamMembers": [
-            {
-                "userId": 16,
-                "teamId": 2
-            },
-            {
-                "userId": 27,
-                "teamId": 4
-            },
-            {
-                "userId": 39,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 4
@@ -3894,33 +2156,8 @@ export const activities = [
         "statusId": 1,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-92824",
-                "userId": 54,
-                "createdAt": "2026-01-16T11:56:01.426Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 1,
         "userId": 23,
-        "teamMembers": [
-            {
-                "userId": 16,
-                "teamId": 2
-            },
-            {
-                "userId": 28,
-                "teamId": 4
-            },
-            {
-                "userId": 49,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 4
@@ -3952,38 +2189,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 1,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-80262",
-                "userId": 12,
-                "createdAt": "2025-12-18T10:11:19.815Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-80262",
-                "userId": 12,
-                "createdAt": "2025-12-17T11:20:28.378Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 1,
         "userId": 12,
-        "teamMembers": [
-            {
-                "userId": 6,
-                "teamId": 2
-            },
-            {
-                "userId": 31,
-                "teamId": 4
-            },
-            {
-                "userId": 43,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 3
@@ -4009,38 +2216,8 @@ export const activities = [
         "statusId": 2,
         "categoryId": 1,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-33706",
-                "userId": 40,
-                "createdAt": "2026-01-02T07:38:35.995Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-33706",
-                "userId": 13,
-                "createdAt": "2025-12-30T15:50:38.544Z"
-            }
-        ],
         "outcomeId": 3,
         "userId": 5,
-        "teamMembers": [
-            {
-                "userId": 13,
-                "teamId": 2
-            },
-            {
-                "userId": 28,
-                "teamId": 4
-            },
-            {
-                "userId": 40,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 8
@@ -4072,27 +2249,8 @@ export const activities = [
         "statusId": 2,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 4,
         "userId": 12,
-        "teamMembers": [
-            {
-                "userId": 14,
-                "teamId": 2
-            },
-            {
-                "userId": 29,
-                "teamId": 4
-            },
-            {
-                "userId": 49,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 18
@@ -4118,33 +2276,8 @@ export const activities = [
         "statusId": 6,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-56899",
-                "userId": 21,
-                "createdAt": "2025-12-30T03:48:29.741Z"
-            }
-        ],
         "outcomeId": 2,
         "userId": 21,
-        "teamMembers": [
-            {
-                "userId": 7,
-                "teamId": 2
-            },
-            {
-                "userId": 34,
-                "teamId": 4
-            },
-            {
-                "userId": 41,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 6
@@ -4176,33 +2309,8 @@ export const activities = [
         "statusId": 6,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-37341",
-                "userId": 21,
-                "createdAt": "2025-12-07T02:03:39.455Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 1,
         "userId": 21,
-        "teamMembers": [
-            {
-                "userId": 15,
-                "teamId": 2
-            },
-            {
-                "userId": 25,
-                "teamId": 4
-            },
-            {
-                "userId": 53,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 14
@@ -4231,27 +2339,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 2,
         "userId": 12,
-        "teamMembers": [
-            {
-                "userId": 16,
-                "teamId": 2
-            },
-            {
-                "userId": 38,
-                "teamId": 4
-            },
-            {
-                "userId": 46,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 11
@@ -4280,33 +2369,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-25437",
-                "userId": 24,
-                "createdAt": "2026-01-03T01:58:02.821Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 4,
         "userId": 14,
-        "teamMembers": [
-            {
-                "userId": 24,
-                "teamId": 2
-            },
-            {
-                "userId": 25,
-                "teamId": 4
-            },
-            {
-                "userId": 44,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 11
@@ -4327,7 +2391,7 @@ export const activities = [
     {
         "id": 81,
         "id1": "93521",
-        "id2": null,
+        "id2": "",
         "clientName": "Globex",
         "projectName": "Globex Project 43",
         "verticalId": 8,
@@ -4338,33 +2402,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-93521",
-                "userId": 28,
-                "createdAt": "2026-01-21T07:49:42.878Z"
-            }
-        ],
         "outcomeId": 1,
         "userId": 5,
-        "teamMembers": [
-            {
-                "userId": 15,
-                "teamId": 2
-            },
-            {
-                "userId": 28,
-                "teamId": 4
-            },
-            {
-                "userId": 52,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 16
@@ -4382,7 +2421,7 @@ export const activities = [
     {
         "id": 82,
         "id1": "89303",
-        "id2": null,
+        "id2": "",
         "clientName": "Cyberdyne",
         "projectName": "Cyberdyne Project 67",
         "verticalId": 7,
@@ -4393,27 +2432,8 @@ export const activities = [
         "statusId": 1,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 5,
         "userId": 13,
-        "teamMembers": [
-            {
-                "userId": 24,
-                "teamId": 2
-            },
-            {
-                "userId": 25,
-                "teamId": 4
-            },
-            {
-                "userId": 41,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 9
@@ -4442,38 +2462,8 @@ export const activities = [
         "statusId": 5,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-93332",
-                "userId": 8,
-                "createdAt": "2025-12-01T04:46:38.739Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-93332",
-                "userId": 8,
-                "createdAt": "2025-11-27T21:25:17.435Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 3,
         "userId": 8,
-        "teamMembers": [
-            {
-                "userId": 8,
-                "teamId": 2
-            },
-            {
-                "userId": 30,
-                "teamId": 4
-            },
-            {
-                "userId": 51,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 15
@@ -4491,7 +2481,7 @@ export const activities = [
     {
         "id": 84,
         "id1": "25747",
-        "id2": null,
+        "id2": "",
         "clientName": "Stark Ind",
         "projectName": "Stark Ind Project 16",
         "verticalId": 6,
@@ -4502,38 +2492,8 @@ export const activities = [
         "statusId": 1,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-25747",
-                "userId": 13,
-                "createdAt": "2026-01-21T07:49:42.878Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-25747",
-                "userId": 13,
-                "createdAt": "2026-01-21T07:49:42.878Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 1,
         "userId": 13,
-        "teamMembers": [
-            {
-                "userId": 6,
-                "teamId": 2
-            },
-            {
-                "userId": 37,
-                "teamId": 4
-            },
-            {
-                "userId": 43,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 12
@@ -4559,33 +2519,8 @@ export const activities = [
         "statusId": 5,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-56587",
-                "userId": 20,
-                "createdAt": "2025-12-27T14:26:20.651Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 2,
         "userId": 20,
-        "teamMembers": [
-            {
-                "userId": 19,
-                "teamId": 2
-            },
-            {
-                "userId": 28,
-                "teamId": 4
-            },
-            {
-                "userId": 46,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 10
@@ -4614,33 +2549,8 @@ export const activities = [
         "statusId": 2,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-16692",
-                "userId": 32,
-                "createdAt": "2026-01-11T09:57:39.722Z"
-            }
-        ],
         "outcomeId": 3,
         "userId": 5,
-        "teamMembers": [
-            {
-                "userId": 19,
-                "teamId": 2
-            },
-            {
-                "userId": 32,
-                "teamId": 4
-            },
-            {
-                "userId": 49,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 2
@@ -4669,38 +2579,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-96925",
-                "userId": 5,
-                "createdAt": "2026-01-17T14:01:24.868Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-96925",
-                "userId": 56,
-                "createdAt": "2025-12-31T13:20:00.284Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 1,
         "userId": 7,
-        "teamMembers": [
-            {
-                "userId": 5,
-                "teamId": 2
-            },
-            {
-                "userId": 38,
-                "teamId": 4
-            },
-            {
-                "userId": 48,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 7
@@ -4732,38 +2612,8 @@ export const activities = [
         "statusId": 2,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-60655",
-                "userId": 19,
-                "createdAt": "2026-01-19T06:53:55.309Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-60655",
-                "userId": 11,
-                "createdAt": "2026-01-11T03:30:34.011Z"
-            }
-        ],
         "outcomeId": 1,
         "userId": 11,
-        "teamMembers": [
-            {
-                "userId": 19,
-                "teamId": 2
-            },
-            {
-                "userId": 38,
-                "teamId": 4
-            },
-            {
-                "userId": 44,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 2
@@ -4795,38 +2645,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-35046",
-                "userId": 17,
-                "createdAt": "2026-01-17T17:15:54.032Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-35046",
-                "userId": 28,
-                "createdAt": "2026-01-18T11:18:36.049Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 1,
         "userId": 17,
-        "teamMembers": [
-            {
-                "userId": 17,
-                "teamId": 2
-            },
-            {
-                "userId": 28,
-                "teamId": 4
-            },
-            {
-                "userId": 42,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 13
@@ -4855,33 +2675,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 1,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-31970",
-                "userId": 26,
-                "createdAt": "2026-01-21T07:49:42.878Z"
-            }
-        ],
         "outcomeId": 3,
         "userId": 7,
-        "teamMembers": [
-            {
-                "userId": 20,
-                "teamId": 2
-            },
-            {
-                "userId": 26,
-                "teamId": 4
-            },
-            {
-                "userId": 40,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 12
@@ -4896,7 +2691,7 @@ export const activities = [
     {
         "id": 91,
         "id1": "90302",
-        "id2": null,
+        "id2": "",
         "clientName": "Umbrella Corp",
         "projectName": "Umbrella Corp Project 96",
         "verticalId": 8,
@@ -4907,27 +2702,8 @@ export const activities = [
         "statusId": 5,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [],
         "outcomeId": 2,
         "userId": 10,
-        "teamMembers": [
-            {
-                "userId": 20,
-                "teamId": 2
-            },
-            {
-                "userId": 33,
-                "teamId": 4
-            },
-            {
-                "userId": 42,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 6
@@ -4942,7 +2718,7 @@ export const activities = [
     {
         "id": 92,
         "id1": "86952",
-        "id2": null,
+        "id2": "",
         "clientName": "Stark Ind",
         "projectName": "Stark Ind Project 26",
         "verticalId": 4,
@@ -4953,27 +2729,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 5,
         "userId": 18,
-        "teamMembers": [
-            {
-                "userId": 11,
-                "teamId": 2
-            },
-            {
-                "userId": 37,
-                "teamId": 4
-            },
-            {
-                "userId": 49,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 5
@@ -5005,38 +2762,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-74452",
-                "userId": 23,
-                "createdAt": "2025-12-09T16:33:44.873Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-74452",
-                "userId": 23,
-                "createdAt": "2025-12-11T22:15:09.254Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 1,
         "userId": 23,
-        "teamMembers": [
-            {
-                "userId": 22,
-                "teamId": 2
-            },
-            {
-                "userId": 36,
-                "teamId": 4
-            },
-            {
-                "userId": 41,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 9
@@ -5068,33 +2795,8 @@ export const activities = [
         "statusId": 6,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-89013",
-                "userId": 32,
-                "createdAt": "2025-12-29T17:32:18.223Z"
-            }
-        ],
         "outcomeId": 2,
         "userId": 20,
-        "teamMembers": [
-            {
-                "userId": 12,
-                "teamId": 2
-            },
-            {
-                "userId": 32,
-                "teamId": 4
-            },
-            {
-                "userId": 46,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 9
@@ -5120,33 +2822,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-96205",
-                "userId": 31,
-                "createdAt": "2026-01-19T22:50:09.230Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 4,
         "userId": 14,
-        "teamMembers": [
-            {
-                "userId": 24,
-                "teamId": 2
-            },
-            {
-                "userId": 31,
-                "teamId": 4
-            },
-            {
-                "userId": 53,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 18
@@ -5167,7 +2844,7 @@ export const activities = [
     {
         "id": 96,
         "id1": "72067",
-        "id2": null,
+        "id2": "",
         "clientName": "Acme Corp",
         "projectName": "Acme Corp Project 25",
         "verticalId": 1,
@@ -5178,38 +2855,8 @@ export const activities = [
         "statusId": 1,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-72067",
-                "userId": 33,
-                "createdAt": "2026-01-21T07:49:42.878Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-72067",
-                "userId": 33,
-                "createdAt": "2026-01-21T07:49:42.878Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 5,
         "userId": 9,
-        "teamMembers": [
-            {
-                "userId": 5,
-                "teamId": 2
-            },
-            {
-                "userId": 33,
-                "teamId": 4
-            },
-            {
-                "userId": 46,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 5
@@ -5238,27 +2885,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 4,
         "userId": 14,
-        "teamMembers": [
-            {
-                "userId": 10,
-                "teamId": 2
-            },
-            {
-                "userId": 30,
-                "teamId": 4
-            },
-            {
-                "userId": 39,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 14
@@ -5279,7 +2907,7 @@ export const activities = [
     {
         "id": 98,
         "id1": "86084",
-        "id2": null,
+        "id2": "",
         "clientName": "Cyberdyne",
         "projectName": "Cyberdyne Project 22",
         "verticalId": 3,
@@ -5290,33 +2918,8 @@ export const activities = [
         "statusId": 1,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-86084",
-                "userId": 27,
-                "createdAt": "2026-01-17T05:39:05.751Z"
-            }
-        ],
         "outcomeId": 1,
         "userId": 8,
-        "teamMembers": [
-            {
-                "userId": 9,
-                "teamId": 2
-            },
-            {
-                "userId": 27,
-                "teamId": 4
-            },
-            {
-                "userId": 51,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 8
@@ -5348,38 +2951,8 @@ export const activities = [
         "statusId": 2,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-69037",
-                "userId": 46,
-                "createdAt": "2025-12-13T14:15:29.978Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-69037",
-                "userId": 6,
-                "createdAt": "2025-12-23T03:52:16.815Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 2,
         "userId": 6,
-        "teamMembers": [
-            {
-                "userId": 18,
-                "teamId": 2
-            },
-            {
-                "userId": 32,
-                "teamId": 4
-            },
-            {
-                "userId": 46,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 12
@@ -5405,38 +2978,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-50347",
-                "userId": 58,
-                "createdAt": "2026-01-21T07:49:42.879Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-50347",
-                "userId": 58,
-                "createdAt": "2026-01-04T02:16:17.887Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 4,
         "userId": 14,
-        "teamMembers": [
-            {
-                "userId": 17,
-                "teamId": 2
-            },
-            {
-                "userId": 25,
-                "teamId": 4
-            },
-            {
-                "userId": 49,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 11
@@ -5451,7 +2994,7 @@ export const activities = [
     {
         "id": 101,
         "id1": "90516",
-        "id2": null,
+        "id2": "",
         "clientName": "Acme Corp",
         "projectName": "Acme Corp Project 36",
         "verticalId": 4,
@@ -5462,38 +3005,8 @@ export const activities = [
         "statusId": 2,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-90516",
-                "userId": 44,
-                "createdAt": "2026-01-15T21:43:02.168Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-90516",
-                "userId": 27,
-                "createdAt": "2026-01-18T23:36:19.250Z"
-            }
-        ],
         "outcomeId": 2,
         "userId": 22,
-        "teamMembers": [
-            {
-                "userId": 6,
-                "teamId": 2
-            },
-            {
-                "userId": 27,
-                "teamId": 4
-            },
-            {
-                "userId": 44,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 10
@@ -5522,33 +3035,8 @@ export const activities = [
         "statusId": 6,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-55192",
-                "userId": 55,
-                "createdAt": "2026-01-20T16:13:02.717Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 1,
         "userId": 14,
-        "teamMembers": [
-            {
-                "userId": 14,
-                "teamId": 2
-            },
-            {
-                "userId": 36,
-                "teamId": 4
-            },
-            {
-                "userId": 40,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 4
@@ -5574,27 +3062,8 @@ export const activities = [
         "statusId": 5,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [],
         "outcomeId": 1,
         "userId": 18,
-        "teamMembers": [
-            {
-                "userId": 9,
-                "teamId": 2
-            },
-            {
-                "userId": 32,
-                "teamId": 4
-            },
-            {
-                "userId": 46,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 5
@@ -5615,7 +3084,7 @@ export const activities = [
     {
         "id": 104,
         "id1": "56820",
-        "id2": null,
+        "id2": "",
         "clientName": "Globex",
         "projectName": "Globex Project 54",
         "verticalId": 7,
@@ -5626,33 +3095,8 @@ export const activities = [
         "statusId": 1,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-56820",
-                "userId": 54,
-                "createdAt": "2025-12-22T08:00:11.337Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 4,
         "userId": 18,
-        "teamMembers": [
-            {
-                "userId": 8,
-                "teamId": 2
-            },
-            {
-                "userId": 29,
-                "teamId": 4
-            },
-            {
-                "userId": 52,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 17
@@ -5678,33 +3122,8 @@ export const activities = [
         "statusId": 1,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-84992",
-                "userId": 22,
-                "createdAt": "2025-12-21T18:22:58.444Z"
-            }
-        ],
         "outcomeId": 1,
         "userId": 21,
-        "teamMembers": [
-            {
-                "userId": 22,
-                "teamId": 2
-            },
-            {
-                "userId": 31,
-                "teamId": 4
-            },
-            {
-                "userId": 47,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 6
@@ -5733,27 +3152,8 @@ export const activities = [
         "statusId": 5,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 5,
         "userId": 9,
-        "teamMembers": [
-            {
-                "userId": 13,
-                "teamId": 2
-            },
-            {
-                "userId": 26,
-                "teamId": 4
-            },
-            {
-                "userId": 50,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 16
@@ -5785,33 +3185,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-42524",
-                "userId": 35,
-                "createdAt": "2026-01-08T16:39:14.700Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 3,
         "userId": 14,
-        "teamMembers": [
-            {
-                "userId": 24,
-                "teamId": 2
-            },
-            {
-                "userId": 35,
-                "teamId": 4
-            },
-            {
-                "userId": 42,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 3
@@ -5837,38 +3212,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-11212",
-                "userId": 58,
-                "createdAt": "2025-12-13T15:27:21.972Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-11212",
-                "userId": 41,
-                "createdAt": "2026-01-08T12:16:38.674Z"
-            }
-        ],
         "outcomeId": 3,
         "userId": 21,
-        "teamMembers": [
-            {
-                "userId": 24,
-                "teamId": 2
-            },
-            {
-                "userId": 34,
-                "teamId": 4
-            },
-            {
-                "userId": 41,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 8
@@ -5886,7 +3231,7 @@ export const activities = [
     {
         "id": 109,
         "id1": "88809",
-        "id2": null,
+        "id2": "",
         "clientName": "Globex",
         "projectName": "Globex Project 89",
         "verticalId": 4,
@@ -5897,27 +3242,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 5,
         "userId": 6,
-        "teamMembers": [
-            {
-                "userId": 10,
-                "teamId": 2
-            },
-            {
-                "userId": 37,
-                "teamId": 4
-            },
-            {
-                "userId": 45,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 18
@@ -5935,7 +3261,7 @@ export const activities = [
     {
         "id": 110,
         "id1": "64126",
-        "id2": null,
+        "id2": "",
         "clientName": "Stark Ind",
         "projectName": "Stark Ind Project 20",
         "verticalId": 1,
@@ -5946,27 +3272,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 1,
         "versionId": 1,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 2,
         "userId": 17,
-        "teamMembers": [
-            {
-                "userId": 14,
-                "teamId": 2
-            },
-            {
-                "userId": 34,
-                "teamId": 4
-            },
-            {
-                "userId": 50,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 6
@@ -5995,27 +3302,8 @@ export const activities = [
         "statusId": 5,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 2,
         "userId": 19,
-        "teamMembers": [
-            {
-                "userId": 19,
-                "teamId": 2
-            },
-            {
-                "userId": 25,
-                "teamId": 4
-            },
-            {
-                "userId": 41,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 11
@@ -6041,38 +3329,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-72393",
-                "userId": 14,
-                "createdAt": "2025-12-28T04:22:54.139Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-72393",
-                "userId": 31,
-                "createdAt": "2026-01-21T07:49:42.879Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 2,
         "userId": 14,
-        "teamMembers": [
-            {
-                "userId": 13,
-                "teamId": 2
-            },
-            {
-                "userId": 31,
-                "teamId": 4
-            },
-            {
-                "userId": 40,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 14
@@ -6101,38 +3359,8 @@ export const activities = [
         "statusId": 5,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-72752",
-                "userId": 8,
-                "createdAt": "2026-01-02T23:46:33.740Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-72752",
-                "userId": 59,
-                "createdAt": "2025-12-25T00:26:10.531Z"
-            }
-        ],
         "outcomeId": 3,
         "userId": 8,
-        "teamMembers": [
-            {
-                "userId": 15,
-                "teamId": 2
-            },
-            {
-                "userId": 30,
-                "teamId": 4
-            },
-            {
-                "userId": 47,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 15
@@ -6161,38 +3389,8 @@ export const activities = [
         "statusId": 1,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-57065",
-                "userId": 25,
-                "createdAt": "2026-01-09T05:17:35.780Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-57065",
-                "userId": 23,
-                "createdAt": "2026-01-08T14:36:30.129Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 2,
         "userId": 20,
-        "teamMembers": [
-            {
-                "userId": 23,
-                "teamId": 2
-            },
-            {
-                "userId": 25,
-                "teamId": 4
-            },
-            {
-                "userId": 40,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 1
@@ -6221,38 +3419,8 @@ export const activities = [
         "statusId": 5,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-43554",
-                "userId": 20,
-                "createdAt": "2025-12-10T18:57:19.242Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-43554",
-                "userId": 30,
-                "createdAt": "2025-12-02T01:15:42.280Z"
-            }
-        ],
         "outcomeId": 3,
         "userId": 20,
-        "teamMembers": [
-            {
-                "userId": 16,
-                "teamId": 2
-            },
-            {
-                "userId": 30,
-                "teamId": 4
-            },
-            {
-                "userId": 45,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 17
@@ -6278,33 +3446,8 @@ export const activities = [
         "statusId": 6,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-77845",
-                "userId": 52,
-                "createdAt": "2026-01-06T03:23:24.803Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 5,
         "userId": 18,
-        "teamMembers": [
-            {
-                "userId": 21,
-                "teamId": 2
-            },
-            {
-                "userId": 27,
-                "teamId": 4
-            },
-            {
-                "userId": 52,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 10
@@ -6333,33 +3476,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-26395",
-                "userId": 56,
-                "createdAt": "2025-12-15T10:19:52.470Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 5,
         "userId": 6,
-        "teamMembers": [
-            {
-                "userId": 11,
-                "teamId": 2
-            },
-            {
-                "userId": 30,
-                "teamId": 4
-            },
-            {
-                "userId": 41,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 12
@@ -6388,33 +3506,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 1,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-42103",
-                "userId": 33,
-                "createdAt": "2025-12-27T08:25:42.911Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 3,
         "userId": 24,
-        "teamMembers": [
-            {
-                "userId": 23,
-                "teamId": 2
-            },
-            {
-                "userId": 33,
-                "teamId": 4
-            },
-            {
-                "userId": 47,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 8
@@ -6443,38 +3536,8 @@ export const activities = [
         "statusId": 1,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-52451",
-                "userId": 48,
-                "createdAt": "2025-12-21T21:43:08.899Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-52451",
-                "userId": 16,
-                "createdAt": "2025-12-15T06:34:20.684Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 5,
         "userId": 16,
-        "teamMembers": [
-            {
-                "userId": 15,
-                "teamId": 2
-            },
-            {
-                "userId": 26,
-                "teamId": 4
-            },
-            {
-                "userId": 48,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 9
@@ -6506,33 +3569,8 @@ export const activities = [
         "statusId": 2,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-46727",
-                "userId": 28,
-                "createdAt": "2026-01-01T08:17:22.462Z"
-            }
-        ],
         "outcomeId": 3,
         "userId": 20,
-        "teamMembers": [
-            {
-                "userId": 14,
-                "teamId": 2
-            },
-            {
-                "userId": 28,
-                "teamId": 4
-            },
-            {
-                "userId": 40,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 8
@@ -6564,27 +3602,8 @@ export const activities = [
         "statusId": 2,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [],
         "outcomeId": 3,
         "userId": 24,
-        "teamMembers": [
-            {
-                "userId": 23,
-                "teamId": 2
-            },
-            {
-                "userId": 36,
-                "teamId": 4
-            },
-            {
-                "userId": 46,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 11
@@ -6616,38 +3635,8 @@ export const activities = [
         "statusId": 2,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-76810",
-                "userId": 44,
-                "createdAt": "2025-12-24T13:28:13.111Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-76810",
-                "userId": 54,
-                "createdAt": "2025-12-21T13:23:33.193Z"
-            }
-        ],
         "outcomeId": 1,
         "userId": 10,
-        "teamMembers": [
-            {
-                "userId": 5,
-                "teamId": 2
-            },
-            {
-                "userId": 35,
-                "teamId": 4
-            },
-            {
-                "userId": 44,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 18
@@ -6673,38 +3662,8 @@ export const activities = [
         "statusId": 5,
         "categoryId": 1,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-25803",
-                "userId": 54,
-                "createdAt": "2025-12-06T18:06:22.367Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-25803",
-                "userId": 22,
-                "createdAt": "2025-12-18T06:12:34.556Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 4,
         "userId": 21,
-        "teamMembers": [
-            {
-                "userId": 22,
-                "teamId": 2
-            },
-            {
-                "userId": 27,
-                "teamId": 4
-            },
-            {
-                "userId": 49,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 3
@@ -6730,27 +3689,8 @@ export const activities = [
         "statusId": 5,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [],
         "outcomeId": 1,
         "userId": 24,
-        "teamMembers": [
-            {
-                "userId": 24,
-                "teamId": 2
-            },
-            {
-                "userId": 30,
-                "teamId": 4
-            },
-            {
-                "userId": 49,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 11
@@ -6779,33 +3719,8 @@ export const activities = [
         "statusId": 1,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-62690",
-                "userId": 25,
-                "createdAt": "2026-01-05T00:39:26.173Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 5,
         "userId": 10,
-        "teamMembers": [
-            {
-                "userId": 7,
-                "teamId": 2
-            },
-            {
-                "userId": 25,
-                "teamId": 4
-            },
-            {
-                "userId": 47,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 7
@@ -6834,27 +3749,8 @@ export const activities = [
         "statusId": 5,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [],
         "outcomeId": 1,
         "userId": 17,
-        "teamMembers": [
-            {
-                "userId": 16,
-                "teamId": 2
-            },
-            {
-                "userId": 25,
-                "teamId": 4
-            },
-            {
-                "userId": 39,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 10
@@ -6880,33 +3776,8 @@ export const activities = [
         "statusId": 1,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-99233",
-                "userId": 28,
-                "createdAt": "2026-01-21T07:49:42.879Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 3,
         "userId": 6,
-        "teamMembers": [
-            {
-                "userId": 10,
-                "teamId": 2
-            },
-            {
-                "userId": 28,
-                "teamId": 4
-            },
-            {
-                "userId": 40,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 5
@@ -6935,33 +3806,8 @@ export const activities = [
         "statusId": 1,
         "categoryId": 1,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-22185",
-                "userId": 43,
-                "createdAt": "2026-01-21T07:49:42.879Z"
-            }
-        ],
         "outcomeId": 2,
         "userId": 10,
-        "teamMembers": [
-            {
-                "userId": 11,
-                "teamId": 2
-            },
-            {
-                "userId": 37,
-                "teamId": 4
-            },
-            {
-                "userId": 43,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 9
@@ -6987,38 +3833,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-63263",
-                "userId": 57,
-                "createdAt": "2026-01-21T07:49:42.879Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-63263",
-                "userId": 6,
-                "createdAt": "2026-01-16T00:25:22.154Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 2,
         "userId": 7,
-        "teamMembers": [
-            {
-                "userId": 6,
-                "teamId": 2
-            },
-            {
-                "userId": 34,
-                "teamId": 4
-            },
-            {
-                "userId": 40,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 3
@@ -7033,7 +3849,7 @@ export const activities = [
     {
         "id": 130,
         "id1": "84719",
-        "id2": null,
+        "id2": "",
         "clientName": "Cyberdyne",
         "projectName": "Cyberdyne Project 69",
         "verticalId": 11,
@@ -7044,27 +3860,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 2,
         "userId": 20,
-        "teamMembers": [
-            {
-                "userId": 9,
-                "teamId": 2
-            },
-            {
-                "userId": 28,
-                "teamId": 4
-            },
-            {
-                "userId": 46,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 14
@@ -7096,33 +3893,8 @@ export const activities = [
         "statusId": 1,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-75383",
-                "userId": 13,
-                "createdAt": "2025-12-17T01:56:27.431Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 2,
         "userId": 6,
-        "teamMembers": [
-            {
-                "userId": 13,
-                "teamId": 2
-            },
-            {
-                "userId": 31,
-                "teamId": 4
-            },
-            {
-                "userId": 52,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 6
@@ -7154,27 +3926,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [],
         "outcomeId": 3,
         "userId": 17,
-        "teamMembers": [
-            {
-                "userId": 12,
-                "teamId": 2
-            },
-            {
-                "userId": 28,
-                "teamId": 4
-            },
-            {
-                "userId": 52,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 17
@@ -7200,27 +3953,8 @@ export const activities = [
         "statusId": 2,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 5,
         "userId": 16,
-        "teamMembers": [
-            {
-                "userId": 16,
-                "teamId": 2
-            },
-            {
-                "userId": 34,
-                "teamId": 4
-            },
-            {
-                "userId": 45,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 17
@@ -7246,27 +3980,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 4,
         "userId": 7,
-        "teamMembers": [
-            {
-                "userId": 8,
-                "teamId": 2
-            },
-            {
-                "userId": 28,
-                "teamId": 4
-            },
-            {
-                "userId": 40,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 4
@@ -7298,38 +4013,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-77174",
-                "userId": 30,
-                "createdAt": "2026-01-11T04:31:11.792Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-77174",
-                "userId": 17,
-                "createdAt": "2025-12-09T22:07:35.981Z"
-            }
-        ],
         "outcomeId": 3,
         "userId": 17,
-        "teamMembers": [
-            {
-                "userId": 19,
-                "teamId": 2
-            },
-            {
-                "userId": 30,
-                "teamId": 4
-            },
-            {
-                "userId": 50,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 7
@@ -7355,33 +4040,8 @@ export const activities = [
         "statusId": 5,
         "categoryId": 1,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-39679",
-                "userId": 57,
-                "createdAt": "2025-12-12T14:19:17.234Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 2,
         "userId": 18,
-        "teamMembers": [
-            {
-                "userId": 12,
-                "teamId": 2
-            },
-            {
-                "userId": 35,
-                "teamId": 4
-            },
-            {
-                "userId": 39,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 16
@@ -7410,33 +4070,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-41534",
-                "userId": 50,
-                "createdAt": "2026-01-21T07:49:42.879Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 5,
         "userId": 17,
-        "teamMembers": [
-            {
-                "userId": 22,
-                "teamId": 2
-            },
-            {
-                "userId": 32,
-                "teamId": 4
-            },
-            {
-                "userId": 50,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 3
@@ -7465,27 +4100,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 1,
         "versionId": 1,
-        "comments": [],
         "outcomeId": 3,
         "userId": 8,
-        "teamMembers": [
-            {
-                "userId": 18,
-                "teamId": 2
-            },
-            {
-                "userId": 29,
-                "teamId": 4
-            },
-            {
-                "userId": 47,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 4
@@ -7514,27 +4130,8 @@ export const activities = [
         "statusId": 5,
         "categoryId": 1,
         "versionId": 1,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 2,
         "userId": 7,
-        "teamMembers": [
-            {
-                "userId": 5,
-                "teamId": 2
-            },
-            {
-                "userId": 36,
-                "teamId": 4
-            },
-            {
-                "userId": 49,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 2
@@ -7560,27 +4157,8 @@ export const activities = [
         "statusId": 6,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 3,
         "userId": 13,
-        "teamMembers": [
-            {
-                "userId": 5,
-                "teamId": 2
-            },
-            {
-                "userId": 32,
-                "teamId": 4
-            },
-            {
-                "userId": 43,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 18
@@ -7612,38 +4190,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-35999",
-                "userId": 24,
-                "createdAt": "2025-12-13T09:13:31.328Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-35999",
-                "userId": 50,
-                "createdAt": "2025-12-26T01:28:14.623Z"
-            }
-        ],
         "outcomeId": 1,
         "userId": 11,
-        "teamMembers": [
-            {
-                "userId": 24,
-                "teamId": 2
-            },
-            {
-                "userId": 33,
-                "teamId": 4
-            },
-            {
-                "userId": 50,
-                "teamId": 1
-            },
-            {
-                "userId": 58,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 4
@@ -7658,7 +4206,7 @@ export const activities = [
     {
         "id": 142,
         "id1": "43090",
-        "id2": null,
+        "id2": "",
         "clientName": "Umbrella Corp",
         "projectName": "Umbrella Corp Project 14",
         "verticalId": 8,
@@ -7669,27 +4217,8 @@ export const activities = [
         "statusId": 1,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [],
         "outcomeId": 3,
         "userId": 20,
-        "teamMembers": [
-            {
-                "userId": 8,
-                "teamId": 2
-            },
-            {
-                "userId": 37,
-                "teamId": 4
-            },
-            {
-                "userId": 53,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 5
@@ -7718,27 +4247,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [],
         "outcomeId": 2,
         "userId": 5,
-        "teamMembers": [
-            {
-                "userId": 9,
-                "teamId": 2
-            },
-            {
-                "userId": 30,
-                "teamId": 4
-            },
-            {
-                "userId": 40,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 8
@@ -7764,27 +4274,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 3,
         "userId": 8,
-        "teamMembers": [
-            {
-                "userId": 24,
-                "teamId": 2
-            },
-            {
-                "userId": 36,
-                "teamId": 4
-            },
-            {
-                "userId": 44,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 13
@@ -7805,7 +4296,7 @@ export const activities = [
     {
         "id": 145,
         "id1": "12079",
-        "id2": null,
+        "id2": "",
         "clientName": "Cyberdyne",
         "projectName": "Cyberdyne Project 50",
         "verticalId": 3,
@@ -7816,33 +4307,8 @@ export const activities = [
         "statusId": 1,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-12079",
-                "userId": 42,
-                "createdAt": "2026-01-21T07:49:42.880Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 4,
         "userId": 8,
-        "teamMembers": [
-            {
-                "userId": 20,
-                "teamId": 2
-            },
-            {
-                "userId": 36,
-                "teamId": 4
-            },
-            {
-                "userId": 42,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 16
@@ -7857,7 +4323,7 @@ export const activities = [
     {
         "id": 146,
         "id1": "69441",
-        "id2": null,
+        "id2": "",
         "clientName": "Acme Corp",
         "projectName": "Acme Corp Project 34",
         "verticalId": 10,
@@ -7868,27 +4334,8 @@ export const activities = [
         "statusId": 6,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 5,
         "userId": 9,
-        "teamMembers": [
-            {
-                "userId": 22,
-                "teamId": 2
-            },
-            {
-                "userId": 36,
-                "teamId": 4
-            },
-            {
-                "userId": 44,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 7
@@ -7917,33 +4364,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-80300",
-                "userId": 40,
-                "createdAt": "2025-12-30T06:50:53.863Z"
-            }
-        ],
         "outcomeId": 1,
         "userId": 17,
-        "teamMembers": [
-            {
-                "userId": 8,
-                "teamId": 2
-            },
-            {
-                "userId": 38,
-                "teamId": 4
-            },
-            {
-                "userId": 40,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 4
@@ -7969,38 +4391,8 @@ export const activities = [
         "statusId": 1,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-92949",
-                "userId": 45,
-                "createdAt": "2026-01-01T02:41:52.201Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-92949",
-                "userId": 45,
-                "createdAt": "2026-01-13T02:50:12.494Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 1,
         "userId": 14,
-        "teamMembers": [
-            {
-                "userId": 12,
-                "teamId": 2
-            },
-            {
-                "userId": 36,
-                "teamId": 4
-            },
-            {
-                "userId": 45,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 12
@@ -8015,7 +4407,7 @@ export const activities = [
     {
         "id": 149,
         "id1": "57421",
-        "id2": null,
+        "id2": "",
         "clientName": "Cyberdyne",
         "projectName": "Cyberdyne Project 93",
         "verticalId": 6,
@@ -8026,27 +4418,8 @@ export const activities = [
         "statusId": 1,
         "categoryId": 2,
         "versionId": 1,
-        "comments": [],
         "outcomeId": 2,
         "userId": 10,
-        "teamMembers": [
-            {
-                "userId": 5,
-                "teamId": 2
-            },
-            {
-                "userId": 33,
-                "teamId": 4
-            },
-            {
-                "userId": 51,
-                "teamId": 1
-            },
-            {
-                "userId": 57,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 8
@@ -8075,33 +4448,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 1,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-77335",
-                "userId": 10,
-                "createdAt": "2026-01-05T00:26:42.320Z"
-            }
-        ],
         "outcomeId": 2,
         "userId": 10,
-        "teamMembers": [
-            {
-                "userId": 7,
-                "teamId": 2
-            },
-            {
-                "userId": 36,
-                "teamId": 4
-            },
-            {
-                "userId": 44,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 10
@@ -8127,33 +4475,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-12828",
-                "userId": 7,
-                "createdAt": "2025-12-14T11:18:51.052Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 3,
         "userId": 7,
-        "teamMembers": [
-            {
-                "userId": 7,
-                "teamId": 2
-            },
-            {
-                "userId": 37,
-                "teamId": 4
-            },
-            {
-                "userId": 46,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 6
@@ -8185,38 +4508,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-50549",
-                "userId": 19,
-                "createdAt": "2025-12-07T13:02:00.146Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-50549",
-                "userId": 53,
-                "createdAt": "2025-12-02T02:43:42.711Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 4,
         "userId": 18,
-        "teamMembers": [
-            {
-                "userId": 19,
-                "teamId": 2
-            },
-            {
-                "userId": 38,
-                "teamId": 4
-            },
-            {
-                "userId": 53,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 6
@@ -8245,33 +4538,8 @@ export const activities = [
         "statusId": 6,
         "categoryId": 1,
         "versionId": 1,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-63011",
-                "userId": 49,
-                "createdAt": "2025-12-15T22:45:20.672Z"
-            }
-        ],
         "outcomeId": 3,
         "userId": 15,
-        "teamMembers": [
-            {
-                "userId": 13,
-                "teamId": 2
-            },
-            {
-                "userId": 28,
-                "teamId": 4
-            },
-            {
-                "userId": 49,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 2
@@ -8297,27 +4565,8 @@ export const activities = [
         "statusId": 7,
         "categoryId": 1,
         "versionId": 2,
-        "comments": [],
         "outcomeId": 3,
         "userId": 5,
-        "teamMembers": [
-            {
-                "userId": 24,
-                "teamId": 2
-            },
-            {
-                "userId": 38,
-                "teamId": 4
-            },
-            {
-                "userId": 50,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 9
@@ -8332,7 +4581,7 @@ export const activities = [
     {
         "id": 155,
         "id1": "44878",
-        "id2": null,
+        "id2": "",
         "clientName": "Globex",
         "projectName": "Globex Project 42",
         "verticalId": 6,
@@ -8343,27 +4592,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 1,
         "userId": 12,
-        "teamMembers": [
-            {
-                "userId": 24,
-                "teamId": 2
-            },
-            {
-                "userId": 28,
-                "teamId": 4
-            },
-            {
-                "userId": 51,
-                "teamId": 1
-            },
-            {
-                "userId": 59,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 11
@@ -8378,7 +4608,7 @@ export const activities = [
     {
         "id": 156,
         "id1": "82077",
-        "id2": null,
+        "id2": "",
         "clientName": "Acme Corp",
         "projectName": "Acme Corp Project 46",
         "verticalId": 6,
@@ -8389,27 +4619,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 1,
         "versionId": 1,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 2,
         "userId": 13,
-        "teamMembers": [
-            {
-                "userId": 16,
-                "teamId": 2
-            },
-            {
-                "userId": 26,
-                "teamId": 4
-            },
-            {
-                "userId": 49,
-                "teamId": 1
-            },
-            {
-                "userId": 56,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 3
@@ -8430,7 +4641,7 @@ export const activities = [
     {
         "id": 157,
         "id1": "48305",
-        "id2": null,
+        "id2": "",
         "clientName": "Soylent Corp",
         "projectName": "Soylent Corp Project 54",
         "verticalId": 2,
@@ -8441,38 +4652,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-48305",
-                "userId": 12,
-                "createdAt": "2026-01-12T00:28:30.292Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-48305",
-                "userId": 12,
-                "createdAt": "2026-01-21T07:49:42.880Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 2,
         "userId": 5,
-        "teamMembers": [
-            {
-                "userId": 12,
-                "teamId": 2
-            },
-            {
-                "userId": 33,
-                "teamId": 4
-            },
-            {
-                "userId": 47,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 1
@@ -8501,27 +4682,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [],
         "outcomeId": 2,
         "userId": 15,
-        "teamMembers": [
-            {
-                "userId": 13,
-                "teamId": 2
-            },
-            {
-                "userId": 32,
-                "teamId": 4
-            },
-            {
-                "userId": 42,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 7
@@ -8547,27 +4709,8 @@ export const activities = [
         "statusId": 3,
         "categoryId": 2,
         "versionId": 2,
-        "comments": [],
-        "outcomeId": null,
+        "outcomeId": 2,
         "userId": 6,
-        "teamMembers": [
-            {
-                "userId": 19,
-                "teamId": 2
-            },
-            {
-                "userId": 31,
-                "teamId": 4
-            },
-            {
-                "userId": 45,
-                "teamId": 1
-            },
-            {
-                "userId": 54,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 12
@@ -8596,38 +4739,8 @@ export const activities = [
         "statusId": 4,
         "categoryId": 2,
         "versionId": 3,
-        "comments": [
-            {
-                "text": "Auto-generated comment 1 for SF-67778",
-                "userId": 26,
-                "createdAt": "2025-12-23T12:28:59.481Z"
-            },
-            {
-                "text": "Auto-generated comment 2 for SF-67778",
-                "userId": 48,
-                "createdAt": "2026-01-01T06:06:09.420Z"
-            }
-        ],
-        "outcomeId": null,
+        "outcomeId": 5,
         "userId": 13,
-        "teamMembers": [
-            {
-                "userId": 20,
-                "teamId": 2
-            },
-            {
-                "userId": 26,
-                "teamId": 4
-            },
-            {
-                "userId": 48,
-                "teamId": 1
-            },
-            {
-                "userId": 55,
-                "teamId": 3
-            }
-        ],
         "clientLocations": [
             {
                 "id": 3

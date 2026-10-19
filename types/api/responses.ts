@@ -5,15 +5,15 @@ export interface ApiResponse<T = unknown> {
   errors?: Record<string, string>
 }
 
-export interface ActivityResponse extends ApiResponse<PricingActivity> {
-  activity?: PricingActivity
+export interface ActivityResponse extends ApiResponse<PricingActivityWithHistory> {
+  activity?: PricingActivityWithHistory
 }
 
 export interface AdminDataResponse extends ApiResponse<unknown[]> {
   data: AdminDataItem[]
 }
 
-export type AdminDataType = 'User' | 'Team' | 'Vertical' | 'Horizontal' | 'Location' | 'Status' | 'Category' | 'Version' | 'Outcome' | 'DocumentType'
+export type AdminDataType = 'User' | 'Team' | 'Vertical' | 'Horizontal' | 'Location' | 'Status' | 'Category' | 'Version' | 'Outcome' | 'DocumentType' | 'SalesforceStage' | 'Subvertical'
 
 export interface AdminDataItem {
   id: number
@@ -21,4 +21,4 @@ export interface AdminDataItem {
 }
 
 // Import from domain
-import type { PricingActivity } from '../domain/activity'
+import type { PricingActivityWithHistory } from '../domain/activity'

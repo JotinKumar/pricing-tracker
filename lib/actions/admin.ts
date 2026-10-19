@@ -4,50 +4,62 @@
 import prisma from '../db'
 import { getSession } from './auth'
 import { adminUserSchema, adminLookupSchema } from '../schemas'
+import { Prisma } from '@prisma/client'
+import { AdminUserFormValues, AdminLookupFormValues, User, AdminDataItem } from '@/types'
 
 async function isAdmin() {
     const session = await getSession()
     return session && session.role === 'ADMIN'
 }
 
-type AdminDataType = 'User' | 'Team' | 'Vertical' | 'Horizontal' | 'Location' | 'Status' | 'Category' | 'Version' | 'Outcome' | 'DocumentType'
+type AdminDataType = 'User' | 'Team' | 'Vertical' | 'Horizontal' | 'Location' | 'Status' | 'Category' | 'Version' | 'Outcome' | 'DocumentType' | 'SalesforceStage' | 'Subvertical'
+type AdminModelName = 'user' | 'team' | 'vertical' | 'horizontal' | 'location' | 'status' | 'category' | 'version' | 'outcome' | 'documentType' | 'salesforceStage' | 'subvertical'
 
-const getModelName = (type: AdminDataType) => {
+type PrismaAdminDelegate = {
+    findMany: (args: { orderBy?: Record<string, 'asc' | 'desc'> }) => Prisma.PrismaPromise<unknown[]>
+    update: (args: { where: { id: number }; data: Record<string, unknown> }) => Prisma.PrismaPromise<unknown>
+    create: (args: { data: Record<string, unknown> }) => Prisma.PrismaPromise<unknown>
+    delete: (args: { where: { id: number } }) => Prisma.PrismaPromise<unknown>
+}
+
+function getAdminModel(modelName: AdminModelName) {
+    const delegate = (prisma as unknown as Record<string, PrismaAdminDelegate>)[modelName]
+    if (!delegate) throw new Error(`Unknown model: ${modelName}`)
+    return delegate
+}
+
+const getModelName = (type: AdminDataType): AdminModelName => {
     switch (type) {
         case 'DocumentType': return 'documentType'
+        case 'SalesforceStage': return 'salesforceStage'
+        case 'Subvertical': return 'subvertical'
         case 'User': return 'user'
-        default: return type.toLowerCase()
+        default: return type.toLowerCase() as AdminModelName
     }
 }
 
 import { TEAM_ORDER } from '../constants'
 
+export async function getAdminData(type: 'User'): Promise<{ success: true; data: User[] } | { success: false; message: string }>
+export async function getAdminData(type: AdminDataType): Promise<{ success: true; data: AdminDataItem[] } | { success: false; message: string }>
 export async function getAdminData(type: AdminDataType) {
     if (!await isAdmin()) return { success: false, message: 'Unauthorized' }
 
     try {
-        let data;
+        let data: User[] | AdminDataItem[];
         const modelName = getModelName(type)
 
         if (type === 'User') {
             data = await prisma.user.findMany({ orderBy: { id: 'asc' }, include: { teams: true, manager: true } });
+        } else if (type === 'Subvertical') {
+            data = await prisma.subvertical.findMany({
+                orderBy: { displayOrder: 'asc' },
+                include: { vertical: true }
+            }) as unknown as AdminDataItem[];
         } else {
-            data = await (prisma as any)[modelName].findMany({ orderBy: { id: 'asc' } });
-
-            // Apply custom sort for Teams
-            if (type === 'Team') {
-                data.sort((a: any, b: any) => {
-                    const indexA = TEAM_ORDER.indexOf(a.teamname);
-                    const indexB = TEAM_ORDER.indexOf(b.teamname);
-
-                    // Handle items not in the list (put them at the end)
-                    if (indexA === -1 && indexB === -1) return a.teamname.localeCompare(b.teamname);
-                    if (indexA === -1) return 1;
-                    if (indexB === -1) return -1;
-
-                    return indexA - indexB;
-                })
-            }
+            // Use displayOrder for all other types
+            data = (await getAdminModel(modelName).findMany({ orderBy: { displayOrder: 'asc' } })) as AdminDataItem[];
+            // Custom sort removed in favor of DB displayOrder
         }
 
         return { success: true, data }
@@ -57,7 +69,7 @@ export async function getAdminData(type: AdminDataType) {
     }
 }
 
-export async function saveAdminData(type: AdminDataType, data: any) {
+export async function saveAdminData(type: AdminDataType, data: AdminUserFormValues | AdminLookupFormValues) {
     if (!await isAdmin()) return { success: false, message: 'Unauthorized' }
 
     try {
@@ -73,7 +85,7 @@ export async function saveAdminData(type: AdminDataType, data: any) {
             const teamConnect = teams ? { [id ? 'set' : 'connect']: teams.map((tId: number) => ({ id: tId })) } : undefined
             const managerConnect = managerId ? { connect: { id: managerId } } : (id ? { disconnect: true } : undefined) // Only disconnect if editing
 
-            const finalData: any = { ...userData }
+            const finalData: Prisma.UserUpdateInput = { ...userData }
             // Ensure name is present (schema made it optional, but DB needs it if creating)
             if (!finalData.name && (firstName || lastName)) {
                 finalData.name = `${firstName || ''} ${lastName || ''}`.trim()
@@ -88,7 +100,7 @@ export async function saveAdminData(type: AdminDataType, data: any) {
             if (id) {
                 await prisma.user.update({ where: { id }, data: finalData })
             } else {
-                await prisma.user.create({ data: finalData })
+                await prisma.user.create({ data: finalData as Prisma.UserCreateInput })
             }
 
         } else {
@@ -106,39 +118,53 @@ export async function saveAdminData(type: AdminDataType, data: any) {
                 'Status': 'status',
                 'Version': 'version',
                 'Outcome': 'outcome',
-                'DocumentType': 'type'
+                'DocumentType': 'type',
+                'SalesforceStage': 'stage',
+                'Subvertical': 'subvertical'
             }
             const fieldName = requiredFields[type]
-            if (!data[fieldName]) return { success: false, message: `${fieldName} is required` }
+            if (!parse.data[fieldName]) return { success: false, message: `${fieldName} is required` }
 
-            const { id } = data
+            // Subvertical requires a parent vertical
+            if (type === 'Subvertical') {
+                const verticalId = Number(parse.data.verticalId)
+                if (!verticalId) return { success: false, message: 'Vertical is required' }
+            }
+
+            const { id } = parse.data
             // Ensure ID is number if present (Zod handled it but let's be safe for Prisma)
             const numId = id ? Number(id) : undefined
 
             // Sanitize data: only include fields valid for the model
-            const cleanData = {
-                [fieldName]: data[fieldName],
-                display: data.display,
-                isActive: data.isActive,
-                ...(type === 'Location' && { currency: data.currency })
+            const cleanData: Record<string, unknown> = {
+                [fieldName]: parse.data[fieldName],
+                display: parse.data.display,
+                isActive: parse.data.isActive,
+                ...(type === 'Location' && { currency: parse.data.currency }),
+                ...(type === 'SalesforceStage' && { description: parse.data.description }),
+                ...(type === 'Subvertical' && {
+                    vertical: { connect: { id: Number(parse.data.verticalId) } }
+                })
             }
 
+            const model = getAdminModel(getModelName(type))
             if (numId) {
-                await (prisma as any)[getModelName(type)].update({
+                await model.update({
                     where: { id: numId },
                     data: cleanData
                 })
             } else {
-                await (prisma as any)[getModelName(type)].create({
+                await model.create({
                     data: cleanData
                 })
             }
         }
 
         return { success: true }
-    } catch (error: any) {
-        if (error.code === 'P2002') {
-            const target = error.meta?.target || []
+    } catch (error: unknown) {
+        const prismaError = error as { code?: string; meta?: { target?: string[] } }
+        if (prismaError.code === 'P2002') {
+            const target = prismaError.meta?.target || []
             const errors: Record<string, string> = {}
 
             if (target.includes('email')) {
@@ -165,7 +191,9 @@ export async function saveAdminData(type: AdminDataType, data: any) {
                     'Version': 'version',
                     'Outcome': 'outcome',
                     'DocumentType': 'type',
-                    'Category': 'category'
+                    'Category': 'category',
+                    'SalesforceStage': 'stage',
+                    'Subvertical': 'subvertical'
                 }
                 const fieldName = requiredFields[type] || 'name'
                 if (target.includes(fieldName)) {
@@ -180,7 +208,7 @@ export async function saveAdminData(type: AdminDataType, data: any) {
             return { success: false, message: 'Unique constraint violation' }
         }
         console.error("Save Admin Data Error:", error)
-        return { success: false, message: error.message || 'Failed to save data' }
+        return { success: false, message: 'Failed to save data' }
     }
 }
 
@@ -189,15 +217,16 @@ export async function deleteAdminData(type: AdminDataType, id: number) {
 
     try {
         const modelName = getModelName(type)
-        const model: any = (prisma as any)[modelName]
+        const model = getAdminModel(modelName)
 
         await model.delete({
             where: { id: Number(id) }
         })
 
         return { success: true }
-    } catch (error: any) {
-        if (error.code === 'P2003') {
+    } catch (error: unknown) {
+        const prismaError = error as { code?: string }
+        if (prismaError.code === 'P2003') {
             return { success: false, message: 'Cannot delete: This item is in use. Try setting it to inactive instead.' }
         }
         return { success: false, message: 'Failed to delete data' }
@@ -241,5 +270,29 @@ export async function updateSystemSetting(key: string, value: string) {
     } catch (error) {
         console.error('Error updating system setting:', error)
         return { success: false, message: 'Failed to update setting' }
+    }
+}
+
+export async function updateDisplayOrder(type: AdminDataType, items: { id: number, displayOrder: number }[]) {
+    if (!await isAdmin()) return { success: false, message: 'Unauthorized' }
+
+    const modelName = getModelName(type)
+    if (modelName === 'user') return { success: false, message: 'Cannot reorder users' }
+
+    try {
+        const model = getAdminModel(modelName)
+        // Use transaction for atomic updates
+        await prisma.$transaction(
+            items.map((item) =>
+                model.update({
+                    where: { id: item.id },
+                    data: { displayOrder: item.displayOrder }
+                })
+            )
+        )
+        return { success: true }
+    } catch (error: unknown) {
+        console.error('Failed to update order', error)
+        return { success: false, message: 'Failed to update display order' }
     }
 }

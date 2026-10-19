@@ -45,4 +45,21 @@ next-env.d.ts
 # local storage
 /storage
 
-.agent
+# agent toolkit (third-party, not part of the project)
+/.agent
+
+# Playwright outputs
+/playwright-report
+/test-results
+
+# dev database (do not version-control SQLite binaries)
+/prisma/dev.db
+/prisma/*.db
+/prisma/*.db-journal
+
+# Local browser captures and diagnostic output
+/.playwright-mcp/
+/*.png
+*.log
+/prisma/*.db-wal
+/prisma/*.db-shm
